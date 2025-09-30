@@ -1,6 +1,9 @@
 {
   "name": "register-base-workspace",
   "version": "0.0.0",
+  "engines": {
+    "node": "^22.14"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -35,5 +38,6 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^18.2.0",
     "typescript": "~5.5.2"
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
