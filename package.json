@@ -9,6 +9,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "stylelint:report": "mkdir -p dist/stylelint && npx stylelint **/*.less --custom-formatter ./stylelint-formatter.js",
+    "stylelint:changes": "bash stylelint-only-changed-develop",
     "test": "ng test"
   },
   "private": true,
@@ -41,7 +43,26 @@
     "ng-packagr": "^18.2.0",
     "prettier": "^3.5.3",
     "prettier-eslint": "^16.3.2",
+    "stylelint": "^16.18.0",
+    "stylelint-at-rule-no-children": "^0.3.1",
+    "stylelint-config-standard-less": "^3.0.1",
+    "stylelint-declaration-block-no-ignored-properties": "^2.8.0",
+    "stylelint-group-selectors": "^1.0.10",
+    "stylelint-html-reporter": "^0.0.8",
+    "stylelint-less": "^3.0.1",
+    "stylelint-order": "^6.0.4",
+    "stylelint-selector-bem-pattern": "^4.0.1",
+    "stylelint-selector-no-empty": "^1.0.9",
+    "stylelint-value-no-exposed-custom-properties": "^2.3.1",
     "typescript": "~5.5.2"
+  },
+  "overrides": {
+    "stylelint-selector-no-empty": {
+      "stylelint": "^16.18.0"
+    },
+    "stylelint-value-no-exposed-custom-properties": {
+      "stylelint": "^16.18.0"
+    }
   },
   "packageManager": "yarn@1.22.22"
 }

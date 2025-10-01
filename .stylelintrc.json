@@ -1,0 +1,34 @@
+{
+  "extends": "stylelint-config-standard-less",
+  "allowEmptyInput": true,
+  "plugins": [
+    "stylelint-at-rule-no-children",
+    "stylelint-declaration-block-no-ignored-properties",
+    "stylelint-group-selectors",
+    "stylelint-order",
+    "stylelint-selector-bem-pattern",
+    "stylelint-selector-no-empty",
+    "stylelint-value-no-exposed-custom-properties"
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "shorthand-property-no-redundant-values": null,
+    "color-named": "never",
+    "no-empty-source": null,
+    "color-hex-alpha": "never",
+    "color-hex-length": "long",
+    "selector-no-vendor-prefix": true,
+    "function-disallowed-list": ["rgb"],
+    "color-function-notation": "legacy",
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["ng-deep"]
+      }
+    ],
+    "plugin/declaration-block-no-ignored-properties": true,
+    "plugin/stylelint-group-selectors": true,
+    "plugin/stylelint-selector-no-empty": true,
+    "plugin/value-no-exposed-custom-properties": true
+  }
+}
