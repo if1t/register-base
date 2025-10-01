@@ -1,20 +1,6 @@
-import {
-  MonoTypeOperatorFunction,
-  distinctUntilChanged,
-  Observable,
-  asyncScheduler,
-  of,
-} from 'rxjs';
-import { observeOn } from 'rxjs/operators';
-import { isEqual } from 'lodash';
-
-export function isNonNull<T>(value: T): value is NonNullable<T> {
-  return value !== null;
-}
-
-export function isDefined<T>(value: T | null | undefined): value is T {
-  return value !== null && value !== undefined;
-}
+import {asyncScheduler, distinctUntilChanged, MonoTypeOperatorFunction, Observable, of,} from 'rxjs';
+import {observeOn} from 'rxjs/operators';
+import {isEqual} from 'lodash';
 
 export function distinctUntilChangedJSONs<T>(): MonoTypeOperatorFunction<T> {
   return distinctUntilChanged((prev, curr) => isEqual(prev, curr));
