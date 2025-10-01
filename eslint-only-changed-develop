@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+FILES=$(git diff --diff-filter=d --name-only origin/develop | grep -E '\.(ts)$' | xargs)
+if [ -n "$FILES" ]; then
+  yarn eslint $FILES --no-inline-config --no-error-on-unmatched-pattern -f html -o dist/eslint/changes-report.html
+else
+  echo "No files found into diff with develop for lint with Eslint."
+  exit 0
+fi
