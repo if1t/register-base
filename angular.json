@@ -62,10 +62,22 @@
               {
                 "glob": "**/*",
                 "input": "projects/test-app/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "dist/ngx-register-base/assets",
+                "output": "assets/"
               }
             ],
             "styles": [
-              "projects/test-app/src/styles.less"
+              "projects/test-app/src/styles.less",
+              "@taiga-ui/core/styles/taiga-ui-theme.less",
+              "@taiga-ui/core/styles/taiga-ui-fonts.less"
             ],
             "scripts": []
           },

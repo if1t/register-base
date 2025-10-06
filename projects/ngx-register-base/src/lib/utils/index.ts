@@ -1,2 +1,2 @@
-export * from './functions'
-export * from './rxjs'
+export * from './functions';
+export * from './rxjs';

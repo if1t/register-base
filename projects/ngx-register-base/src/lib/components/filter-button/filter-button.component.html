@@ -1,0 +1,20 @@
+<button
+  tuiButton
+  size="m"
+  appearance="flat-destructive"
+  tuiHint
+  tuiHintDirection="bottom"
+  [class.--indicator]="filterApplied()"
+  [disabled]="disabled()"
+  (click)="filterToggle.emit()"
+>
+  <img ngSrc="assets/icons/filter.svg" alt="filter" height="16" width="16" />
+
+  <tui-hint
+    *tuiHint
+    class="filter-button__tooltip"
+    [class.filter-button__tooltip--showed]="filterApplied()"
+  >
+    <span>К реестру применены фильтры</span>
+  </tui-hint>
+</button>

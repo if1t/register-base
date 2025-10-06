@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {isDefined, StickyRelativeDirective} from 'ngx-register-base';
+import { isDefined, FilterButtonComponent } from 'ngx-register-base';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, StickyRelativeDirective],
+  imports: [RouterOutlet, FilterButtonComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.less'
+  styleUrl: './app.component.less',
 })
 export class AppComponent {
   title = 'test-app';
