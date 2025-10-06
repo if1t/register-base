@@ -130,6 +130,8 @@ module.exports = {
           },
         ],
         '@typescript-eslint/ban-ts-comment': 'error',
+        '@typescript-eslint/no-throw-literal': 'off',
+        '@typescript-eslint/only-throw-error': 'error',
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/naming-convention': 'warn',
         '@typescript-eslint/no-unused-vars': 'off',
