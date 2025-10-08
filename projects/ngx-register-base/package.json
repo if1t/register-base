@@ -1,6 +1,10 @@
 {
   "name": "ngx-register-base",
   "version": "0.0.1",
+  "exports": {
+    "./icons/*": "./icons/*",
+    "./styles/*": "./styles/*"
+  },
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",

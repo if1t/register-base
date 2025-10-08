@@ -1,13 +1,9 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/ngx-register-base",
-  "assets": ["./assets",
-    {
-      "input": "less/styles", "glob": "**/*.less", "output": "styles"
-    }
-  ],
+  "assets": ["icons", "styles"],
+  "inlineStyleLanguage": "less",
   "lib": {
-    "styleIncludePaths": ["less/styles.less"],
     "entryFile": "src/public-api.ts"
   }
 }

@@ -70,14 +70,15 @@
               },
               {
                 "glob": "**/*",
-                "input": "dist/ngx-register-base/assets",
-                "output": "assets/"
+                "input": "dist/ngx-register-base/icons",
+                "output": "assets/ngx-register-base/icons"
               }
             ],
             "styles": [
               "projects/test-app/src/styles.less",
               "@taiga-ui/core/styles/taiga-ui-theme.less",
-              "@taiga-ui/core/styles/taiga-ui-fonts.less"
+              "@taiga-ui/core/styles/taiga-ui-fonts.less",
+              "dist/ngx-register-base/styles/styles.less"
             ],
             "scripts": []
           },
