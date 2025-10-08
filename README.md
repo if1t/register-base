@@ -1,27 +1,56 @@
 # RegisterBaseWorkspace
+Этот проект был создан с помощью [Angular CLI](https://github.com/angular/angular-cli) версии 18.2.21.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+## Установка Node, npm и зависимостей
+Установка Node:
+```bash
+nvm install 22.14
+```
+или использование текущей версии:
+```bash
+nvm use 22.14
+```
 
-## Development server
+Установка yarn классической версии:
+```bash
+npm install -g yarn@1.22.22
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Установка зависимостей проекта:
+```bash
+yarn install
+```
 
-## Code scaffolding
+## Настройка плагинов проекта
+В проекте подключены статические анализаторы кода Eslint, Stylelint и Prettier. Настройте соответствующие плагины в вашей среде разработки для использования общих конфигураций.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Сервер разработки
+Выполните `ng serve` для запуска тестового приложения test-app. Перейдите по адресу `http://localhost:4200/`.
+Приложение автоматически перезагрузится при изменении любого исходного файла.
 
-## Build
+## Формирование кода
+Запустите `ng generate component component-name` для генерации нового компонента. Вы также можете использовать `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Сборка
+Запустите `ng build` для сборки проекта. Артефакты сборки будут сохранены в каталоге `dist/`.
 
-## Running unit tests
+## Eslint
+Проверка качества кода для js, ts и html-файлов с помощью Eslint:
+```bash
+yarn eslint:report
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Stylelint
+Проверка качества кода для less-файлов с помощью Stylelint:
+```bash
+yarn stylelint:report
+```
 
-## Running end-to-end tests
+## Запуск модульных тестов
+Запустите `ng test` для выполнения модульных тестов через [Karma](https://karma-runner.github.io).
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Запуск сквозных тестов
+Запустите `ng e2e`, чтобы выполнить сквозные тесты на выбранной вами платформе. Чтобы использовать эту команду, необходимо сначала добавить пакет, реализующий возможности сквозного тестирования.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Дополнительная помощь
+Чтобы получить дополнительную справку по Angular CLI, используйте `ng help` или посетите страницу [Обзор и справочник команд Angular CLI](https://angular.dev/tools/cli).
