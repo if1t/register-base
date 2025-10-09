@@ -1,0 +1,84 @@
+<div class="checkbox__container" (click)="toggle(); $event.stopImmediatePropagation()">
+  @let indeterminate = calcIndeterminate();
+  @let checked = calcChecked();
+
+  <input
+    tuiCheckbox
+    size="s"
+    type="checkbox"
+    [indeterminate]="indeterminate"
+    [tuiDropdown]="dropdown"
+    [tuiDropdownManual]="isOpen()"
+    [checked]="checked"
+  />
+</div>
+
+<ng-template #dropdown>
+  <section class="dropdown__content" id="checkbox__dropdown__content">
+    @let selected = selectedElement();
+
+    <span
+      class="dropdown__element"
+      [class.dropdown__element_selected]="selected === ESelectionTypes.ALL"
+      (click)="selectElement(ESelectionTypes.ALL)"
+    >
+      Выбрать все
+    </span>
+    <span
+      class="dropdown__element"
+      [class.dropdown__element_selected]="selected === ESelectionTypes.VISIBLE"
+      (click)="selectElement(ESelectionTypes.VISIBLE)"
+    >
+      Выбрать видимое
+    </span>
+    <span
+      class="dropdown__element"
+      [class.dropdown__element_selected]="selected === ESelectionTypes.INVERSE"
+      (click)="selectElement(ESelectionTypes.INVERSE)"
+    >
+      Кроме выделенного
+    </span>
+    <div
+      class="dropdown__select-value"
+      [class.dropdown__element_selected]="selected === ESelectionTypes.COUNT"
+    >
+      <span>Выбрать</span>
+      <tui-textfield
+        tuiTextfieldSize="s"
+        tuiTextfieldAppearance="textfield"
+        [tuiTextfieldCleaner]="true"
+        class="flex-1"
+      >
+        <input
+          tuiTextfield
+          numberOnly
+          placeholder="Введите число"
+          [ngModel]="inputValue()"
+          (ngModelChange)="inputValueChanges($event)"
+          (focusin)="onInputFocus()"
+        />
+      </tui-textfield>
+    </div>
+    <div class="dropdown__footer">
+      <button
+        tuiButton
+        class="dropdown__button dropdown__button__apply"
+        size="m"
+        appearance="outline"
+        [loading]="loading()"
+        (click)="applySelection()"
+      >
+        Применить
+      </button>
+      <button
+        tuiButton
+        class="dropdown__button dropdown__button__cancel"
+        size="m"
+        appearance="outline-grayscale"
+        (click)="dropSelection()"
+      >
+        Отмена
+      </button>
+    </div>
+  </section>
+</ng-template>
