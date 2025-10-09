@@ -8146,6 +8146,13 @@ ng-packagr@^18.2.0:
   optionalDependencies:
     rollup "^4.18.0"
 
+ngx-register-base@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-register-base/-/ngx-register-base-0.0.2.tgz#a4823a2457e305cc1d1b223587536a2b5ba3ef6e"
+  integrity sha512-5zftCtEZF0+0xcWpUBEYOkp/C6OGViOfscot9N67XjoEulH27OqepvkkW43M/2FD/TLtT962fP76v6gOHi9Ikg==
+  dependencies:
+    tslib "^2.3.0"
+
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nice-napi/-/nice-napi-1.0.2.tgz#dc0ab5a1eac20ce548802fc5686eaa6bc654927b"
