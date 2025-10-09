@@ -10,3 +10,8 @@ export const invertState = (state: ERegisterObjectState): ERegisterObjectState =
 
   return ERegisterObjectState.SELECTED;
 };
+
+export const enum EOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
