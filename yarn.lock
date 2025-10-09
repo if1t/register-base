@@ -3001,6 +3001,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/hasura@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@types/hasura/-/hasura-0.1.5.tgz#255c205155f71064b107af2095b2bc5c4a72309c"
+  integrity sha512-+r1O+DcoMBO10n0w62fqzTAPgBw3i3pcaUd/vSsUQMU47jQgdCRZRRKpNajXSrl5uViQ9WhqnDp7iIB6DqM3wA==
+
 "@types/http-errors@*":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-2.0.5.tgz#5b749ab2b16ba113423feb1a64a95dcd30398472"
@@ -8145,13 +8150,6 @@ ng-packagr@^18.2.0:
     sass "^1.69.5"
   optionalDependencies:
     rollup "^4.18.0"
-
-ngx-register-base@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/ngx-register-base/-/ngx-register-base-0.0.2.tgz#a4823a2457e305cc1d1b223587536a2b5ba3ef6e"
-  integrity sha512-5zftCtEZF0+0xcWpUBEYOkp/C6OGViOfscot9N67XjoEulH27OqepvkkW43M/2FD/TLtT962fP76v6gOHi9Ikg==
-  dependencies:
-    tslib "^2.3.0"
 
 nice-napi@^1.0.2:
   version "1.0.2"

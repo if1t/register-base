@@ -65,7 +65,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/ngx-register-base/icons",
+                "input": "dist/ngx-register-base/icons",
                 "output": "assets/ngx-register-base/icons"
               }
             ],
@@ -73,7 +73,7 @@
               "projects/test-app/src/styles.less",
               "@taiga-ui/core/styles/taiga-ui-theme.less",
               "@taiga-ui/core/styles/taiga-ui-fonts.less",
-              "ngx-register-base/styles/styles.less"
+              "dist/ngx-register-base/styles/styles.less"
             ],
             "scripts": []
           },
