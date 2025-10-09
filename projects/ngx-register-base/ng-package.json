@@ -4,6 +4,7 @@
   "assets": ["icons", "styles"],
   "inlineStyleLanguage": "less",
   "lib": {
-    "entryFile": "src/public-api.ts"
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": ["./styles"]
   }
 }
