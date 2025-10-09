@@ -1,0 +1,123 @@
+@import 'src/less/fonts';
+
+@contentHeight: calc(100vh - var(--header-height) - var(--footer-height));
+@headerHeight: 40px;
+
+:host {
+  .register-table__section {
+    position: relative;
+  }
+
+  .register-table__scrollable {
+    height: @contentHeight;
+
+    .register-table__loader {
+      height: @contentHeight;
+
+      table {
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+
+        thead {
+          position: sticky;
+          top: 0;
+          z-index: 22;
+        }
+
+        .register-table__row {
+          background: var(--main-white);
+
+          &:hover {
+            background: var(--brand-hovered);
+          }
+
+          &.selected {
+            background: var(--brand-selected);
+          }
+
+          &.shift-pressed {
+            background: var(--brand-hovered);
+          }
+        }
+
+        td,
+        th {
+          padding: 4px 8px;
+          height: 32px;
+
+          &.register-table__cell-checkbox-selector {
+            padding: 4px 6.8px;
+            position: sticky;
+            left: 0;
+            z-index: 21;
+          }
+
+          &.register-table__cell-text {
+            color: var(--main-black);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
+          &.register-table__cell-icon {
+            width: 32px !important;
+            min-width: 32px !important;
+            max-width: 32px !important;
+            vertical-align: middle;
+          }
+
+          &.register-table__cell-checkbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+            prizm-checkbox {
+              width: 16px;
+            }
+          }
+        }
+
+        th {
+          height: @headerHeight;
+
+          &.register-table__cell-text {
+            .table-heading-12px;
+          }
+
+          &.register-table__cell-icon .register-table--icon-color {
+            font-size: 16px;
+            color: var(--main-black);
+          }
+        }
+
+        td {
+          background: inherit;
+
+          &.register-table__cell-text {
+            .table-text-12px-400;
+          }
+        }
+
+        .sticky {
+          position: sticky;
+          left: 0;
+        }
+
+        .empty-layer {
+          text-align: center;
+          position: relative;
+
+          .centered-text {
+            position: absolute;
+            top: 50%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}
