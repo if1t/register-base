@@ -1,0 +1,34 @@
+tui-pagination {
+  .t-button {
+    // left-page-arrow
+    &:first-child {
+      --tui-text-action: var(--gray-icon);
+      --t-icon-start: url('../../icons/chevrons-left.svg') !important;
+
+      margin-right: 12px !important;
+    }
+
+    // all pages
+    &:not(:first-child, :last-child) {
+      --tui-text-action: var(--text-main);
+
+      margin: 0 4px !important;
+      width: 40px;
+    }
+
+    // right-page-arrow
+    &:last-child {
+      --tui-text-action: var(--gray-icon);
+      --t-icon-start: url('../../icons/chevrons-right.svg') !important;
+
+      margin-left: 12px !important;
+    }
+  }
+
+  button[tuiAppearance][data-appearance='primary'] {
+    --tui-background-accent-1: var(--button-active);
+    --tui-background-accent-1-hover: var(--button-active);
+
+    color: unset;
+  }
+}

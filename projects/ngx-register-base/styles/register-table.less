@@ -1,0 +1,46 @@
+.filter-register-table-wrapper {
+  display: grid;
+  transition: grid-template-columns var(--page-menu-transition-time);
+
+  &[filters-open='true'] {
+    grid-template-columns: var(--filter-width) calc(100% - var(--filter-width));
+  }
+
+  &[filters-open='false'] {
+    grid-template-columns: 0 calc(100%);
+  }
+}
+
+.param-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 12px 8px 16px;
+}
+
+.register-table__th {
+  .t-sort {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    tui-icon {
+      content: url('../icons/triangle-up-down.svg');
+    }
+  }
+
+  &[order='asc'] {
+    .t-sort tui-icon {
+      content: url('../icons/triangle-up-selected.svg');
+    }
+  }
+
+  &[order='desc'] {
+    .t-sort tui-icon {
+      content: url('../icons/triangle-down-selected.svg');
+    }
+  }
+}

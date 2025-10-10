@@ -5,6 +5,7 @@
   "inlineStyleLanguage": "less",
   "lib": {
     "entryFile": "src/public-api.ts",
-    "styleIncludePaths": ["./styles"]
+    "styleIncludePaths": ["./styles"],
+    "cssUrl": "inline"
   }
 }
