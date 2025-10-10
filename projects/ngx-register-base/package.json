@@ -9,7 +9,14 @@
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
     "moment-timezone": "^0.5.48",
-    "date-fns": "^4.1.0"
+    "date-fns": "^4.1.0",
+    "@taiga-ui/core": "4.44.0",
+    "@taiga-ui/kit": "4.44.0",
+    "@taiga-ui/legacy": "4.44.0",
+    "@taiga-ui/addon-table": "4.44.0",
+    "lodash": "^4.17.21",
+    "rxjs": "~7.8.0",
+    "@prizm-ui/components": "^5.9"
   },
   "dependencies": {
     "tslib": "^2.3.0"
