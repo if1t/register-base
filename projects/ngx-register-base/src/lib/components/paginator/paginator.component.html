@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="content">
+    <span
+      class="rows rows__count"
+      *ngIf="!paginatorOptions()?.noRowsSelector && !paginatorOptions()?.noRowsSelectorLabel"
+    >
+      <ng-container *polymorphOutlet="textOnPage() as title">
+        {{ title }}
+      </ng-container>
+    </span>
+    <div class="rows-selector" *ngIf="!paginatorOptions()?.noRowsSelector">
+      <tui-combo-box
+        [ngModel]="currentRows"
+        [ngModelOptions]="{ standalone: true }"
+        [strict]="false"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldCleaner]="false"
+        tuiTextfieldSize="s"
+        [disabled]="disabled()"
+        (ngModelChange)="currentRowsInputChange.next($event)"
+      >
+        <tui-data-list-wrapper
+          *tuiDataList
+          [items]="rowsCountOptions().length ? rowsCountOptions() : [currentRows]"
+        />
+      </tui-combo-box>
+    </div>
+    <div class="selected-panel">
+      <div class="selected-container">
+        <span>Выбрано</span>
+        <span class="selected-counter">{{ selectedCounter() }}</span>
+      </div>
+      <sma-divider layout="vertical"></sma-divider>
+      <div class="selected-container" *ngIf="!paginatorOptions()?.noFilterInfo">
+        <span>Отфильтровано</span>
+        <span class="selected-counter">{{ totalRecords() }}</span>
+        <span>из</span>
+        <span class="selected-counter">{{ totalNotFiltered() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <span class="rows rows__show" *ngIf="!paginatorOptions()?.noInfo" [hidden]="disabled()">
+      Показано строк: {{ (currentPage - 1) * currentRows + 1 }}-{{
+        currentPage * currentRows > totalRecords() ? totalRecords() : currentPage * currentRows
+      }}
+      <ng-container> из {{ totalRecords() }} </ng-container>
+    </span>
+    <div class="paginator">
+      <button
+        tuiIconButton
+        class="paginator__control"
+        appearance="flat"
+        type="button"
+        size="xs"
+        tabIndex="-1"
+        [disabled]="disabled() || currentPage === 1"
+        (click)="toFirstPage()"
+      >
+        <img [src]="SvgSrc.CHEVRONS_DOUBLE_LEFT" />
+      </button>
+      <tui-pagination
+        [index]="currentPage - 1"
+        [length]="pagesCount()"
+        [activePadding]="pageLinkSize()"
+        (indexChange)="changePage($event + 1)"
+      />
+      @if (paginatorOptions().noToLastPageBtn ?? true) {
+        <button
+          tuiIconButton
+          class="paginator__control"
+          appearance="flat"
+          type="button"
+          size="xs"
+          tabIndex="-1"
+          [disabled]="disabled() || currentPage === pagesCount() || currentPage === 0"
+          (click)="toLastPage()"
+        >
+          <img [src]="SvgSrc.CHEVRONS_DOUBLE_RIGHT" />
+        </button>
+      }
+    </div>
+  </div>
+</div>

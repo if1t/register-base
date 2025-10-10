@@ -1,220 +1,218 @@
 <section class="register-table__section">
   <tui-scrollbar class="register-table__scrollable" (scrollend)="saveScrollEndPosition()">
     <tui-loader class="register-table__loader" [showLoader]="isLoading() || false" [overlay]="true">
-      @if (settingsNotLoading()) {
-        <table
-          tuiTable
-          class="table"
-          stickyRelative
-          [columns]="columnsWithCheckboxes()"
-          [style.width.px]="tableWidth()"
-          [tuiSortBy]="''"
-          (sortChange)="sortChange($event)"
-        >
-          <thead>
-            <tr tuiThGroup>
+      <table
+        tuiTable
+        class="table"
+        stickyRelative
+        [columns]="columnsWithCheckboxes()"
+        [style.width.px]="tableWidth()"
+        [tuiSortBy]="''"
+        (sortChange)="sortChange($event)"
+      >
+        <thead>
+          <tr tuiThGroup>
+            @if (checkboxColumn()) {
+              <th
+                tuiTh
+                *tuiHead="CHECKBOX_SELECTOR_KEY"
+                class="register-table__cell-icon register-table__cell-checkbox-selector"
+                [style.width.px]="CHECKBOX_SELECTOR_WIDTH_PX"
+                [sorter]="null"
+              >
+                <sma-checkbox-selector
+                  [selected]="selectedIds()"
+                  [totalRecords]="totalRecords()"
+                  [loading]="isSelectloading()"
+                  [disabled]="checkboxDisabled()"
+                  (onApply)="selectChanged.emit($event)"
+                ></sma-checkbox-selector>
+              </th>
+            }
+            @for (columnData of columnsData(); track columnData) {
+              @let thType = columnData.type;
+              @let thName = columnData.name;
+              @let sortable = checkAvailableColumnSorting(columnData);
+              @let resizeBlocked = checkResizeBlocked(columnData);
+              <th
+                tuiTh
+                *tuiHead="thName"
+                [ngClass]="['register-table__th', thType | classByType]"
+                [stickyLeft]="thName | stickyColumn: stickyLeftIds()"
+                [stylesOnSticky]="stickyThStyle"
+                [style]="columnData.headerStyle ?? ''"
+                [resizable]="!resizeBlocked"
+                [style.min-width.px]="getThWidth(thName)"
+                [style.width.px]="getThWidth(thName)"
+                [style.max-width.px]="getThWidth(thName)"
+                [tuiSortable]="sortable"
+                [sorter]="sortable ? setThName(thName) : null"
+                [attr.order]="columnOrders.get(thName)?.options?.order"
+                [tuiHint]="columnData.tooltipText ?? null"
+                (tuiResized)="thResizeChanges(columnData.name, $event)"
+              >
+                @switch (thType) {
+                  @case (EColumnDataType.ICON) {
+                    <tui-icon
+                      class="register-table--icon-color"
+                      [icon]="columnData.value!"
+                    ></tui-icon>
+                  }
+                  @case (EColumnDataType.ICON_SVG) {
+                    <img [src]="columnData.value" [alt]="thName" />
+                  }
+                  @case (EColumnDataType.TEXT) {
+                    @if (columnData.svgSrc) {
+                      <img [src]="columnData.svgSrc" [alt]="thName" />
+                    }
+                    <span
+                      class="text-overflow--ellipsis"
+                      [ngStyle]="columnData.textStyle ?? null"
+                      [innerHTML]="columnData.value"
+                    >
+                      {{ columnData.value }}
+                    </span>
+                  }
+                  @case (EColumnDataType.NUM) {
+                    <span [ngStyle]="columnData.textStyle ?? null" [innerHTML]="columnData.value">
+                      {{ columnData.value }}
+                    </span>
+                  }
+                  @case (EColumnDataType.DATE) {
+                    <span [ngStyle]="columnData.textStyle ?? null" [innerHTML]="columnData.value">
+                      {{ columnData.value }}
+                    </span>
+                  }
+                  @case (EColumnDataType.CHECKBOX) {
+                    {{ columnData.value }}
+                  }
+                }
+              </th>
+            }
+          </tr>
+        </thead>
+        @let rows = rowData();
+        <tbody tuiTbody [data]="rows">
+          @for (row of rows; track row.id) {
+            @let state = stateObjects?.();
+            @let trSelected =
+              state
+                ? state.get(row.id)?.state === ERegisterObjectState.SELECTED
+                : selectedIds().has(row.id);
+
+            <tr
+              #bodyRow
+              tuiTr
+              class="register-table__row"
+              [class.selected]="trSelected"
+              [class.shift-pressed]="markRowBeforeSelect(row)"
+              (mouseenter)="onRowHover(row)"
+              (mouseleave)="onRowHover(null)"
+              (click)="onRowClick($event, row)"
+              (dblclick)="rowDblClick.emit(row)"
+            >
               @if (checkboxColumn()) {
-                <th
-                  tuiTh
-                  *tuiHead="CHECKBOX_SELECTOR_KEY"
-                  class="register-table__cell-icon register-table__cell-checkbox-selector"
-                  [style.width.px]="CHECKBOX_SELECTOR_WIDTH_PX"
-                  [sorter]="null"
+                <td
+                  tuiTd
+                  *tuiCell="CHECKBOX_SELECTOR_KEY"
+                  class="register-table__cell-checkbox-selector"
                 >
-                  <sma-checkbox-selector
-                    [selected]="selectedIds()"
-                    [totalRecords]="totalRecords()"
-                    [loading]="isSelectloading()"
+                  <input
+                    tuiCheckbox
+                    size="s"
+                    type="checkbox"
+                    class="checkbox"
+                    [checked]="trSelected"
                     [disabled]="checkboxDisabled()"
-                    (onApply)="selectChanged.emit($event)"
-                  ></sma-checkbox-selector>
-                </th>
+                  />
+                </td>
               }
               @for (columnData of columnsData(); track columnData) {
-                @let thType = columnData.type;
-                @let thName = columnData.name;
-                @let sortable = checkAvailableColumnSorting(columnData);
-                @let resizeBlocked = checkResizeBlocked(columnData);
-                <th
-                  tuiTh
-                  *tuiHead="thName"
-                  [ngClass]="['register-table__th', thType | classByType]"
-                  [stickyLeft]="thName | stickyColumn: stickyLeftIds()"
-                  [stylesOnSticky]="stickyThStyle"
-                  [style]="columnData.headerStyle ?? ''"
-                  [resizable]="!resizeBlocked"
-                  [style.min-width.px]="getThWidth(thName)"
-                  [style.width.px]="getThWidth(thName)"
-                  [style.max-width.px]="getThWidth(thName)"
-                  [tuiSortable]="sortable"
-                  [sorter]="sortable ? setThName(thName) : null"
-                  [attr.order]="columnOrders.get(thName)?.options?.order"
-                  [tuiHint]="columnData.tooltipText ?? null"
-                  (tuiResized)="thResizeChanges(columnData.name, $event)"
+                @let tdType = columnData.type;
+                @let tdKey = columnData.name;
+                @let tdValue = row[tdKey];
+                <td
+                  tuiTd
+                  *tuiCell="tdKey"
+                  [class]="tdType | classByType: 'td'"
+                  [stickyLeft]="tdKey | stickyColumn: stickyLeftIds()"
+                  [stylesOnSticky]="stickyTdStyle"
                 >
-                  @switch (thType) {
-                    @case (EColumnDataType.ICON) {
-                      <tui-icon
-                        class="register-table--icon-color"
-                        [icon]="columnData.value!"
-                      ></tui-icon>
-                    }
-                    @case (EColumnDataType.ICON_SVG) {
-                      <img [src]="columnData.value" [alt]="thName" />
-                    }
-                    @case (EColumnDataType.TEXT) {
-                      @if (columnData.svgSrc) {
-                        <img [src]="columnData.svgSrc" [alt]="thName" />
+                  @let tdProjection = getProjectedColumnByName(tdKey);
+
+                  @if (columnData.isTemplate && tdProjection) {
+                    <ng-container
+                      [ngTemplateOutlet]="tdProjection"
+                      [ngTemplateOutletContext]="{
+                        $implicit: tdValue,
+                        row,
+                      }"
+                    ></ng-container>
+                  } @else {
+                    @switch (tdType) {
+                      @case (EColumnDataType.ICON) {
+                        @if (tdValue) {
+                          <tui-icon
+                            class="register-table--icon-color"
+                            [icon]="columnData.value!"
+                          ></tui-icon>
+                        }
                       }
-                      <span
-                        class="text-overflow--ellipsis"
-                        [ngStyle]="columnData.textStyle ?? null"
-                        [innerHTML]="columnData.value"
-                      >
-                        {{ columnData.value }}
-                      </span>
-                    }
-                    @case (EColumnDataType.NUM) {
-                      <span [ngStyle]="columnData.textStyle ?? null" [innerHTML]="columnData.value">
-                        {{ columnData.value }}
-                      </span>
-                    }
-                    @case (EColumnDataType.DATE) {
-                      <span [ngStyle]="columnData.textStyle ?? null" [innerHTML]="columnData.value">
-                        {{ columnData.value }}
-                      </span>
-                    }
-                    @case (EColumnDataType.CHECKBOX) {
-                      {{ columnData.value }}
+                      @case (EColumnDataType.ICON_SVG) {
+                        @if (tdValue) {
+                          <img [src]="columnData.value" [alt]="tdKey" />
+                        }
+                      }
+                      @case (EColumnDataType.CHECKBOX) {
+                        <input
+                          tuiCheckbox
+                          size="s"
+                          type="checkbox"
+                          class="checkbox"
+                          [checked]="tdValue"
+                          [disabled]="true"
+                        />
+                      }
+                      @case (EColumnDataType.TEXT) {
+                        <span [tuiHint]="tdValue">
+                          {{ tdValue ?? '' }}
+                        </span>
+                        <span>
+                          {{ tdValue ? columnData.postfix : '' }}
+                        </span>
+                      }
+                      @case (EColumnDataType.NUM) {
+                        {{ tdValue ?? '' | number: columnData.numberPipe }}
+                        {{ tdValue ? columnData.postfix : '' }}
+                      }
+                      @case (EColumnDataType.DATE) {
+                        {{
+                          (tdValue
+                            | formatDate
+                              : ETimezone.UTC
+                              : columnData.datePattern ?? EDatePattern.DATE_TIME_WITHOUT_SECONDS
+                              : (timeZoneChanges$ | async)) ?? ''
+                        }}
+                        {{ tdValue ? columnData.postfix : '' }}
+                      }
                     }
                   }
-                </th>
+                </td>
               }
             </tr>
-          </thead>
-          @let rows = rowData();
-          <tbody tuiTbody [data]="rows">
-            @for (row of rows; track row.id) {
-              @let state = stateObjects?.();
-              @let trSelected =
-                state
-                  ? state.get(row.id)?.state === ERegisterObjectState.SELECTED
-                  : selectedIds().has(row.id);
-
-              <tr
-                #bodyRow
-                tuiTr
-                class="register-table__row"
-                [class.selected]="trSelected"
-                [class.shift-pressed]="markRowBeforeSelect(row)"
-                (mouseenter)="onRowHover(row)"
-                (mouseleave)="onRowHover(null)"
-                (click)="onRowClick($event, row)"
-                (dblclick)="rowDblClick.emit(row)"
-              >
-                @if (checkboxColumn()) {
-                  <td
-                    tuiTd
-                    *tuiCell="CHECKBOX_SELECTOR_KEY"
-                    class="register-table__cell-checkbox-selector"
-                  >
-                    <input
-                      tuiCheckbox
-                      size="s"
-                      type="checkbox"
-                      class="checkbox"
-                      [checked]="trSelected"
-                      [disabled]="checkboxDisabled()"
-                    />
-                  </td>
-                }
-                @for (columnData of columnsData(); track columnData) {
-                  @let tdType = columnData.type;
-                  @let tdKey = columnData.name;
-                  @let tdValue = row[tdKey];
-                  <td
-                    tuiTd
-                    *tuiCell="tdKey"
-                    [class]="tdType | classByType: 'td'"
-                    [stickyLeft]="tdKey | stickyColumn: stickyLeftIds()"
-                    [stylesOnSticky]="stickyTdStyle"
-                  >
-                    @let tdProjection = getProjectedColumnByName(tdKey);
-
-                    @if (columnData.isTemplate && tdProjection) {
-                      <ng-container
-                        [ngTemplateOutlet]="tdProjection"
-                        [ngTemplateOutletContext]="{
-                          $implicit: tdValue,
-                          row,
-                        }"
-                      ></ng-container>
-                    } @else {
-                      @switch (tdType) {
-                        @case (EColumnDataType.ICON) {
-                          @if (tdValue) {
-                            <tui-icon
-                              class="register-table--icon-color"
-                              [icon]="columnData.value!"
-                            ></tui-icon>
-                          }
-                        }
-                        @case (EColumnDataType.ICON_SVG) {
-                          @if (tdValue) {
-                            <img [src]="columnData.value" [alt]="tdKey" />
-                          }
-                        }
-                        @case (EColumnDataType.CHECKBOX) {
-                          <input
-                            tuiCheckbox
-                            size="s"
-                            type="checkbox"
-                            class="checkbox"
-                            [checked]="tdValue"
-                            [disabled]="true"
-                          />
-                        }
-                        @case (EColumnDataType.TEXT) {
-                          <span [tuiHint]="tdValue">
-                            {{ tdValue ?? '' }}
-                          </span>
-                          <span>
-                            {{ tdValue ? columnData.postfix : '' }}
-                          </span>
-                        }
-                        @case (EColumnDataType.NUM) {
-                          {{ tdValue ?? '' | number: columnData.numberPipe }}
-                          {{ tdValue ? columnData.postfix : '' }}
-                        }
-                        @case (EColumnDataType.DATE) {
-                          {{
-                            (tdValue
-                              | formatDate
-                                : ETimezone.UTC
-                                : columnData.datePattern ?? EDatePattern.DATE_TIME_WITHOUT_SECONDS
-                                : (timeZoneChanges$ | async)) ?? ''
-                          }}
-                          {{ tdValue ? columnData.postfix : '' }}
-                        }
-                      }
-                    }
-                  </td>
-                }
-              </tr>
-            } @empty {
-              <tr class="empty-layer">
-                <td colspan="100%">
-                  <div class="centered-text">{{ emptyText() }}</div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      }
+          } @empty {
+            <tr class="empty-layer">
+              <td colspan="100%">
+                <div class="centered-text">{{ emptyText() }}</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </tui-loader>
   </tui-scrollbar>
 
-  <sma-prizm-paginator
+  <sma-paginator
     class="register-table__paginator"
     [page]="page()"
     [rows]="limit()"
@@ -226,5 +224,5 @@
     (paginatorChange)="paginatorChange.emit($event)"
     [disabled]="paginatorDisabled()"
   >
-  </sma-prizm-paginator>
+  </sma-paginator>
 </section>

@@ -1,0 +1,97 @@
+@import 'fonts';
+
+:host {
+  height: 40px;
+  display: flex;
+
+  .container {
+    height: 100%;
+    width: 100%;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    background: var(--main-white);
+    box-shadow: 0 -2px 4px 0 rgba(191, 198, 215, 50%);
+    z-index: 1;
+
+    .content {
+      display: flex;
+      align-items: center;
+    }
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rows {
+      .input-label;
+
+      color: var(--text-main);
+
+      &__count {
+        margin-right: 12px;
+      }
+
+      &__show {
+        margin-right: 32px;
+      }
+    }
+
+    .selected-panel {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+
+      sma-divider {
+        height: 24px;
+      }
+
+      .selected-container {
+        width: 100%;
+        display: flex;
+        gap: 12px;
+
+        .input-label;
+
+        color: var(--text-main);
+
+        .selected-counter {
+          padding: 0 8px;
+          border-bottom: 1px solid var(--table-stroke);
+        }
+      }
+    }
+
+    .rows-selector {
+      margin-right: 12px;
+      width: 100px;
+      min-width: 100px;
+    }
+
+    .paginator {
+      display: flex;
+      gap: 8px;
+
+      &__control {
+        --tui-text-action: var(--gray-icon);
+
+        tui-icon {
+          font-size: 16px;
+        }
+      }
+    }
+
+    ::ng-deep [tuiAppearance][data-appearance='textfield'] {
+      box-shadow: none;
+      padding-right: 10px !important;
+
+      ::ng-deep tui-icon {
+        //TODO--t-icon: url('assets/ngx-register-base/icons/chevrons-dropdown.svg') !important;
+      }
+    }
+  }
+}

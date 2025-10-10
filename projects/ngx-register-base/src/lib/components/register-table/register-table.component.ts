@@ -30,9 +30,7 @@ import {
   toSignal,
 } from '@angular/core/rxjs-interop';
 import { DateTimeService } from '../../services/date-time.service';
-import { SmaTpUserSettingsStore } from '../../store/sma-tp-user-settings-store/sma-tp-user-settings.store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PaginatorModule, PrizmPaginatorOutput } from '@/shared/components/paginator';
 import {
   BehaviorSubject,
   combineLatest,
@@ -70,6 +68,8 @@ import {
   CHECKBOX_SELECTOR_WIDTH_PX,
   MIN_COL_WIDTH_PX,
 } from './consts/register-table.consts';
+import { IPaginatorOutput } from '../paginator/types/paginator.types';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 /** Общий компонент для создания таблицы ресстра */
 @Component({
@@ -94,7 +94,7 @@ import {
     ClassByTypePipe,
     StickyColumnPipe,
     TuiHint,
-    PaginatorModule,
+    PaginatorComponent,
     CheckboxSelectorComponent,
     StickyDirective,
     StickyRelativeDirective,
@@ -102,7 +102,6 @@ import {
   ],
   providers: [
     DomIntersectionService,
-    SmaTpUserSettingsStore,
     KeyPressedService,
     {
       provide: KEY_PRESSED,
@@ -176,7 +175,6 @@ export class RegisterTableComponent implements OnDestroy {
   });
 
   protected readonly dts = inject(DateTimeService);
-  protected readonly settingsStore = inject(SmaTpUserSettingsStore);
   protected readonly destroyRef = inject(DestroyRef);
 
   private readonly _shift = inject(KeyPressedService);
@@ -189,7 +187,7 @@ export class RegisterTableComponent implements OnDestroy {
   /** Событие выбора в чекбокс-селекторе */
   public selectChanged = output<ApplySelectionTypes>();
   /** Событие изменения значений пагинатора */
-  public paginatorChange = output<PrizmPaginatorOutput>();
+  public paginatorChange = output<IPaginatorOutput>();
   /** Событие нажатия на строку */
   public rowClick = output<any>();
   /** Событие двойного нажатия на строку */
@@ -247,9 +245,6 @@ export class RegisterTableComponent implements OnDestroy {
   protected readonly stickyThStyle = Object.freeze({ 'z-index': 22 });
   protected readonly stickyTdStyle = Object.freeze({ 'z-index': 21 });
 
-  protected readonly settingsNotLoading = toSignal(
-    this.settingsStore.loading$.pipe(map((loading) => !loading))
-  );
   protected readonly columnsWithCheckboxes = computed(() => [
     CHECKBOX_SELECTOR_KEY,
     ...this.columns(),
