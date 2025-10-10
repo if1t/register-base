@@ -21,26 +21,34 @@
   padding: 8px 12px 8px 16px;
 }
 
-.register-table__th {
-  .t-sort {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-
-    tui-icon {
-      content: url('../icons/triangle-up-down.svg');
+sma-register-table .register-table {
+  &__thead {
+    th {
+      background: #e6f1f8 !important;
     }
   }
 
-  &[order='asc'] {
-    .t-sort tui-icon {
-      content: url('../icons/triangle-up-selected.svg');
-    }
-  }
+  &__th {
+    .t-sort {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
 
-  &[order='desc'] {
-    .t-sort tui-icon {
-      content: url('../icons/triangle-down-selected.svg');
+      tui-icon {
+        content: url('../icons/triangle-up-down.svg');
+      }
+    }
+
+    &[order='asc'] {
+      .t-sort tui-icon {
+        content: url('../icons/triangle-up-selected.svg');
+      }
+    }
+
+    &[order='desc'] {
+      .t-sort tui-icon {
+        content: url('../icons/triangle-down-selected.svg');
+      }
     }
   }
 }

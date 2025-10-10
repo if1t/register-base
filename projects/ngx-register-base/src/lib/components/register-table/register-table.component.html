@@ -10,7 +10,7 @@
         [tuiSortBy]="''"
         (sortChange)="sortChange($event)"
       >
-        <thead>
+        <thead class="register-table__thead">
           <tr tuiThGroup>
             @if (checkboxColumn()) {
               <th
@@ -216,7 +216,7 @@
     class="register-table__paginator"
     [page]="page()"
     [rows]="limit()"
-    [pageLinkSize]="3"
+    [pageLinkSize]="1"
     [totalRecords]="totalRecords()"
     [totalNotFiltered]="totalNotFiltered()"
     [rowsCountOptions]="[30, 40, 50]"
