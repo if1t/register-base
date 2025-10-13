@@ -8,17 +8,19 @@
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
-    "moment-timezone": "^0.5.48",
-    "date-fns": "^4.1.0",
+    "@apollo/client": "^3.13.5",
+    "@ngrx/component-store": "^18.1.1",
+    "@prizm-ui/components": "^5.9",
+    "@taiga-ui/addon-table": "4.44.0",
     "@taiga-ui/core": "4.44.0",
     "@taiga-ui/kit": "4.44.0",
     "@taiga-ui/legacy": "4.44.0",
-    "@taiga-ui/addon-table": "4.44.0",
+    "apollo-angular": "^10.0.3",
+    "date-fns": "^4.1.0",
+    "graphql": "^16.10.0",
     "lodash": "^4.17.21",
-    "rxjs": "~7.8.0",
-    "@prizm-ui/components": "^5.9",
-    "@ngrx/component-store": "^18.1.1",
-    "apollo-angular": "^10.0.3"
+    "moment-timezone": "^0.5.48",
+    "rxjs": "~7.8.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

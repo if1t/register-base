@@ -1,24 +1,67 @@
-import { Component } from '@angular/core';
-import { FilterButtonComponent, RegisterTableComponent } from 'ngx-register-base';
-import { of } from 'rxjs';
+import { Component, Injector } from '@angular/core';
+import {
+  FilterButtonComponent,
+  FiltersService,
+  FiltersStateService,
+  FiltersTransmitService,
+  FormGroupWrapper,
+  INPUTS_STATE_CONFIG_KEY,
+  RegisterBase,
+  RegisterBaseStore,
+  RegisterTableComponent,
+  SelectedObjectsStateService,
+  IHasuraQueryFilter,
+  RegisterTableCellSorter,
+  GqlFields,
+  IInputsStateConfig,
+  IUserProfile,
+  USER_SETTINGS_LOADER,
+} from 'ngx-register-base';
+import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { ITestTable } from './types';
 import { columnsData } from './mocks/mocks';
+import { ContractsTableStoreService } from './store';
+import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store';
 
 @Component({
   standalone: true,
   imports: [FilterButtonComponent, RegisterTableComponent, AsyncPipe],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
+  providers: [
+    SelectedObjectsStateService,
+    FiltersStateService,
+    FiltersService,
+    FiltersTransmitService,
+    { provide: INPUTS_STATE_CONFIG_KEY, useValue: { searchInput: true } as IInputsStateConfig },
+    { provide: USER_SETTINGS_LOADER, useClass: SmaTpUserSettingsStore },
+    { provide: RegisterBaseStore, useClass: ContractsTableStoreService },
+  ],
 })
-export class TestRegisterTableComponent<T> {
-  public data: T[] = [];
-  public columns: string[] = columnsData.map((cd) => cd.name);
-  public columnsData: any[] = columnsData;
-  public stickyLeftIds: string[] = [];
-  public dataCount = 0;
-  public totalNotFiltered$ = of(0);
-  public loading$ = of(false);
-  public selectedRecordsLoading$ = of(false);
-  public page$ = of(1);
-  public limit$ = of(30);
+export class TestRegisterTableComponent<T> extends RegisterBase<ITestTable> {
+  override totalNotFiltered$ = this.baseStore!.total$;
+  override routes: any[] = [];
+  override actionCompleted$ = new ReplaySubject<boolean>();
+  loading$ = this.baseStore!.loading$;
+
+  constructor(injector: Injector) {
+    super(injector, columnsData);
+  }
+
+  override fetchTotalObjects = this.baseStore!.fetchTotal;
+  override objectsSubscription = this.baseStore!.fetchObjects;
+  override baseFilter = (user: IUserProfile | undefined) => ({});
+  override buildFilter(
+    limit?: number,
+    offset?: number,
+    gqlFilter?: GqlFields,
+    user?: IUserProfile,
+    sorter?: RegisterTableCellSorter<ITestTable>[] | undefined
+  ): IHasuraQueryFilter<any> {
+    return {};
+  }
+  protected override get buildForm(): FormGroupWrapper<any> {
+    return new FormGroupWrapper({});
+  }
 }

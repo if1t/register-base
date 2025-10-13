@@ -1,4 +1,5 @@
 import { PrizmTableSettings } from '@prizm-ui/components';
+import { IColumnData } from 'ngx-register-base';
 
 export enum ContractsTableSettingNames {
   ID_SUBSIDIARY = 'subsidiary_short_name',
@@ -9,7 +10,7 @@ export enum ContractsTableSettingNames {
   SMART_SERVICE = 'Smart Service',
 }
 
-export const columnsData = [
+export const columnsData: IColumnData[] = [
   {
     name: 'code',
     type: 'text',

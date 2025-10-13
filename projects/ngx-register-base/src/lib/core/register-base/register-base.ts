@@ -75,7 +75,7 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
   /** Сервис управления пользователем */
   protected readonly userService = inject(USER_PROFILE_LOADER);
   /** Сервис управления данными в реестре */
-  protected readonly baseStore = inject(RegisterBaseStore, { optional: true });
+  protected readonly baseStore = inject(RegisterBaseStore<T>, { optional: true });
   // TODO удалить optional: true после выполнения задачи SMA2-3134
   protected readonly selectedService = inject(SelectedObjectsStateService<T>, {
     optional: true,
