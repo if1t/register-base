@@ -26,11 +26,21 @@ interface IRegisterPropertiesState {
   defaultFilter?: ITpUserSettings | null;
 }
 
+const initialState: IRegisterPropertiesState = {
+  loading: false,
+  settings: [],
+  defaultFilter: null,
+};
+
 @Injectable()
 export class SmaTpUserSettingsStore
   extends ComponentStore<IRegisterPropertiesState>
   implements IUserSettingsLoader
 {
+  constructor() {
+    super(initialState);
+  }
+
   #error = (e: any): void => {
     console.error(e);
     this.setLoading(false);
