@@ -1,3 +1,5 @@
+import { OrderBy, WhereBoolExp } from 'hasura';
+
 export type ColumnDataTypes =
   | 'text'
   | 'num'
@@ -42,3 +44,26 @@ export interface IColumnData {
 }
 
 export type ThWidthEntry = Pick<IColumnData, 'name' | 'width'>;
+
+export interface IHasuraQueryFilter<T extends Record<string, any>> {
+  where?: WhereBoolExp<T>;
+  distinct_on?: (keyof T)[];
+  limit?: number;
+  offset?: number;
+  order_by?: OrderBy<T>;
+}
+
+export type RegisterTableSortOptions = {
+  order: RegisterTableCellSortOrder;
+  id: string;
+};
+export type RegisterTableCellSorterHandler<T> = (
+  a: T,
+  b: T,
+  options: RegisterTableSortOptions
+) => number;
+export type RegisterTableCellSorter<T> = {
+  options: RegisterTableSortOptions;
+  sorter?: RegisterTableCellSorterHandler<T>;
+};
+export type RegisterTableCellSortOrder = 'asc' | 'desc';

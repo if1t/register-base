@@ -16,7 +16,9 @@
     "@taiga-ui/addon-table": "4.44.0",
     "lodash": "^4.17.21",
     "rxjs": "~7.8.0",
-    "@prizm-ui/components": "^5.9"
+    "@prizm-ui/components": "^5.9",
+    "@ngrx/component-store": "^18.1.1",
+    "apollo-angular": "^10.0.3"
   },
   "dependencies": {
     "tslib": "^2.3.0"
