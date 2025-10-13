@@ -1,0 +1,147 @@
+<ng-container [ngSwitch]="filterState$ | async">
+  <h4 *ngSwitchCase="FilterState.FILTER_LIST">{{ filterListHeaderTitle }}</h4>
+  <h4 *ngSwitchCase="FilterState.SAVED_LIST">Сохраненные фильтры</h4>
+  <h4 *ngSwitchCase="FilterState.ON_EDIT_FILTER">Редактирование фильтра</h4>
+  <h4 *ngSwitchCase="FilterState.ON_SAVE_FILTER">Сохранить фильтр</h4>
+</ng-container>
+
+<div class="sma-filter-list-header-actions-button">
+  <ng-container [ngSwitch]="filterState$ | async">
+    <ng-container
+      *ngSwitchCase="FilterState.FILTER_LIST"
+      [ngTemplateOutlet]="filterListTemplate"
+    ></ng-container>
+    <ng-container
+      *ngSwitchCase="FilterState.SAVED_LIST"
+      [ngTemplateOutlet]="savedListTemplate"
+    ></ng-container>
+    <ng-container
+      *ngSwitchCase="FilterState.ON_EDIT_FILTER"
+      [ngTemplateOutlet]="saveFilterTemplate"
+    ></ng-container>
+    <ng-container
+      *ngSwitchCase="FilterState.ON_SAVE_FILTER"
+      [ngTemplateOutlet]="saveFilterTemplate"
+    ></ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="backButtonTemplate"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #filterListTemplate>
+  <ng-container *ngIf="showPin">
+    <button
+      size="s"
+      appearanceType="ghost"
+      appearance="secondary"
+      prizmButton
+      class="icon-button"
+      (click)="onTogglePin()"
+    >
+      <img
+        [src]="
+          'assets/ngx-register-base/icons/' + (isPin ? 'thumbtack-directly.svg' : 'thumbtack.svg')
+        "
+      />
+    </button>
+
+    <sma-divider layout="vertical"></sma-divider>
+  </ng-container>
+
+  <button
+    icon="social-star"
+    size="s"
+    appearanceType="ghost"
+    appearance="secondary"
+    prizmButton
+    class="icon-button"
+    (click)="onSavedList()"
+  ></button>
+
+  <button
+    icon="tools-content-save"
+    size="s"
+    appearanceType="ghost"
+    appearance="secondary"
+    prizmButton
+    class="icon-button"
+    (click)="onSave()"
+  ></button>
+
+  <sma-divider layout="vertical"></sma-divider>
+
+  <button
+    icon="selection-check-simple"
+    size="s"
+    appearanceType="ghost"
+    appearance="primary"
+    prizmButton
+    class="icon-button"
+    [disabled]="applyButtonDisabled"
+    (click)="onApplyFilter()"
+  ></button>
+
+  <button
+    icon="tools-eraser"
+    size="s"
+    appearanceType="ghost"
+    appearance="secondary"
+    prizmButton
+    class="icon-button"
+    (click)="onReset()"
+  ></button>
+
+  <button
+    *ngIf="showCloseButton"
+    icon="cancel-close"
+    size="s"
+    appearanceType="ghost"
+    appearance="danger"
+    prizmButton
+    class="icon-button"
+    (click)="onClose()"
+  ></button>
+</ng-template>
+
+<ng-template #savedListTemplate>
+  <button
+    icon="selection-check-simple"
+    size="s"
+    appearanceType="ghost"
+    appearance="primary"
+    prizmButton
+    class="icon-button"
+    [disabled]="acceptButtonDisabled"
+    (click)="onApplySavedFilter()"
+  ></button>
+
+  <ng-container *ngTemplateOutlet="backButtonTemplate"></ng-container>
+</ng-template>
+
+<ng-template #saveFilterTemplate>
+  <button
+    icon="tools-content-save"
+    size="s"
+    appearanceType="ghost"
+    appearance="secondary"
+    prizmButton
+    class="icon-button"
+    [disabled]="acceptButtonDisabled"
+    (click)="onSaveFilter()"
+  ></button>
+
+  <ng-container *ngTemplateOutlet="backButtonTemplate"></ng-container>
+</ng-template>
+
+<ng-template #backButtonTemplate>
+  <button
+    icon="arrows-corner-up-left"
+    size="s"
+    appearanceType="ghost"
+    appearance="secondary"
+    prizmButton
+    class="icon-button"
+    prizmHint="Главное меню фильтров"
+    prizmHintTheme="light"
+    (click)="onBack()"
+  ></button>
+</ng-template>

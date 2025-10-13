@@ -1,0 +1,49 @@
+:host {
+  .sma-filter-list-saved {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+    gap: 1px;
+
+    .sma-filter-list-saved-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      height: 32px;
+      padding: 0 8px 0 16px;
+
+      .sma-filter-list-saved-item-action-buttons {
+        display: flex;
+        flex-direction: row;
+
+        button {
+          height: 32px;
+          min-height: 32px;
+          width: 32px;
+        }
+
+        ::ng-deep prizm-wrapper {
+          background-color: transparent;
+
+          :hover {
+            color: var(--brand-blue);
+          }
+
+          .prizm-icon-16.social-star-fill::before {
+            color: var(--brand-blue) !important;
+          }
+        }
+      }
+    }
+
+    .sma-filter-list-saved-item:hover {
+      background-color: var(--brand-hovered);
+      cursor: pointer;
+    }
+  }
+
+  .selected {
+    background-color: #d0edff !important;
+  }
+}

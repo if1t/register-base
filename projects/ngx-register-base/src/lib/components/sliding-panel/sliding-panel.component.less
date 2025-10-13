@@ -1,0 +1,104 @@
+@import 'fonts';
+
+:host {
+  position: fixed;
+  z-index: 3;
+  border-right: 1px;
+  box-shadow: 1px 0 12px 0 rgba(59, 71, 83, 15%);
+  //change
+  clip-path: inset(0 -12px 0 0);
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
+
+  .sma-sliding-panel {
+    transition: width var(--page-menu-transition-time);
+    overflow-x: hidden;
+
+    &[show='true'] {
+      width: 302px;
+    }
+
+    &[show='false'] {
+      width: 0;
+    }
+  }
+
+  .divider {
+    ::ng-deep .horizontal-solid {
+      margin-bottom: 8px !important;
+    }
+  }
+
+  ::ng-deep {
+    sma-param-date-time-range .prizm-icon-16.date-calendar-range::before {
+      mask-image: url('../../../../icons/calendar-icon.svg') !important;
+      background-color: #777b92;
+      color: #777b92;
+    }
+
+    sma-param-date-time-range .prizm-icon-16:hover {
+      &.date-calendar-range::before {
+        background-color: #000000 !important;
+        color: #000000 !important;
+      }
+    }
+
+    .label {
+      color: #000000;
+    }
+
+    input {
+      color: #000000;
+      font-weight: 400 !important;
+    }
+
+    prizm-input-layout .prizm-input-form {
+      padding: 0 0 0 8px !important;
+
+      input {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+      }
+
+      .multiple-input-box {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+
+        input {
+          padding-left: unset !important;
+          padding-right: unset !important;
+        }
+      }
+    }
+
+    ::placeholder {
+      font-family: Inter, sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 16px;
+    }
+
+    prizm-chips {
+      margin: 0 !important;
+    }
+
+    .chips-name,
+    .chips-list__item {
+      color: #000000;
+
+      .table-text-12px-400;
+    }
+
+    button[data-appearance='secondary'][data-appearance-type='ghost']:hover {
+      background: inherit !important;
+    }
+  }
+}
+
+::ng-deep {
+  .z-overlay-wrapper prizm-hint-container[data-prizm-theme='dark'] {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+}

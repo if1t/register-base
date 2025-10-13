@@ -1,15 +1,21 @@
 <header [style.height.px]="52">
-  <sma-filter-button [filterApplied]="true"></sma-filter-button>
+  <sma-filter-button [filterApplied]="true" (filterToggle)="filterToggle()"></sma-filter-button>
 </header>
-<sma-register-table
-  [rowData]="data"
-  [columns]="columns"
-  [columnsData]="columnsData"
-  [stickyLeftIds]="stickyLeftIds"
-  [totalRecords]="dataCount"
-  [totalNotFiltered]="$any(totalNotFiltered$ | async)"
-  [isLoading]="loading$ | async"
-  [isSelectloading]="selectedRecordsLoading$ | async"
-  [page]="page$ | async"
-  [limit]="limit$ | async"
-></sma-register-table>
+<div class="filter-register-table-wrapper" [attr.filters-open]="filtersAreOpened">
+  <sma-register-table-filter>
+    <!--      <sma-contract-table-filter [filtersForm]="filtersForm"> </sma-contract-table-filter>-->
+  </sma-register-table-filter>
+
+  <sma-register-table
+    [rowData]="data"
+    [columns]="columns"
+    [columnsData]="columnsData"
+    [stickyLeftIds]="stickyLeftIds"
+    [totalRecords]="dataCount"
+    [totalNotFiltered]="$any(totalNotFiltered$ | async)"
+    [isLoading]="loading$ | async"
+    [isSelectloading]="selectedRecordsLoading$ | async"
+    [page]="page$ | async"
+    [limit]="limit$ | async"
+  ></sma-register-table>
+</div>

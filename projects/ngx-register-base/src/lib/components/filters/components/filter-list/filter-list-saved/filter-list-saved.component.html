@@ -1,0 +1,44 @@
+<div class="sma-filter-list-saved">
+  <prizm-loader [showLoader]="$any(loading$ | async)" [overlay]="true">
+    <span *ngIf="savedItems.length === 0" class="input-text-12px"
+      >Сохраненых фильтров не найдено
+    </span>
+    <div
+      *ngFor="let item of savedItems; let i = index"
+      [class.selected]="item.selected"
+      class="sma-filter-list-saved-item"
+      (click)="onSelect(item.id)"
+    >
+      <div class="input-text-12px">{{ item.name }}</div>
+
+      <div class="sma-filter-list-saved-item-action-buttons">
+        <button
+          [icon]="item.favorite ? 'social-star-fill' : 'social-star'"
+          prizmIconButton
+          appearanceType="ghost"
+          [appearance]="item.favorite ? 'primary' : 'secondary'"
+          size="xl"
+          (click)="onFavorite(item.id)"
+        ></button>
+
+        <button
+          [icon]="'editor-mode'"
+          prizmIconButton
+          appearanceType="ghost"
+          appearance="secondary"
+          size="xl"
+          (click)="onEdit(item.id)"
+        ></button>
+
+        <button
+          [icon]="'delete'"
+          prizmIconButton
+          appearanceType="ghost"
+          appearance="secondary"
+          size="xl"
+          (click)="onDelete(item.id)"
+        ></button>
+      </div>
+    </div>
+  </prizm-loader>
+</div>

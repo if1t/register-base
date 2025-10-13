@@ -1,0 +1,18 @@
+<div class="panel-head" (click)="toggleHeader()">
+  <div class="title">
+    <span class="title__font">{{ label() }}</span>
+    @if (haveAppliedFilters()) {
+      <div class="title__wrapper--relative">
+        <div class="title-wrapper--absolute indicator__wrapper">
+          <div class="indicator__icon indicator--danger"></div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <prizm-icons [name]="isOpen() ? 'chevrons-up' : 'chevrons-down'" size="16"></prizm-icons>
+</div>
+
+<div class="filters-block" [attr.show]="isOpen()">
+  <ng-content></ng-content>
+</div>

@@ -9,6 +9,7 @@ import {
   RegisterBase,
   RegisterBaseStore,
   RegisterTableComponent,
+  RegisterTableFilterModule,
   SelectedObjectsStateService,
   IHasuraQueryFilter,
   RegisterTableCellSorter,
@@ -26,7 +27,7 @@ import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store'
 
 @Component({
   standalone: true,
-  imports: [FilterButtonComponent, RegisterTableComponent, AsyncPipe],
+  imports: [FilterButtonComponent, RegisterTableComponent, RegisterTableFilterModule, AsyncPipe],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
   providers: [

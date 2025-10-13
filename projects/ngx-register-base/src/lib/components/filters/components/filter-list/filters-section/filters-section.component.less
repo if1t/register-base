@@ -1,0 +1,72 @@
+@import 'fonts';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+  gap: 8px;
+
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 4px;
+    height: 24px;
+    align-items: center;
+    border-bottom: 1px solid var(--brand-blue);
+    cursor: pointer;
+
+    .title {
+      display: flex;
+
+      &__font {
+        .main-subtitle;
+      }
+
+      &__wrapper {
+        &--relative {
+          position: relative;
+        }
+
+        &--absolute {
+          position: absolute;
+        }
+      }
+    }
+
+    .indicator {
+      &__wrapper {
+        width: 14px;
+        height: 14px;
+        padding-left: 4px;
+      }
+
+      &__icon {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      &--danger {
+        background-color: var(--brand-danger);
+      }
+    }
+  }
+
+  .filters-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 2px;
+    transform-origin: top;
+    transition: max-height 0.4s;
+    overflow: hidden;
+
+    &[show='true'] {
+      max-height: 1000px;
+    }
+
+    &[show='false'] {
+      max-height: 0;
+    }
+  }
+}

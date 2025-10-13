@@ -1,0 +1,37 @@
+:host {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  .sma-filter-list-footer-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 48px;
+    width: 100%;
+    border-top: 1px;
+    gap: 8px;
+    padding: 8px 16px 8px 16px;
+    background: var(--main-white);
+
+    .filter-list__button {
+      width: 100%;
+      height: 32px;
+    }
+
+    button {
+      ::ng-deep .z-wrapper {
+        display: flex !important;
+
+        ::ng-deep .z-content .prizm-font-btn-links-14 {
+          font-weight: 400 !important;
+        }
+
+        ::ng-deep .z-content {
+          margin: auto !important;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<div class="input-wrapper">
+  <prizm-input-layout [clearButton]="clearButtonTemplate" size="s">
+    <input [formControl]="valueControl" placeholder="Введите название фильтра" prizmInput />
+  </prizm-input-layout>
+</div>
+
+<ng-template
+  #clearButtonTemplate
+  let-showStatusButton="showStatusButton"
+  let-disabled="disabled"
+  let-clear="clear"
+>
+  <button
+    class="{{ showStatusButton ? '' : 'alone' }}"
+    [interactive]="true"
+    [disabled]="disabled"
+    [prizmHint]="'Нажмите для очистки'"
+    [prizmHintTheme]="'light'"
+    [prizmInputIconButton]="'cancel-delete-content'"
+    (click)="clear($event)"
+  ></button>
+</ng-template>

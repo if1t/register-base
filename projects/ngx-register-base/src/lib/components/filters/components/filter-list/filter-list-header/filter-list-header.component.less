@@ -1,0 +1,44 @@
+@import 'fonts';
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  padding: 0 8px 0 16px;
+  border-radius: 2px 2px 0 0;
+  background: var(--table-header, #eef0f5);
+  border-bottom: 1px solid rgba(119, 123, 146, 30%);
+
+  h4 {
+    .static-title-h4;
+  }
+
+  .sma-filter-list-header-actions-button {
+    height: 32px;
+    display: flex;
+
+    .icon-button {
+      height: 32px;
+
+      ::ng-deep {
+        .prizm-font-btn-links-14 {
+          height: 16px;
+        }
+
+        .z-wrapper {
+          display: flex;
+          align-items: center;
+
+          &[data-appearance='secondary'][data-appearance-type='ghost'] {
+            color: #4f5669;
+
+            &:hover {
+              color: var(--main-black);
+            }
+          }
+        }
+      }
+    }
+  }
+}

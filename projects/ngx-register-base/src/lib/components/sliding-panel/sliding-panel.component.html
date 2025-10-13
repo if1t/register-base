@@ -1,0 +1,15 @@
+<div class="sma-sliding-panel" [attr.show]="!!isOpen">
+  <div #headerContainer>
+    <ng-content select="[header]"></ng-content>
+  </div>
+
+  <prizm-scrollbar [style.height]="scrollbarHeight">
+    <div [style.padding-bottom.px]="footerOffsetHeight">
+      <ng-content></ng-content>
+    </div>
+  </prizm-scrollbar>
+
+  <div #footerContainer>
+    <ng-content select="[footer]"></ng-content>
+  </div>
+</div>

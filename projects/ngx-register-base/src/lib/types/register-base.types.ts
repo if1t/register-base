@@ -62,6 +62,22 @@ export interface IUserSettingsLoader<T extends ITpUserSettings = any> {
   settings$: Observable<T[]>;
   /** Запрос пользовательских настроек по фильтру */
   fetchUserSettings$(where: WhereBoolExp<T>, hidden?: boolean): Observable<T[]>;
+  /** Запрос пользовательских настроек по фильтру (Эффект для фильтров) */
+  fetchUserSettingsByUserId: (
+    observableOrValue:
+      | {
+          userId: string;
+          settingsType: SETTINGS_TYPE;
+          moduleName: string;
+        }
+      | Observable<{
+          userId: string;
+          settingsType: SETTINGS_TYPE;
+          moduleName: string;
+        }>
+  ) => Subscription;
+  /** Состояние загрузки пользовательских настроек */
+  loading$: Observable<boolean>;
   /** Мутация на создание или обновление пользовательской настройки */
   upsertUserSettingsByUserId: (
     observableOrValue:
@@ -76,8 +92,34 @@ export interface IUserSettingsLoader<T extends ITpUserSettings = any> {
           updateSettings?: boolean;
         }>
   ) => Subscription;
+  /** Мутация на обновление пользовательской настройки (Эффект для фильтров) */
+  updateUserSettingsSettingsById: (
+    observableOrValue:
+      | {
+          id: string;
+          settings: ITpUserSettingsSettings;
+        }
+      | Observable<{
+          id: string;
+          settings: ITpUserSettingsSettings;
+        }>
+  ) => Subscription;
+  /** Удаление пользовательской настройки (Эффект для фильтров) */
+  deleteUserSettingsById: (
+    observableOrValue:
+      | {
+          id: string;
+          updateSettings?: boolean;
+        }
+      | Observable<{
+          id: string;
+          updateSettings?: boolean;
+        }>
+  ) => Subscription;
   /** Результат выполнения мутации */
   upsertReturningOne$(type: SETTINGS_TYPE): Observable<ITpUserSettings | null>;
+  /** Завершение создания или обновления пользовательской настройки */
+  upsertEnded$: Observable<void>;
 }
 
 /** Интерфейс сервиса управления аутентификацией пользователя */

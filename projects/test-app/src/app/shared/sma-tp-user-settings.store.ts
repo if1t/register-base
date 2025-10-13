@@ -13,7 +13,12 @@ import {
   tap,
 } from 'rxjs';
 import { WhereBoolExp } from 'hasura';
-import { ITpUserSettings, IUserSettingsLoader, SETTINGS_TYPE } from 'ngx-register-base';
+import {
+  ITpUserSettings,
+  ITpUserSettingsSettings,
+  IUserSettingsLoader,
+  SETTINGS_TYPE,
+} from 'ngx-register-base';
 
 interface IRegisterPropertiesState {
   loading: boolean;
@@ -26,43 +31,19 @@ export class SmaTpUserSettingsStore
   extends ComponentStore<IRegisterPropertiesState>
   implements IUserSettingsLoader
 {
-  settings$ = of([]);
-  fetchUserSettings$(where: WhereBoolExp<any>, hidden?: boolean): Observable<any[]> {
-    return of([]);
-  }
-  readonly upsertUserSettingsByUserId = this.effect(
-    (
-      event$: Observable<{
-        settings: Partial<ITpUserSettings>;
-        hidden?: boolean;
-        updateSettings?: boolean;
-      }>
-    ) =>
-      event$.pipe(
-        switchMap(() => {
-          return of({
-            data: { insert_usr_tp_user_settings: { returning: [] } },
-          }).pipe(
-            tap({
-              next: ({ data }) => {
-                const upsertedSettings = data?.insert_usr_tp_user_settings?.returning;
+  #error = (e: any): void => {
+    console.error(e);
+    this.setLoading(false);
+  };
 
-                this._upsertReturning$.next(upsertedSettings);
-              },
-              error: (e) => {
-                console.error(e);
-              },
-            }),
-            catchError((e) => {
-              console.error(e);
-              return EMPTY;
-            })
-          );
-        })
-      )
-  );
-
+  private readonly _upsertEnded$ = new Subject<void>();
   private readonly _upsertReturning$ = new Subject<ITpUserSettings[] | undefined>();
+
+  // Selectors
+  readonly loading$ = this.select(({ loading }) => loading);
+  readonly settings$ = this.select(({ settings }) => settings);
+  readonly default$ = this.select(({ defaultFilter }) => defaultFilter);
+  readonly upsertEnded$ = this._upsertEnded$.asObservable();
   readonly upsertReturning$ = (type: SETTINGS_TYPE): Observable<ITpUserSettings[] | undefined> =>
     this._upsertReturning$
       .asObservable()
@@ -74,4 +55,201 @@ export class SmaTpUserSettingsStore
       take(1),
       map((settings) => settings?.[0] ?? null)
     );
+
+  // Updaters
+  private readonly setLoading = this.updater((store, loading: boolean) => ({ ...store, loading }));
+  private readonly setSettings = this.updater((store, settings: ITpUserSettings[]) => ({
+    ...store,
+    settings,
+  }));
+  public readonly setDefault = this.updater(
+    (store, defaultFilter: ITpUserSettings | undefined | null) => ({
+      ...store,
+      defaultFilter,
+    })
+  );
+
+  // Mutations
+  readonly upsertUserSettingsByUserId = this.effect(
+    (
+      event$: Observable<{
+        settings: Partial<ITpUserSettings>;
+        hidden?: boolean;
+        updateSettings?: boolean;
+      }>
+    ) =>
+      event$.pipe(
+        switchMap(({ settings, hidden, updateSettings }) => {
+          if (!hidden) {
+            this.setLoading(true);
+          }
+
+          return of({
+            data: { insert_usr_tp_user_settings: { returning: [] } },
+          }).pipe(
+            tap({
+              next: ({ data }) => {
+                const upsertedSettings = data?.insert_usr_tp_user_settings?.returning;
+
+                if (updateSettings) {
+                  this.setSettings(upsertedSettings ?? []);
+                }
+
+                this._upsertReturning$.next(upsertedSettings);
+
+                if (!hidden) {
+                  this.setLoading(false);
+                }
+
+                this._upsertEnded$.next();
+              },
+              error: (e) => {
+                this.#error(e);
+              },
+            }),
+            catchError((e) => {
+              this.#error(e);
+              return EMPTY;
+            })
+          );
+        })
+      )
+  );
+
+  readonly updateUserSettingsSettingsById = this.effect(
+    (event$: Observable<{ id: string; settings: ITpUserSettingsSettings }>) =>
+      event$.pipe(
+        switchMap((filter) => {
+          this.setLoading(true);
+
+          return of({
+            data: { update_usr_tp_user_settings: { returning: [] } },
+          }).pipe(
+            tap({
+              next: (_) => {
+                this.setLoading(false);
+              },
+              error: (e) => {
+                this.#error(e);
+              },
+            }),
+            catchError((e) => {
+              this.#error(e);
+              return EMPTY;
+            })
+          );
+        })
+      )
+  );
+
+  readonly deleteUserSettingsById = this.effect(
+    (event$: Observable<{ id: string; updateSettings?: boolean }>) =>
+      event$.pipe(
+        switchMap(({ id, updateSettings }) => {
+          this.setLoading(true);
+
+          return of({
+            data: { delete_usr_tp_user_settings_by_pk: { returning: [] } },
+          }).pipe(
+            tap({
+              next: (_) => {
+                if (updateSettings) {
+                  this.setSettings([]);
+                }
+
+                this.setLoading(false);
+              },
+              error: (e) => {
+                this.#error(e);
+              },
+            }),
+            catchError((e) => {
+              this.#error(e);
+              return EMPTY;
+            })
+          );
+        })
+      )
+  );
+
+  // Fetchers
+  readonly fetchUserSettingsByUserId = this.effect(
+    (event$: Observable<{ userId: string; settingsType: SETTINGS_TYPE; moduleName: string }>) =>
+      event$.pipe(
+        switchMap((filter) => {
+          this.setLoading(true);
+
+          return of({
+            data: { usr_tp_user_settings: [] },
+          }).pipe(
+            tap({
+              next: ({ data }) => {
+                this.setSettings(data.usr_tp_user_settings);
+              },
+              error: (e) => {
+                this.#error(e);
+              },
+              finalize: () => {
+                this.setLoading(false);
+              },
+            }),
+            catchError((e) => {
+              this.#error(e);
+              return EMPTY;
+            })
+          );
+        })
+      )
+  );
+
+  readonly fetchDefaultUserSettingsByUserId = this.effect(
+    (event$: Observable<{ userId: string; settingsType: SETTINGS_TYPE; moduleName: string }>) =>
+      event$.pipe(
+        switchMap((filter) => {
+          this.setLoading(true);
+
+          return of({
+            data: { usr_tp_user_settings: <any>[] },
+          }).pipe(
+            tap({
+              next: ({ data }) => {
+                this.setLoading(false);
+
+                const founded = data.usr_tp_user_settings.find(
+                  (settings: any) => settings?.settings?.favorite
+                );
+
+                this.setDefault(founded);
+              },
+              error: (e) => {
+                this.#error(e);
+              },
+            }),
+            catchError((e) => {
+              this.#error(e);
+              return EMPTY;
+            })
+          );
+        })
+      )
+  );
+
+  public readonly fetchUserSettings$ = (
+    where: WhereBoolExp<ITpUserSettings>,
+    hidden?: boolean
+  ): Observable<ITpUserSettings[]> => {
+    if (!hidden) {
+      this.setLoading(true);
+    }
+    return of({
+      data: { usr_tp_user_settings: [] },
+    }).pipe(
+      map(({ data }) => data.usr_tp_user_settings ?? []),
+      tap(() => {
+        if (!hidden) {
+          this.setLoading(false);
+        }
+      })
+    );
+  };
 }

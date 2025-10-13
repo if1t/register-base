@@ -1,0 +1,46 @@
+<sma-sliding-panel [isOpen]="isOpen$ | async" [subOffsetHeight]="subOffsetHeight">
+  <sma-filter-list-header
+    header
+    [showTotal]="showTotal"
+    [showPin]="showPin"
+    [showCloseButton]="showCloseButton"
+    [total]="total$ | async"
+    [acceptButtonDisabled]="acceptButtonDisabled"
+    [applyButtonDisabled]="applyButtonDisabled"
+    (applyFilter)="onApplyFilter($event)"
+    [filterListHeaderTitle]="filterListHeaderTitle"
+  ></sma-filter-list-header>
+
+  <ng-container [ngSwitch]="filterState$ | async">
+    <ng-container *ngSwitchCase="FilterState.FILTER_LIST" [ngTemplateOutlet]="filtersTemplate">
+    </ng-container>
+
+    <div *ngSwitchCase="FilterState.SAVED_LIST">
+      <sma-filter-list-saved></sma-filter-list-saved>
+    </div>
+
+    <div *ngSwitchCase="FilterState.ON_EDIT_FILTER">
+      <sma-filter-edit></sma-filter-edit>
+
+      <sma-divider></sma-divider>
+
+      <ng-container [ngTemplateOutlet]="filtersTemplate"></ng-container>
+    </div>
+
+    <div *ngSwitchCase="FilterState.ON_SAVE_FILTER">
+      <sma-filter-edit></sma-filter-edit>
+    </div>
+
+    <ng-template #filtersTemplate>
+      <ng-content></ng-content>
+    </ng-template>
+  </ng-container>
+
+  <sma-filter-list-footer
+    footer
+    [acceptButtonDisabled]="acceptButtonDisabled"
+    [applyButtonDisabled]="applyButtonDisabled"
+    (apply)="onApplyFilter($event)"
+    [footerApplyButtonLabel]="footerApplyButtonLabel"
+  ></sma-filter-list-footer>
+</sma-sliding-panel>

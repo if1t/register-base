@@ -1,0 +1,49 @@
+<div class="sma-filter-list-footer-container">
+  <ng-container [ngSwitch]="filterState$ | async">
+    <ng-container *ngSwitchCase="FilterState.FILTER_LIST">
+      <button
+        class="filter-list__button"
+        prizmButton
+        size="s"
+        [disabled]="applyButtonDisabled"
+        (click)="onApplyFilter()"
+      >
+        {{ footerApplyButtonLabel }}
+      </button>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="FilterState.SAVED_LIST">
+      <button
+        class="filter-list__button"
+        prizmButton
+        size="s"
+        [disabled]="acceptButtonDisabled"
+        (click)="onApplySavedFilter()"
+      >
+        Применить
+      </button>
+    </ng-container>
+
+    <ng-container
+      *ngSwitchCase="FilterState.ON_EDIT_FILTER"
+      [ngTemplateOutlet]="onEditFilter"
+    ></ng-container>
+
+    <ng-container
+      *ngSwitchCase="FilterState.ON_SAVE_FILTER"
+      [ngTemplateOutlet]="onEditFilter"
+    ></ng-container>
+
+    <ng-template #onEditFilter>
+      <button
+        class="filter-list__button"
+        prizmButton
+        size="s"
+        [disabled]="acceptButtonDisabled"
+        (click)="onSaveFilter()"
+      >
+        Сохранить
+      </button>
+    </ng-template>
+  </ng-container>
+</div>
