@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { isDefined } from 'ngx-register-base';
 import { TuiRoot } from '@taiga-ui/core';
+import { PrizmIconsFullRegistry, PrizmIconsRegistry } from '@prizm-ui/icons/core';
+import * as allBaseIcons from '@prizm-ui/icons/base/source';
+import * as fullBaseIcons from '@prizm-ui/icons/full/source';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +14,11 @@ import { TuiRoot } from '@taiga-ui/core';
 })
 export class AppComponent {
   title = 'test-app';
+  readonly iconsFullRegistry = inject(PrizmIconsFullRegistry);
+  readonly iconsBaseRegistry = inject(PrizmIconsRegistry);
 
   constructor() {
-    this._test();
-  }
-
-  private _test(): void {
-    if (isDefined(this.title)) {
-      this.title = 'test';
-    }
+    this.iconsBaseRegistry.registerIcons(Object.values(allBaseIcons));
+    this.iconsFullRegistry.registerIcons(Object.values(fullBaseIcons));
   }
 }

@@ -10,6 +10,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { MenuStateService } from './shared/menu-state.service';
+import { prizmIconsProvideOldNameTransformer } from '@prizm-ui/icons';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
     }),
     { provide: USER_PROFILE_LOADER, useClass: UserProfileService },
     { provide: MENU_STATE_SERVICE, useClass: MenuStateService },
+    prizmIconsProvideOldNameTransformer(),
   ],
 };
