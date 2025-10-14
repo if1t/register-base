@@ -164,7 +164,6 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
     limit?: number,
     offset?: number,
     gqlFilter?: GqlFields,
-    user?: IUserProfile,
     sorter?: RegisterTableCellSorter<T>[]
   ): any;
 
@@ -406,7 +405,7 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
   }
 
   protected actionCompleted(): void {
-    const filter = this.buildFilter(this.limit, this.offset, this._filterState, this._user);
+    const filter = this.buildFilter(this.limit, this.offset, this._filterState);
     this.currentFilter = filter;
 
     this.objectsSubscription({ filter });
@@ -457,7 +456,7 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([limit, offset, gqlFilter, sorter]) => {
-        const filter = this.buildFilter(limit, offset, gqlFilter, this._user, sorter);
+        const filter = this.buildFilter(limit, offset, gqlFilter, sorter);
         const gqlFilterUpdated = !_.isEqual(this._filterState, gqlFilter);
         this.currentFilter = filter;
         this._filterState = gqlFilter;
@@ -559,7 +558,6 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
         value,
         this.offset,
         this._filterState,
-        this._user,
         sorter.length > 0 ? sorter : undefined
       );
       this.objectsSubscription({
@@ -745,14 +743,13 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
     const { sorter } = this.stateService;
 
     if (selection === SelectionTypes.ALL) {
-      filter = this.buildFilter(undefined, undefined, this._filterState, this._user);
+      filter = this.buildFilter(undefined, undefined, this._filterState);
     } else if (typeof selection === 'number') {
       if (selection > this.limit) {
         filter = this.buildFilter(
           selection,
           0,
           this._filterState,
-          this._user,
           sorter.length > 0 ? sorter : undefined
         );
       } else {
@@ -779,7 +776,7 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
       ? [...this._filterState, inverseFilter]
       : [this._filterState, inverseFilter];
 
-    return this.buildFilter(undefined, undefined, updatedFilterState, this._user);
+    return this.buildFilter(undefined, undefined, updatedFilterState);
   }
 
   private _setSelected(data: T[]): void {

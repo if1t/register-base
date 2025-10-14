@@ -56,7 +56,6 @@ export class TestRegisterTableComponent<T> extends RegisterBase<ITestTable> {
     limit?: number,
     offset?: number,
     gqlFilter?: GqlFields,
-    user?: IUserProfile,
     sorter?: RegisterTableCellSorter<ITestTable>[] | undefined
   ): IHasuraQueryFilter<any> {
     return {};
