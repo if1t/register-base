@@ -14,7 +14,6 @@ import {
   IHasuraQueryFilter,
   RegisterTableCellSorter,
   GqlFields,
-  IInputsStateConfig,
   IUserProfile,
   USER_SETTINGS_LOADER,
 } from 'ngx-register-base';
@@ -35,7 +34,7 @@ import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store'
     FiltersStateService,
     FiltersService,
     FiltersTransmitService,
-    { provide: INPUTS_STATE_CONFIG_KEY, useValue: { searchInput: true } as IInputsStateConfig },
+    { provide: INPUTS_STATE_CONFIG_KEY, useValue: { searchInput: true } },
     { provide: USER_SETTINGS_LOADER, useClass: SmaTpUserSettingsStore },
     { provide: RegisterBaseStore, useClass: ContractsTableStoreService },
   ],
