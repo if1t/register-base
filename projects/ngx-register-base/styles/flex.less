@@ -1,0 +1,53 @@
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+// .gap-1, ...,  .gap-6
+.loop(@counter) when (@counter > 0) {
+  .gap-@{counter} {
+    gap: @counter * 4px;
+  }
+  .loop(@counter - 1);
+}
+.loop(6);
+
+// Justify Content
+.justify-content(@prefix: justify) {
+  .@{prefix}-start {
+    justify-content: flex-start;
+  }
+  .@{prefix}-between {
+    justify-content: space-between;
+  }
+  .@{prefix}-end {
+    justify-content: flex-end;
+  }
+}
+.justify-content();
+
+// Align Items
+.align-items(@prefix: items) {
+  .@{prefix}-start {
+    align-items: flex-start;
+  }
+  .@{prefix}-center {
+    align-items: center;
+  }
+  .@{prefix}-end {
+    align-items: flex-end;
+  }
+}
+.align-items();
+

@@ -1,0 +1,52 @@
+.textfield-icons-container {
+  display: flex;
+  margin-inline-end: 0.5rem;
+  margin-inline-start: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+
+  .invalid-icon {
+    color: var(--deleted-color);
+    height: 16px;
+    width: 16px;
+  }
+
+  .cleaner-icon {
+    color: var(--gray-icon);
+    height: 16px;
+    width: 16px;
+    pointer-events: auto;
+
+    &:hover {
+      color: var(--main-black);
+      cursor: pointer;
+    }
+  }
+
+  .chevron {
+    color: var(--gray-icon);
+    height: 16px;
+    width: 16px;
+    pointer-events: none;
+  }
+}
+
+.clickable {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.exclamation-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: url('../icons/circle-exclamation-fill.svg');
+}
+
+.truncate-text() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
