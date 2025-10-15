@@ -2,7 +2,6 @@ import { FormControl } from '@angular/forms';
 import { WhereBoolExp } from 'hasura';
 import { BehaviorSubject } from 'rxjs';
 import { JsonValue } from 'type-fest';
-import { Injector } from '@angular/core';
 
 export enum EInputsState {
   HIDDEN,
@@ -59,8 +58,3 @@ export interface GqlField {
     | GqlField
     | GqlField[];
 }
-
-export type FormatterGqlValueType<ValueType> = (
-  value: ValueType,
-  injector?: Injector
-) => InputControlGqlValue;

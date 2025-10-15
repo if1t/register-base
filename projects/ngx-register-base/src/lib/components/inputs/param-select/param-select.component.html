@@ -1,0 +1,108 @@
+<ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
+  <ng-template #readTemplate>
+    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+      @if (label) {
+        <ng-container [ngSwitch]="paramStyle">
+          <ng-template ngSwitchCase="filter">
+            <div class="label-wrapper">
+              <span class="label">{{ label }}</span>
+              <div class="dashed-row"></div>
+            </div>
+          </ng-template>
+          <ng-template ngSwitchDefault>
+            <span class="label">{{ label }}</span>
+            <div class="dashed-row"></div>
+          </ng-template>
+        </ng-container>
+      }
+      <div class="value">
+        <span>{{ showedValue }}</span>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #editTemplate>
+    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+      <div *ngIf="label" class="label-wrapper">
+        <span class="label">{{ label }}</span>
+        <span *ngIf="required" class="required">*</span>
+      </div>
+
+      @if (searchable) {
+        <tui-textfield
+          tuiTextfieldSize="m"
+          tuiAppearance="sma-input-appearance"
+          tuiChevron
+          [tuiTextfieldCleaner]="true"
+          (focusin)="isFocused = true"
+          (focusout)="isFocused = false"
+          (mouseenter)="isHovered = true"
+          (mouseleave)="isHovered = false"
+          [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+        >
+          <input
+            (input)="search$.next($any($event.target).value)"
+            tuiComboBox
+            [placeholder]="placeholder()"
+            [formControl]="control"
+          />
+
+          <tui-loader [showLoader]="loading" [overlay]="true">
+            <tui-data-list-wrapper
+              new
+              *tuiTextfieldDropdown
+              [items]="items | tuiFilterByInput: matcher()"
+              [itemContent]="listItemTemplate ?? dropdownOptionContent"
+              [tuiDropdownMaxHeight]="maxDropdownHeight"
+              (itemClick)="onSelect.emit($event)"
+            />
+          </tui-loader>
+
+          <ng-container *ngTemplateOutlet="textfieldIcons"></ng-container>
+        </tui-textfield>
+      } @else {
+        <tui-textfield
+          tuiTextfieldSize="m"
+          tuiAppearance="sma-input-appearance"
+          tuiChevron
+          [tuiTextfieldLabelOutside]="true"
+          [tuiTextfieldCleaner]="true"
+          (focusin)="isFocused = true"
+          (focusout)="isFocused = false"
+          (mouseenter)="isHovered = true"
+          (mouseleave)="isHovered = false"
+          [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+          [tuiDropdownMaxHeight]="maxDropdownHeight"
+        >
+          <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
+
+          <tui-loader [showLoader]="loading" [overlay]="true">
+            <tui-data-list-wrapper
+              new
+              *tuiTextfieldDropdown
+              [items]="items"
+              [itemContent]="listItemTemplate ?? dropdownOptionContent"
+              (itemClick)="onSelect.emit($event)"
+            />
+          </tui-loader>
+
+          <ng-container *ngTemplateOutlet="textfieldIcons"></ng-container>
+        </tui-textfield>
+      }
+      <ng-template #dropdownOptionContent let-data>
+        <div>
+          {{ data.name }}
+        </div>
+      </ng-template>
+
+      <ng-template #hintContent> {{ showedValue }} </ng-template>
+
+      <ng-template #textfieldIcons>
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sma-param-invalid-icon></sma-param-invalid-icon>
+          }
+        </div>
+      </ng-template>
+    </div>
+  </ng-template>
+</ng-container>

@@ -30,6 +30,7 @@ export function assertControlPresent(parent: any, isGroup: boolean, key: string 
   }
 }
 
+/** @deprecated заменить на FormGroup */
 export class FormGroupWrapper<TItem> extends FormGroup<ControlsWrapper<TItem>> {
   public override setValue(
     value: TItem & ɵFormGroupRawValue<any>,

@@ -6,4 +6,4 @@ export const INPUTS_STATE_CONFIG_KEY = new InjectionToken<IInputsStateConfig>(
 );
 
 export const WARN_SEARCH_INPUT_UNDEFINED =
-  'Поле поиска не инициализировано. Пожалуйста задайте конфигурацию createSearchInput: true при провайде INPUTS_STATE_CONFIG_KEY';
+  'Поле поиска не инициализировано. Пожалуйста задайте конфигурацию searchInput: true при провайде INPUTS_STATE_CONFIG_KEY';

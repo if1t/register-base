@@ -1,0 +1,19 @@
+<div class="param-custom-template">
+  <div *ngIf="label" class="label">
+    <span *ngIf="label" class="label__text">{{ label }}</span>
+    <span *ngIf="required" class="label--required">*</span>
+  </div>
+
+  <prizm-switcher [switchers]="switchers" [formControl]="switcherControl"></prizm-switcher>
+
+  <prizm-input-layout class="flex-shrink--zero" size="s" [forceClear]="forceClear">
+    <prizm-input-layout-date-time-range
+      [placeholder]="placeholder()"
+      [timeMode]="timeMode"
+      [maxLength]="maxLength"
+      [min]="$any(min)"
+      [max]="$any(max)"
+      [formControl]="control"
+    ></prizm-input-layout-date-time-range>
+  </prizm-input-layout>
+</div>

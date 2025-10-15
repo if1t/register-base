@@ -1,0 +1,53 @@
+@import 'fonts';
+
+:host {
+  .param-switcher {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .label {
+      display: flex;
+      gap: 4px;
+
+      .input-label;
+
+      &__text {
+        color: var(--main-black);
+      }
+
+      &--required {
+        color: var(--brand-danger);
+      }
+    }
+
+    ::ng-deep {
+      prizm-switcher {
+        .container {
+          display: flex;
+          flex: 1;
+
+          prizm-switcher-item {
+            display: flex;
+            flex: 1;
+
+            button {
+              height: 24px !important;
+              min-height: 24px !important;
+              display: flex;
+              flex: 1;
+
+              prizm-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: unset !important;
+                border: 1px solid var(--chip-background);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

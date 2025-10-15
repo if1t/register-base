@@ -1,0 +1,59 @@
+<ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
+  <ng-template #readTemplate>
+    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+      @if (label) {
+        @switch (paramStyle) {
+          @case ('filter') {
+            <div class="label-wrapper">
+              <span class="label">{{ label }}</span>
+              <div class="dashed-row"></div>
+            </div>
+          }
+          @default {
+            <span class="label">{{ label }}</span>
+            <div class="dashed-row"></div>
+          }
+        }
+      }
+      <div class="value">
+        <span>{{ showedValue }}</span>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #editTemplate>
+    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+      @if (label) {
+        <div class="label-wrapper">
+          <span class="label">{{ label }}</span>
+          @if (required) {
+            <span class="required">*</span>
+          }
+        </div>
+      }
+      <tui-textfield
+        tuiChevron
+        tuiTextfieldSize="m"
+        tuiAppearance="sma-input-appearance"
+        [stringify]="stringify()"
+        [tuiTextfieldLabelOutside]="forceClear"
+        [tuiTextfieldCleaner]="true"
+        (focusin)="isFocused = true"
+        (focusout)="isFocused = false"
+        (mouseenter)="isHovered = true"
+        (mouseleave)="isHovered = false"
+        [tuiDropdownMaxHeight]="maxDropdownHeight"
+      >
+        <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
+        <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate"></ng-container>
+      </tui-textfield>
+    </div>
+  </ng-template>
+</ng-container>
+
+<ng-template #paramTreeTemplate>
+  <sma-param-tree
+    [multi]="false"
+    [checkedNodes]="checkedNodes()"
+    (selectedNodesChange)="setSelectedNodes($event)"
+  ></sma-param-tree>
+</ng-template>

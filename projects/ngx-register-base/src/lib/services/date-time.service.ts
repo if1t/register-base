@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
 import moment, { Moment } from 'moment-timezone';
 import { BehaviorSubject } from 'rxjs';
-import { STORED_TIMEZONE } from '../app.constants';
+import { STORED_TIMEZONE } from '../consts/date-time.consts';
 import { PrizmDateTimeRange, PrizmDayRange, PrizmTime, PrizmTimeRange } from '@prizm-ui/components';
 import { EDatePattern, ETimezone, SmaPrizmDateTime } from '../directives/date/date-time.types';
 

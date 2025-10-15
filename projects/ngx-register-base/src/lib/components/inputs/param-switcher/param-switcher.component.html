@@ -1,0 +1,8 @@
+<div class="param-switcher">
+  <div *ngIf="label" class="label">
+    <span *ngIf="label" class="label__text">{{ label }}</span>
+    <span *ngIf="required" class="label--required">*</span>
+  </div>
+
+  <prizm-switcher [formControl]="control" [switchers]="switchers"></prizm-switcher>
+</div>

@@ -1,0 +1,44 @@
+<div class="tree-custom-class__container">
+  @for (node of treeNodes$ | async; track node) {
+    @if (node === TREE_LOADER) {
+      <tui-loader [showLoader]="true" [overlay]="true" size="s"></tui-loader>
+    } @else {
+      @if (defaultNodeOpenedState() === undefined) {
+        <tui-tree
+          class="tui_tree--not-collapsed"
+          [value]="node"
+          [content]="nodeTemplate"
+          [childrenHandler]="childrenHandler"
+        >
+        </tui-tree>
+      } @else {
+        <tui-tree
+          [value]="node"
+          [content]="nodeTemplate"
+          [childrenHandler]="childrenHandler"
+          [tuiTreeController]="!!defaultNodeOpenedState()"
+          [map]="openedNodesState()"
+          (toggled)="onToggle($event)"
+        >
+        </tui-tree>
+      }
+    }
+  }
+</div>
+
+<ng-template #nodeTemplate let-node>
+  @if (node === TREE_LOADER) {
+    <tui-loader [showLoader]="true" [overlay]="true" size="s"></tui-loader>
+  } @else {
+    <label tuiLabel class="tree-custom-class__label-checkbox-container">
+      <input
+        size="s"
+        tuiCheckbox
+        type="checkbox"
+        [ngModel]="checkedNodesState().get(node)"
+        (ngModelChange)="onChecked(node, $event)"
+      />
+      <small>{{ node.name }}</small>
+    </label>
+  }
+</ng-template>

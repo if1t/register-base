@@ -1,0 +1,84 @@
+<ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
+  <ng-template #readTemplate>
+    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+      <ng-container *ngIf="label">
+        <ng-container [ngSwitch]="paramStyle">
+          <ng-template ngSwitchCase="filter">
+            <div class="label-wrapper">
+              <span class="label">{{ label }}</span>
+              <div class="dashed-row"></div>
+            </div>
+          </ng-template>
+          <ng-template ngSwitchDefault>
+            <span class="label">{{ label }}</span>
+            <div class="dashed-row"></div>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+      <ng-container [ngTemplateOutlet]="value ? showedValueTemplate : emptyTemplate">
+        <ng-template #showedValueTemplate>
+          <ng-container [ngSwitch]="paramStyle">
+            <ng-template ngSwitchCase="filter">
+              <pre class="value">{{ showedValue }}</pre>
+            </ng-template>
+            <ng-template ngSwitchDefault>
+              <div class="value" [tuiHint]="showedValue">
+                <span>{{ showedValue }}</span>
+              </div>
+            </ng-template>
+          </ng-container>
+        </ng-template>
+        <ng-template #emptyTemplate>
+          <span class="value">-</span>
+        </ng-template>
+      </ng-container>
+    </div>
+  </ng-template>
+  <ng-template #editTemplate>
+    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+      <div *ngIf="label" class="label-wrapper">
+        <span class="label" [class.required]="required">
+          {{ label }}
+        </span>
+        <tui-icon
+          *ngIf="hint"
+          icon="assets/icons/circle-info-empty.svg"
+          [tuiHint]="hint"
+          class="hintIcon"
+        ></tui-icon>
+      </div>
+      <tui-multi-select
+        [formControl]="control"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldCleaner]="true"
+        tuiAppearance="sma-input-appearance"
+        [valueContent]="valueContent"
+        tuiTextfieldSize="m"
+        [stringify]="stringify()"
+        [identityMatcher]="identityMatcher()"
+        (searchChange)="onSearch($event)"
+        [editable]="searchable"
+      >
+        <span class="placeholder">{{ placeholder() }}</span>
+
+        <tui-data-list-wrapper
+          *tuiDataList
+          tuiMultiSelectGroup
+          [items]="items"
+          [itemContent]="listItemTemplate ?? itemContent"
+        ></tui-data-list-wrapper>
+      </tui-multi-select>
+
+      <ng-template #itemContent let-data>
+        {{ data.name }}
+      </ng-template>
+      <ng-template #valueContent let-list>
+        @let isSingle = list.length === 1;
+        <span [class]="isSingle ? 'choosed choosed-one' : 'choosed choosed-many'">
+          {{ isSingle ? list[0].name : shortPickedLength() ? 'Выбрано: ' : null }}
+          {{ getListLength(list) }}
+        </span>
+      </ng-template>
+    </div>
+  </ng-template>
+</ng-container>

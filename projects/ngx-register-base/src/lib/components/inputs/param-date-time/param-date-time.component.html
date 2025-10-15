@@ -1,0 +1,69 @@
+<ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
+  <ng-template #readTemplate>
+    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+      <ng-container *ngIf="label">
+        <ng-container [ngSwitch]="paramStyle">
+          <ng-template ngSwitchCase="filter">
+            <div class="label-wrapper">
+              <span class="label">{{ label }}</span>
+              <div class="dashed-row"></div>
+            </div>
+          </ng-template>
+          <ng-template ngSwitchDefault>
+            <span class="label">{{ label }}</span>
+            <div class="dashed-row"></div>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+      <div class="value">
+        <span *ngIf="nativeDate; else emptyTemplate">
+          {{
+            nativeDate
+              | formatDate
+                : (timezoneChange | async)!.time_diff!
+                : EDatePattern.DATE_TIME_WITHOUT_SECONDS
+                : (timezoneChange | async)
+          }}
+        </span>
+        <ng-template #emptyTemplate>-</ng-template>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #editTemplate>
+    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+      <div *ngIf="label" class="label-wrapper">
+        <span class="label">{{ label }}</span>
+        <span *ngIf="required" class="required">*</span>
+      </div>
+
+      <prizm-input-layout
+        class="flex-shrink--zero"
+        size="s"
+        [forceClear]="forceClear"
+        [clearButton]="clearButtonTemplate"
+      >
+        <prizm-input-layout-date-time
+          [placeholder]="placeholder()"
+          [max]="$any(max)"
+          [min]="$any(min)"
+          [formControl]="control"
+        ></prizm-input-layout-date-time>
+        <ng-template
+          #clearButtonTemplate
+          let-showStatusButton="showStatusButton"
+          let-disabled="disabled"
+        >
+          <button
+            [interactive]="true"
+            [disabled]="disabled"
+            prizmHint="Нажмите для очистки"
+            prizmHintTheme="light"
+            prizmInputIconButton="cancel-delete-content"
+            class="{{ showStatusButton ? '' : 'alone' }}"
+            (click)="clearValue()"
+          ></button>
+        </ng-template>
+      </prizm-input-layout>
+    </div>
+  </ng-template>
+</ng-container>

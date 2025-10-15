@@ -1,0 +1,209 @@
+@import 'fonts';
+
+:host {
+  .container {
+    &--read {
+      &[sma-param-style='card'] {
+        display: flex;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 8px 0;
+
+        .label-wrapper {
+          .default-label-wrapper;
+
+          width: fit-content;
+        }
+
+        .label {
+          .default-label;
+        }
+
+        .dashed-row {
+          display: flex;
+          height: 16px;
+          align-items: center;
+          flex: 1 0 0;
+          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
+          min-width: 20px;
+        }
+
+        .value {
+          max-width: 210px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: #000000 !important;
+          .card-content-text !important;
+        }
+      }
+
+      &[sma-param-style='filter'] {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: stretch;
+        gap: 4px;
+
+        .label-wrapper {
+          .default-label-wrapper;
+
+          width: 100%;
+        }
+
+        .label {
+          .default-label;
+        }
+
+        .dashed-row {
+          display: flex;
+          height: 16px;
+          align-items: center;
+          flex: 1 0 0;
+          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
+          min-width: 20px;
+        }
+
+        .value {
+          .main-body-text-14px;
+
+          color: var(--text-main);
+        }
+      }
+    }
+
+    &--edit {
+      &[sma-param-style='card'] {
+        height: 52px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0 2px;
+
+        .label-wrapper {
+          .default-label-wrapper;
+
+          width: fit-content;
+        }
+
+        .label {
+          .default-label;
+        }
+
+        ::ng-deep {
+          .prizm-input-form:not(.prizm-input-form-focused) {
+            background: inherit;
+            border: 1px solid var(--input-stroke);
+            padding: 0 3.5px 0 8px;
+          }
+
+          .prizm-input-form .prizm-input-form-focused {
+            background: inherit;
+            border: 1px solid var(--input-stroke);
+          }
+
+          .prizm-input-form-inner {
+            min-height: 32px;
+            height: 32px;
+          }
+
+          input {
+            .input-text-14px;
+
+            color: var(--text-contrast);
+          }
+        }
+      }
+
+      &[sma-param-style='filter'] {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .label-wrapper {
+          .default-label-wrapper;
+
+          width: fit-content;
+        }
+
+        .label {
+          .default-label;
+        }
+
+        ::ng-deep {
+          .prizm-input-form:not(.prizm-input-form-focused) {
+            background: inherit;
+            border: none;
+            border-bottom: 1px solid var(--input-stroke);
+            padding: 0 3.5px 0 8px;
+          }
+
+          .prizm-input-form .prizm-input-form-focused {
+            background: inherit;
+            border: 1px !important;
+            border-bottom: 1px solid var(--input-stroke);
+          }
+
+          .prizm-input-form-inner {
+            min-height: 32px;
+            height: 32px;
+          }
+
+          .multiple-input-box {
+            padding: 0 !important;
+
+            input {
+              .input-text-12px;
+
+              color: var(--text-contrast);
+
+              &:last-child {
+                width: 100%;
+              }
+            }
+          }
+
+          .prizm-input-label-clear-btn {
+            position: absolute;
+            right: 0;
+            display: flex;
+            align-items: center;
+
+            prizm-icons-full {
+              width: 16px;
+              height: 16px;
+              display: none;
+            }
+
+            &:hover {
+              background: var(--brand-disabled);
+
+              prizm-icons-full {
+                width: 16px;
+                height: 16px;
+                display: unset;
+              }
+            }
+          }
+        }
+      }
+
+      .required {
+        .input-label;
+
+        color: var(--brand-danger);
+      }
+    }
+
+    .default-label-wrapper {
+      display: flex;
+      gap: 4px;
+    }
+
+    .default-label {
+      .input-label;
+
+      color: var(--main-black);
+    }
+  }
+}

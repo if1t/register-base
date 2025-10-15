@@ -1,0 +1,46 @@
+<ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
+  <ng-template #readTemplate>
+    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+      <ng-container *ngIf="label">
+        <ng-container [ngSwitch]="paramStyle">
+          <ng-template ngSwitchCase="filter">
+            <div class="label-wrapper">
+              <span class="label">{{ label }}</span>
+              <div class="dashed-row"></div>
+            </div>
+          </ng-template>
+          <ng-template ngSwitchDefault>
+            <span class="label">{{ label }}</span>
+            <div class="dashed-row"></div>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+      <div class="value">
+        <span>{{ showedValue }}</span>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #editTemplate>
+    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+      <div *ngIf="label" class="label-wrapper">
+        <span class="label">{{ label }}</span>
+        <span *ngIf="required" class="required">*</span>
+      </div>
+
+      <tui-textfield
+        [tuiTextfieldSize]="size()"
+        [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldCleaner]="true"
+      >
+        <tui-input-year
+          [formControl]="control"
+          [max]="max()"
+          [min]="min()"
+          [disabledItemHandler]="disabledHandler"
+        >
+          Выберите год
+        </tui-input-year>
+      </tui-textfield>
+    </div>
+  </ng-template>
+</ng-container>

@@ -1,4 +1,5 @@
 export { INPUTS_STATE_CONFIG_KEY } from './inputs.consts';
+export * from './month.consts';
 export {
   EOrder,
   SETTINGS_TYPE,
