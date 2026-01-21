@@ -33,10 +33,6 @@
           tuiAppearance="sma-input-appearance"
           tuiChevron
           [tuiTextfieldCleaner]="true"
-          (focusin)="isFocused = true"
-          (focusout)="isFocused = false"
-          (mouseenter)="isHovered = true"
-          (mouseleave)="isHovered = false"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
         >
           <input
@@ -66,10 +62,6 @@
           tuiChevron
           [tuiTextfieldLabelOutside]="true"
           [tuiTextfieldCleaner]="true"
-          (focusin)="isFocused = true"
-          (focusout)="isFocused = false"
-          (mouseenter)="isHovered = true"
-          (mouseleave)="isHovered = false"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
           [tuiDropdownMaxHeight]="maxDropdownHeight"
         >

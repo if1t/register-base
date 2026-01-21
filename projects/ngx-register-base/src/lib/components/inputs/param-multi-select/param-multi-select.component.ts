@@ -348,6 +348,7 @@ export class ParamMultiSelectComponent
       return bIsSelected - aIsSelected;
     });
     this.items = this.items.filter((elem: any) => elem.id !== this.selectAllItem.id);
+    this.itemsChange.emit(this.items);
     if (this.itemSelectAll() && this.items.length > 0) {
       this.items.unshift(this.selectAllItem);
     }
@@ -462,6 +463,7 @@ export class ParamMultiSelectComponent
     );
 
     this.items.push(...itemsThatDontExist);
+    this.itemsChange.emit(this.items);
   }
 
   private _getNameFromField(item: any, field: string): string {

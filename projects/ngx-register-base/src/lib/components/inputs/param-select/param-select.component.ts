@@ -290,5 +290,6 @@ export class ParamSelectComponent
     );
 
     this.items.push(...itemsThatDontExist);
+    this.itemsChange.emit(this.items);
   }
 }

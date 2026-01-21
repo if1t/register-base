@@ -38,10 +38,6 @@
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="forceClear"
         [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
-        (focusin)="isFocused = true"
-        (focusout)="isFocused = false"
-        (mouseenter)="isHovered = true"
-        (mouseleave)="isHovered = false"
       >
         <textarea
           tuiTextarea

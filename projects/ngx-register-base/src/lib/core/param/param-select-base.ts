@@ -1,4 +1,4 @@
-import { Directive, Injector, Input } from '@angular/core';
+import { Directive, Injector, Input, output } from '@angular/core';
 import { ParamBase } from './param-base';
 import { BehaviorSubject } from 'rxjs';
 import { PolymorphContent } from '@prizm-ui/components';
@@ -36,6 +36,8 @@ export abstract class ParamSelectBase<
   public get meta(): MetaQuery | null {
     return this._meta$.getValue();
   }
+
+  public itemsChange = output<NonNullable<InferArrayType<ValueType>>[]>();
 
   private readonly _meta$ = new BehaviorSubject<MetaQuery | null>(null);
 

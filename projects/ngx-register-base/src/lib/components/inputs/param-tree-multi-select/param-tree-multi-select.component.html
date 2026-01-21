@@ -58,10 +58,6 @@
         [tuiTextfieldCleaner]="forceClear"
         [tuiTextfieldLabelOutside]="true"
         [content]="valueContent"
-        (focusin)="isFocused = true"
-        (focusout)="isFocused = false"
-        (mouseenter)="isHovered = true"
-        (mouseleave)="isHovered = false"
       >
         <input tuiComboBox [placeholder]="placeholder()" [formControl]="control" />
         <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate"></ng-container>

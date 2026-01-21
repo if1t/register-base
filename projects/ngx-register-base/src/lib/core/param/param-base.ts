@@ -101,9 +101,6 @@ export abstract class ParamBase<
   protected readonly cdr = inject(ChangeDetectorRef);
   protected readonly dr = inject(DestroyRef);
 
-  protected isFocused = false;
-  protected isHovered = false;
-
   protected control!: IInputControl<ValueType, SavedValueType>;
   protected formatterSavedValue: (value: ValueType, injector?: Injector) => SavedValueType = (
     value

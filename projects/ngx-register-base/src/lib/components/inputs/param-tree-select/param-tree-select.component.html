@@ -37,10 +37,6 @@
         [stringify]="stringify()"
         [tuiTextfieldLabelOutside]="forceClear"
         [tuiTextfieldCleaner]="true"
-        (focusin)="isFocused = true"
-        (focusout)="isFocused = false"
-        (mouseenter)="isHovered = true"
-        (mouseleave)="isHovered = false"
         [tuiDropdownMaxHeight]="maxDropdownHeight"
       >
         <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
