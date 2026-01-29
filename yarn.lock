@@ -325,27 +325,11 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-server@^18.2.0":
-  version "18.2.14"
-  resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-18.2.14.tgz#25a948e61003a12697170e0bdde804b04c0e7d12"
-  integrity sha512-XUErL0mOPvua5EtlmSOFllSM+Ts1wHzNIv0WNV5FJxWI3Pe6Xxs29xneKDOImC9ErYWuQqK7sQ/hyIaHO5fhOw==
-  dependencies:
-    tslib "^2.3.0"
-    xhr2 "^0.2.0"
-
 "@angular/router@^18.2.0":
   version "18.2.14"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-18.2.14.tgz#f40f8893b975b91aebfd241462a38893ba8008e9"
   integrity sha512-v/gweh8MBjjDfh1QssuyjISa+6SVVIvIZox7MaMs81RkaoVHwS9grDtPud1pTKHzms2KxSVpvwwyvkRJQplueg==
   dependencies:
-    tslib "^2.3.0"
-
-"@angular/ssr@^18.2.21":
-  version "18.2.21"
-  resolved "https://registry.yarnpkg.com/@angular/ssr/-/ssr-18.2.21.tgz#0cfcc34c53d993c15b4bdf58b25bf9ba27f64f70"
-  integrity sha512-0euH/xxVLv12xVPf1WkfVVmteFccsObjcomCQg/wwu6U4pp5BVqtXpLgA6kAyJByhwbjJWnJJwxovHcVMsRoig==
-  dependencies:
-    critters "0.0.24"
     tslib "^2.3.0"
 
 "@apollo/client@^3.13.5":
@@ -8405,8 +8389,8 @@ ngx-mask@17.0.4:
   dependencies:
     tslib "^2.3.0"
 
-"ngx-page-menu@file:dist/ngx-page-menu":
-  version "0.0.1"
+"ngx-register-base@file:dist/ngx-register-base":
+  version "0.0.0-watch"
   dependencies:
     tslib "^2.3.0"
 
@@ -11426,11 +11410,6 @@ wsl-utils@^0.1.0:
   integrity sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==
   dependencies:
     is-wsl "^3.1.0"
-
-xhr2@^0.2.0:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/xhr2/-/xhr2-0.2.1.tgz#4e73adc4f9cfec9cbd2157f73efdce3a5f108a93"
-  integrity sha512-sID0rrVCqkVNUn8t6xuv9+6FViXjUVXq8H5rWOH2rz9fDNQEd4g0EA2XlcEdJXRz5BMEn4O1pJFdT+z4YHhoWw==
 
 y18n@^5.0.5:
   version "5.0.8"

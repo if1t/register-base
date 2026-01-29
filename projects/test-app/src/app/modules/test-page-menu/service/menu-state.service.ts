@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AbstractMenuStateService } from '../../../../ngx-page-menu/src/lib';
 import { Injectable } from '@angular/core';
+import { AbstractMenuStateService } from 'ngx-register-base';
 
 @Injectable({ providedIn: 'root' })
 export class MenuStateService extends AbstractMenuStateService {

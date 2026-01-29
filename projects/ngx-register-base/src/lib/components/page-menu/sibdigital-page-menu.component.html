@@ -54,7 +54,7 @@
   >
     @if (icon) {
       <span class="menu-item__icon">
-        <img [alt]="icon" [width]="16" [height]="16" [ngSrc]="'assets/ngx-page-menu/page-menu/' + icon + '.svg'">
+        <img [alt]="icon" [width]="16" [height]="16" [ngSrc]="'assets/sibdigital-page-menu/page-menu/' + icon + '.svg'">
       </span>
     }
     <span class="menu-item__title"> {{ navigation_item.title }} </span>
@@ -67,7 +67,7 @@
     }
   </a>
   @if (isExpanded && childrenCount > 0) {
-    @for (children of navigation_item.children; track $index) {
+    @for (children of navigation_item.children ?? []; track $index) {
       <ng-container
         *ngTemplateOutlet="menuItemOpened; context: { navigation_item: children, level: level + 1 }"
       ></ng-container>
@@ -98,7 +98,7 @@
         <img
           [height]="16"
           [width]="16"
-          [ngSrc]="'assets/ngx-page-menu/page-menu/' + icon + '.svg'" alt="Menu Chevron"/>
+          [ngSrc]="'assets/sibdigital-page-menu/page-menu/' + icon + '.svg'" alt="Menu Chevron"/>
       </a>
     }
     <ng-container
