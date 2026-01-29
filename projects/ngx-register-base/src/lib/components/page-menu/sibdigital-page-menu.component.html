@@ -1,0 +1,166 @@
+<section [class]="menuState() ? 'side-menu side-menu_opened' : 'side-menu side-menu_closed'">
+  <div class="side-menu__header">
+    <img
+      [src]="menuState() ? ICONS_SRC.MENU : ICONS_SRC.MENU_CLOSED"
+      alt="Group Icon"
+      class="side-menu__header__logo"
+    />
+    <img
+      (click)="toggleNavigation()"
+      [class.disabled]="toggleDisabled$ | async"
+      [height]="16"
+      [ngClass]="menuState() ? 'side-menu__header__chevron_opened' : 'side-menu__header__chevron_closed'"
+      [ngSrc]="ICONS_SRC.MENU_CHEVRON" [width]="16" alt="Menu Chevron"/>
+  </div>
+
+  @if (menuState()) {
+    <div class="expanded-menu-content">
+      @for (navigation_item of navigationHierarchy(); track $index) {
+        <ng-container
+          *ngTemplateOutlet="
+            menuItemOpened;
+            context: { navigation_item: navigation_item, level: 0 }
+          "
+        ></ng-container>
+      }
+    </div>
+
+    <ng-content></ng-content>
+  } @else {
+    @for (navigation_item of navigationHierarchy(); track $index) {
+      <ng-container
+        *ngTemplateOutlet="closedMenu; context: { navigation_item: navigation_item }"
+      ></ng-container>
+    }
+  }
+</section>
+
+<ng-template #menuItemOpened let-level="level" let-navigation_item="navigation_item">
+  @let isExpanded = expandedIds().has(navigation_item.code);
+  @let childrenCount = navigation_item.children.length;
+  @let code = navigation_item.code;
+  @let route = navigation_item.code;
+  @let icon = navigation_item.icon;
+  @let isHighlighted = selectedSection() === code;
+
+  <a
+    (click)="childrenCount === 0 ? handleNavigation(navigation_item) : toggleItem(navigation_item)"
+    [@fadeInOut]
+    [class.menu-item_selected]="isHighlighted"
+    [class.padding-level-0]="level === 0"
+    [routerLink]="childrenCount > 0 || isExternalLink(route) ? undefined : route"
+    [style.padding-left.px]="level === 0 ? 0 : 44 + level * 20"
+    class="menu-item"
+  >
+    @if (icon) {
+      <span class="menu-item__icon">
+        <img [alt]="icon" [width]="16" [height]="16" [ngSrc]="'assets/sibdigital-page-menu/page-menu/' + icon + '.svg'">
+      </span>
+    }
+    <span class="menu-item__title"> {{ navigation_item.title }} </span>
+    @if (childrenCount > 0) {
+      <img
+        class="menu-item__chevron"
+        [class.menu-item__chevron_rotated]="!isExpanded"
+        [alt]="icon" [width]="16" [height]="16"
+        [ngSrc]="ICONS_SRC.CHEVRON_UP">
+    }
+  </a>
+  @if (isExpanded && childrenCount > 0) {
+    @for (children of navigation_item.children ?? []; track $index) {
+      <ng-container
+        *ngTemplateOutlet="menuItemOpened; context: { navigation_item: children, level: level + 1 }"
+      ></ng-container>
+    }
+  }
+</ng-template>
+
+<ng-template #closedMenu let-navigation_item="navigation_item">
+  @let isExpanded = expandedIds().has(navigation_item.code);
+  @let childrenCount = navigation_item.children.length;
+  @let code = navigation_item.code;
+  @let route = navigation_item.code;
+  @let icon = navigation_item.icon;
+  @let isHighlighted = selectedSection() === code || parentItemCodes().has(code);
+
+  <div
+    (mouseleave)="collapseMenu()"
+    [id]="navigation_item.id"
+    class="collapsed-menu-content"
+  >
+    @if (icon) {
+      <a
+        class="menu-item__icon_closed"
+        [class.menu-item_selected]="isHighlighted"
+        (click)="childrenCount === 0 ? handleNavigation(navigation_item) : toggleItem(navigation_item)"
+        [routerLink]="childrenCount > 0 || isExternalLink(route) ? undefined : route"
+        (mouseenter)="toggleItem(navigation_item)">
+        <img
+          [height]="16"
+          [width]="16"
+          [ngSrc]="'assets/sibdigital-page-menu/page-menu/' + icon + '.svg'" alt="Menu Chevron"/>
+      </a>
+    }
+    <ng-container
+      *ngTemplateOutlet="
+        menuClosedItem;
+        context: { item: navigation_item, level: 1, topPadding: 1 }
+      "
+    >
+    </ng-container>
+    @if (isExpanded && childrenCount > 0) {
+      <div class="static-item">
+        <span class="static-item__element">
+        {{ navigation_item.title }}
+          </span>
+      </div>
+    }
+  </div>
+</ng-template>
+
+<ng-template #menuClosedItem let-item="item" let-level="level" let-topPadding="topPadding">
+  @let isExpanded = expandedIds().has(item.code);
+  <div [id]="item.id">
+    @if (isExpanded && item.children.length > 0) {
+      <div
+        class="side-menu__subitems"
+        [class.padding-level-1]="level === 1"
+        [style.top.px]="topPadding * 40"
+        id="side-menu__subitems"
+      >
+        @for (navigation_item of item.children; track navigation_item; let index = $index) {
+          @let childrenCount = navigation_item.children.length;
+          @let code = navigation_item.code;
+          @let route = navigation_item.code;
+          @let isHighlighted = selectedSection() === code || parentItemCodes().has(code);
+          <a
+            class="side-menu__subitem"
+            [class.menu-item_selected]="isHighlighted"
+            (mouseenter)="childrenCount > 0 ? toggleItem(navigation_item) : collapseMenu(navigation_item)"
+            (click)="childrenCount === 0 ? handleNavigation(navigation_item) : toggleItem(navigation_item)"
+            [routerLink]="childrenCount > 0 || isExternalLink(route) ? undefined : route"
+          >
+          <span
+            [class.padding-level-1]="level === 1">{{
+              navigation_item.title
+            }}</span>
+
+            @if (childrenCount > 0) {
+              <img
+                class="chevron-right"
+                [height]="16"
+                [width]="16"
+                [ngSrc]="ICONS_SRC.CHEVRON_RIGHT" alt="Menu Chevron"/>
+            }
+          </a>
+          <ng-container
+            *ngTemplateOutlet="
+            menuClosedItem;
+            context: { item: navigation_item, level: level + 1, topPadding: index }
+          "
+          ></ng-container>
+        }
+      </div>
+    }
+  </div>
+</ng-template>

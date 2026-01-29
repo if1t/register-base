@@ -56,6 +56,11 @@
             "assets": [
               {
                 "glob": "**/*",
+                "input": "dist/ngx-register-base/assets/sibdigital-page-menu",
+                "output": "assets/sibdigital-page-menu"
+              },
+              {
+                "glob": "**/*",
                 "input": "projects/test-app/public"
               },
               {
@@ -67,6 +72,11 @@
                 "glob": "**/*",
                 "input": "dist/ngx-register-base/icons",
                 "output": "assets/ngx-register-base/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/test-app/assets",
+                "output": "assets"
               }
             ],
             "styles": [

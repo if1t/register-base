@@ -1,0 +1,228 @@
+:host {
+  @closedMenuWidth: 48px;
+  @closedMenuLevelWidth: 294px;
+  @closedMenuLabelPaddingLevel1: 64px;
+  @closedMenuLabelPadding: 16px;
+
+  background: var(--page-menu-main);
+  height: 100vh;
+  max-height: 100vh;
+  z-index: 1000;
+  display: flex;
+
+  tui-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    background: var(--page-menu-main);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: 6px;
+    background: #c3c7cf;
+    border-radius: 2px;
+  }
+
+  .side-menu {
+    transition: all var(--page-menu-transition-time);
+    display: flex;
+    color: var(--main-white);
+    flex-direction: column;
+    flex-shrink: 0;
+    font-size: 14px;
+
+    &__header {
+      height: 64px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &__chevron {
+        cursor: pointer;
+        transition: rotate 0.15s linear;
+
+        &_opened {
+          margin: 0 8px 0 0;
+          rotate: 0deg;
+        }
+
+        &_closed {
+          margin: 0 0 0 -4px;
+          rotate: 180deg;
+        }
+      }
+
+      .disabled {
+        pointer-events: none;
+      }
+
+      &__logo {
+        margin-left: 8px;
+      }
+    }
+
+    &_opened {
+      width: var(--page-menu-opened-width);
+    }
+
+    &_closed {
+      width: var(--page-menu-closed-width);
+    }
+
+    &__subitems,
+    .static-item {
+      position: absolute;
+      display: flex;
+      z-index: 3;
+      right: 0;
+      top: 0;
+      flex-direction: column;
+    }
+
+    &__subitems {
+      width: @closedMenuLevelWidth;
+      box-shadow: 0 2px 6px 0 rgba(40, 40, 40, 25%);
+      left: @closedMenuLevelWidth;
+
+      &.padding-level-1 {
+        left: @closedMenuWidth;
+      }
+
+      .chevron-right {
+        margin-right: 16px;
+      }
+
+      a {
+        span {
+          height: 40px;
+          display: flex;
+          align-items: center;
+          padding-left: 40px;
+
+          .padding-level-1 {
+            padding-left: @closedMenuLabelPaddingLevel1;
+          }
+        }
+      }
+    }
+
+    .static-item {
+      color: var(--main-black);
+      left: 48px;
+      top: 0;
+    }
+
+    &__subitem,
+    .static-item__element {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      color: var(--main-white);
+      height: 40px;
+      width: 294px;
+      background: var(--page-menu-main);
+      justify-content: space-between;
+    }
+
+    &__subitem:hover {
+      background: var(--page-menu-main-hovered);
+      cursor: pointer;
+    }
+
+    .static-item__element {
+      justify-content: unset;
+      padding-left: 16px;
+    }
+
+    .expanded-menu-content {
+      height: calc(100vh - 103px);
+      -ms-overflow-style: none; /* for Internet Explorer, Edge */
+      scrollbar-width: none; /* for Firefox */
+      overflow-y: scroll;
+    }
+
+    .expanded-menu-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    .collapsed-menu-content {
+      position: relative;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: row;
+      cursor: pointer;
+      justify-content: start;
+      align-items: center;
+      box-sizing: border-box;
+      transition: background 0.9ms;
+      height: 40px;
+
+      &_selected {
+        background: var(--page-menu-active) !important;
+        box-shadow: inset 3px 0 var(--main-white);
+      }
+
+      &_selected:hover {
+        background: var(--page-menu-active) !important;
+      }
+
+      &__chevron {
+        margin-left: auto;
+        margin-right: 8px;
+        transition: rotate 0.15s linear;
+
+        &_rotated {
+          rotate: 180deg;
+        }
+      }
+
+      &__title {
+        .page-menu-text-14px {
+          font-family: Inter, serif;
+          font-size: 14px;
+          font-weight: 300;
+        }
+
+        padding: 10px 0 10px 8px;
+        overflow: hidden;
+        color: var(--main-white);
+        font-variant-numeric: lining-nums tabular-nums;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        .page-menu-text-14px;
+      }
+
+      &__icon {
+        padding: 0 8px 0 16px;
+
+        &_closed {
+          display: flex;
+          height: 40px;
+          justify-content: center;
+          align-items: center;
+        }
+
+        &_closed:hover {
+          background: var(--page-menu-main-hovered);
+          cursor: pointer;
+        }
+      }
+    }
+
+    .menu-item:hover {
+      background: var(--page-menu-main-hovered);
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: unset;
+  }
+}
