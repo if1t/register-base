@@ -16,7 +16,7 @@ export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any }
 
 /** Компонент выбора единственного значения из иерархического списка */
 @Component({
-  selector: 'sma-param-tree-select',
+  selector: 'sproc-param-tree-select',
   standalone: true,
   imports: [
     ParamTreeComponent,

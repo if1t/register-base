@@ -1,6 +1,6 @@
 <ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
   <ng-template #readTemplate>
-    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+    <div class="container container--read" [attr.sproc-param-style]="paramStyle">
       @if (label) {
         @switch (paramStyle) {
           @case ('filter') {
@@ -35,7 +35,7 @@
     </div>
   </ng-template>
   <ng-template #editTemplate>
-    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+    <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
       @if (label) {
         <div class="label-wrapper">
           <span class="label" [class.required]="required">
@@ -53,7 +53,7 @@
       <tui-textfield
         tuiChevron
         tuiTextfieldSize="m"
-        tuiAppearance="sma-input-appearance"
+        tuiAppearance="sproc-input-appearance"
         [stringify]="stringify()"
         [tuiTextfieldCleaner]="forceClear"
         [tuiTextfieldLabelOutside]="true"
@@ -70,9 +70,9 @@
 </ng-container>
 
 <ng-template #paramTreeTemplate>
-  <sma-param-tree
+  <sproc-param-tree
     [multi]="true"
     [checkedNodes]="checkedNodes()"
     (selectedNodesChange)="setSelectedNodes($event)"
-  ></sma-param-tree>
+  ></sproc-param-tree>
 </ng-template>

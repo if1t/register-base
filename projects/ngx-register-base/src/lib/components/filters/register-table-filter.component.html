@@ -1,5 +1,5 @@
-<sma-sliding-panel [isOpen]="isOpen$ | async" [subOffsetHeight]="subOffsetHeight">
-  <sma-filter-list-header
+<sproc-sliding-panel [isOpen]="isOpen$ | async" [subOffsetHeight]="subOffsetHeight">
+  <sproc-filter-list-header
     header
     [showTotal]="showTotal"
     [showPin]="showPin"
@@ -9,26 +9,26 @@
     [applyButtonDisabled]="applyButtonDisabled"
     (applyFilter)="onApplyFilter($event)"
     [filterListHeaderTitle]="filterListHeaderTitle"
-  ></sma-filter-list-header>
+  ></sproc-filter-list-header>
 
   <ng-container [ngSwitch]="filterState$ | async">
     <ng-container *ngSwitchCase="FilterState.FILTER_LIST" [ngTemplateOutlet]="filtersTemplate">
     </ng-container>
 
     <div *ngSwitchCase="FilterState.SAVED_LIST">
-      <sma-filter-list-saved></sma-filter-list-saved>
+      <sproc-filter-list-saved></sproc-filter-list-saved>
     </div>
 
     <div *ngSwitchCase="FilterState.ON_EDIT_FILTER">
-      <sma-filter-edit></sma-filter-edit>
+      <sproc-filter-edit></sproc-filter-edit>
 
-      <sma-divider></sma-divider>
+      <sproc-divider></sproc-divider>
 
       <ng-container [ngTemplateOutlet]="filtersTemplate"></ng-container>
     </div>
 
     <div *ngSwitchCase="FilterState.ON_SAVE_FILTER">
-      <sma-filter-edit></sma-filter-edit>
+      <sproc-filter-edit></sproc-filter-edit>
     </div>
 
     <ng-template #filtersTemplate>
@@ -36,11 +36,11 @@
     </ng-template>
   </ng-container>
 
-  <sma-filter-list-footer
+  <sproc-filter-list-footer
     footer
     [acceptButtonDisabled]="acceptButtonDisabled"
     [applyButtonDisabled]="applyButtonDisabled"
     (apply)="onApplyFilter($event)"
     [footerApplyButtonLabel]="footerApplyButtonLabel"
-  ></sma-filter-list-footer>
-</sma-sliding-panel>
+  ></sproc-filter-list-footer>
+</sproc-sliding-panel>

@@ -16,7 +16,7 @@ export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any }
 
 /** Компонент выбора единственного значения из иерархического списка */
 @Component({
-  selector: 'sma-param-tree-multi-select',
+  selector: 'sproc-param-tree-multi-select',
   standalone: true,
   imports: [
     NgTemplateOutlet,

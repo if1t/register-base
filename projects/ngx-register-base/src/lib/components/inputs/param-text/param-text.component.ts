@@ -9,7 +9,7 @@ import { MaskitoDirective } from '@maskito/angular';
 import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
 
 @Component({
-  selector: 'sma-param-text',
+  selector: 'sproc-param-text',
   templateUrl: './param-text.component.html',
   styleUrls: ['./param-text.component.less'],
   standalone: true,

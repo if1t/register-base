@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { PrizmHintDirective, PrizmInputIconButtonComponent } from '@prizm-ui/components';
 
 @Component({
-  selector: 'sma-param-clear-button',
+  selector: 'sproc-param-clear-button',
   standalone: true,
   templateUrl: './param-clear-button.component.html',
   styleUrls: ['./param-clear-button.component.less'],

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ParamBase } from '../../../core/param/param-base';
 
 @Component({
-  selector: 'sma-param-custom',
+  selector: 'sproc-param-custom',
   templateUrl: './param-custom.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -9,7 +9,7 @@ export type SmaPrizmDateTime = [PrizmDay, PrizmTime | undefined];
 export type InputDateTimeSaveValue = string | null;
 
 @Component({
-  selector: 'sma-param-date-time',
+  selector: 'sproc-param-date-time',
   templateUrl: './param-date-time.component.html',
   styleUrls: ['./param-date-time.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

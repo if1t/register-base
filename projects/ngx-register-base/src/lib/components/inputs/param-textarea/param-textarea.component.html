@@ -1,6 +1,6 @@
 <ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
   <ng-template #readTemplate>
-    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+    <div class="container container--read" [attr.sproc-param-style]="paramStyle">
       @if (label) {
         @switch (paramStyle) {
           @case ('filter') {
@@ -23,7 +23,7 @@
     </div>
   </ng-template>
   <ng-template #editTemplate>
-    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+    <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
       @if (label) {
         <div class="label-wrapper">
           <span class="label">{{ label }}</span>
@@ -33,7 +33,7 @@
         </div>
       }
       <tui-textfield
-        tuiAppearance="sma-input-appearance"
+        tuiAppearance="sproc-input-appearance"
         tuiTextfieldSize="m"
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="forceClear"
@@ -49,7 +49,7 @@
         ></textarea>
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
-            <sma-param-invalid-icon></sma-param-invalid-icon>
+            <sproc-param-invalid-icon></sproc-param-invalid-icon>
           }
         </div>
       </tui-textfield>

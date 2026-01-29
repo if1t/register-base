@@ -5,7 +5,7 @@ export enum SvgSrc {
 }
 
 @Component({
-  selector: 'sma-reset-settings-form',
+  selector: 'sproc-reset-settings-form',
   templateUrl: './reset-settings-form.component.html',
   styleUrls: ['./reset-settings-form.component.less'],
   standalone: true,

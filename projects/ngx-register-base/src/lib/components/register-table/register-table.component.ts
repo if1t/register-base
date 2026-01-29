@@ -73,7 +73,7 @@ import { PaginatorComponent } from '../paginator/paginator.component';
 
 /** Общий компонент для создания таблицы ресстра */
 @Component({
-  selector: 'sma-register-table',
+  selector: 'sproc-register-table',
   templateUrl: './register-table.component.html',
   styleUrls: ['./register-table.component.less'],
   standalone: true,

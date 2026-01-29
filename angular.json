@@ -7,7 +7,7 @@
       "projectType": "library",
       "root": "projects/ngx-register-base",
       "sourceRoot": "projects/ngx-register-base/src",
-      "prefix": "lib",
+      "prefix": "sproc",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",

@@ -44,7 +44,7 @@ import { IFilterSelectValue } from '../../../types/params.types';
 import { PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS } from '../../../consts/params.consts';
 
 @Component({
-  selector: 'sma-param-select',
+  selector: 'sproc-param-select',
   templateUrl: './param-select.component.html',
   styleUrls: ['./param-select.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

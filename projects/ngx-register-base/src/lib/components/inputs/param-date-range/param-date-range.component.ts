@@ -7,7 +7,7 @@ import { EDatePattern } from '../../../directives/date/date-time.types';
 export type InputDateRangeSavedValue = { from: string; to: string } | null;
 
 @Component({
-  selector: 'sma-param-date-range',
+  selector: 'sproc-param-date-range',
   templateUrl: './param-date-range.component.html',
   styleUrls: ['./param-date-range.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

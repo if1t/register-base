@@ -3,7 +3,7 @@ import { TuiButton, TuiHint } from '@taiga-ui/core';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
-  selector: 'sma-filter-button',
+  selector: 'sproc-filter-button',
   templateUrl: './filter-button.component.html',
   styleUrl: './filter-button.component.less',
   standalone: true,

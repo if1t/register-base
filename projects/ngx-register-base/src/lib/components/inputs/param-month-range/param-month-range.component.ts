@@ -7,7 +7,7 @@ import { EMonth, MonthMapper } from '../../../consts/month.consts';
 export type InputMonthRangeSavedValue = { from: string; to: string } | null;
 
 @Component({
-  selector: 'sma-param-month-range',
+  selector: 'sproc-param-month-range',
   templateUrl: './param-month-range.component.html',
   styleUrls: ['./param-month-range.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

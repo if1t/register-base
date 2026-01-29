@@ -13,7 +13,7 @@ import { EDatePattern } from '../../../directives/date/date-time.types';
 export type InputDateSaveValue = string | null;
 
 @Component({
-  selector: 'sma-param-date',
+  selector: 'sproc-param-date',
   templateUrl: './param-date.component.html',
   styleUrls: ['./param-date.component.less'],
   standalone: true,

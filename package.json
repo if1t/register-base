@@ -2,7 +2,7 @@
   "name": "register-base-workspace",
   "version": "0.0.2",
   "engines": {
-    "node": "^22.14"
+    "node": ">=22.14"
   },
   "scripts": {
     "ng": "ng",
