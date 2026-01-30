@@ -18,7 +18,7 @@ import {
   ITpUserSettingsSettings,
   IUserSettingsLoader,
   SETTINGS_TYPE,
-} from 'ngx-register-base';
+} from 'ngx-sproc-kit';
 
 interface IRegisterPropertiesState {
   loading: boolean;

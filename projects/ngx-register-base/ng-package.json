@@ -1,11 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/ngx-register-base",
-  "assets": [
-    "icons",
-    "styles",
-    "assets"
-  ],
+  "dest": "../../dist/ngx-sproc-kit",
+  "assets": ["icons", "styles", "assets"],
   "inlineStyleLanguage": "less",
   "lib": {
     "entryFile": "src/public-api.ts",

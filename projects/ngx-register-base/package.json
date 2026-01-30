@@ -1,5 +1,5 @@
 {
-  "name": "ngx-register-base",
+  "name": "ngx-sproc-kit",
   "version": "0.1.2",
   "exports": {
     "./icons/*": "./icons/*",

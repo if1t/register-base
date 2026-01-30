@@ -22,8 +22,8 @@ import { IPaginatorOptions, IPaginatorOutput } from './types/paginator.types';
 import { DividerComponent } from '../divider/divider.component';
 
 export enum SvgSrc {
-  CHEVRONS_DOUBLE_LEFT = 'assets/ngx-register-base/icons/chevrons-double-left.svg',
-  CHEVRONS_DOUBLE_RIGHT = 'assets/ngx-register-base/icons/chevrons-double-right.svg',
+  CHEVRONS_DOUBLE_LEFT = 'assets/ngx-sproc-kit/icons/chevrons-double-left.svg',
+  CHEVRONS_DOUBLE_RIGHT = 'assets/ngx-sproc-kit/icons/chevrons-double-right.svg',
 }
 
 @Component({

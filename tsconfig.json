@@ -12,8 +12,8 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "paths": {
-      "ngx-register-base": [
-        "./dist/ngx-register-base"
+      "ngx-sproc-kit": [
+        "./dist/ngx-sproc-kit"
       ]
     },
     "esModuleInterop": true,

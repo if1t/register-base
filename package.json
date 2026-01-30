@@ -7,8 +7,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build ngx-register-base",
-    "watch": "ng build ngx-register-base --watch --configuration development",
+    "build": "ng build ngx-sproc-kit",
+    "watch": "ng build ngx-sproc-kit --watch --configuration development",
     "eslint:report": "yarn eslint ./projects -f html -o dist/eslint/report.html",
     "eslint:changes": "bash eslint-only-changed-develop",
     "stylelint:report": "mkdir -p dist/stylelint && npx stylelint **/*.less --custom-formatter ./stylelint-formatter.js",

@@ -3,23 +3,23 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-register-base": {
+    "ngx-sproc-kit": {
       "projectType": "library",
-      "root": "projects/ngx-register-base",
-      "sourceRoot": "projects/ngx-register-base/src",
+      "root": "projects/ngx-sproc-kit",
+      "sourceRoot": "projects/ngx-sproc-kit/src",
       "prefix": "sproc",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/ngx-register-base/ng-package.json"
+            "project": "projects/ngx-sproc-kit/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/ngx-register-base/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ngx-sproc-kit/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/ngx-register-base/tsconfig.lib.json"
+              "tsConfig": "projects/ngx-sproc-kit/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,7 +27,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/ngx-register-base/tsconfig.spec.json",
+            "tsConfig": "projects/ngx-sproc-kit/tsconfig.spec.json",
             "polyfills": ["zone.js", "zone.js/testing"]
           }
         }
@@ -56,7 +56,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "dist/ngx-register-base/assets/sibdigital-page-menu",
+                "input": "dist/ngx-sproc-kit/assets/sibdigital-page-menu",
                 "output": "assets/sibdigital-page-menu"
               },
               {
@@ -70,8 +70,8 @@
               },
               {
                 "glob": "**/*",
-                "input": "dist/ngx-register-base/icons",
-                "output": "assets/ngx-register-base/icons"
+                "input": "dist/ngx-sproc-kit/icons",
+                "output": "assets/ngx-sproc-kit/icons"
               },
               {
                 "glob": "**/*",
@@ -83,7 +83,7 @@
               "projects/test-app/src/styles.less",
               "@taiga-ui/core/styles/taiga-ui-theme.less",
               "@taiga-ui/core/styles/taiga-ui-fonts.less",
-              "dist/ngx-register-base/styles/styles.less",
+              "dist/ngx-sproc-kit/styles/styles.less",
               "node_modules/@prizm-ui/theme/src/styles/styles.less",
               "node_modules/@prizm-ui/components/src/styles/styles.less",
               "node_modules/@prizm-ui/components/src/styles/icons/icons.less",
