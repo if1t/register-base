@@ -1,5 +1,5 @@
-export { SibdigitalPageMenuComponent } from './sibdigital-page-menu.component';
-export * from './schema/sibdigital-page-menu.schema';
-export * from './schema/sibdigital-page-menu.tokens';
-export * from './schema/sibdigital-page-menu.consts';
-export * from './schema/sibdigital-page-menu.types';
+export { SprocPageMenuComponent } from './sproc-page-menu.component';
+export * from './schema/sproc-page-menu.schema';
+export * from './schema/sproc-page-menu.tokens';
+export * from './schema/sproc-page-menu.consts';
+export * from './schema/sproc-page-menu.types';
