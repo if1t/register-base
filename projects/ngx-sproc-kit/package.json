@@ -1,6 +1,9 @@
 {
   "name": "ngx-sproc-kit",
   "version": "0.1.2",
+  "ng-update": {
+    "migrations": "./schematics/migration/migration-collection.json"
+  },
   "exports": {
     "./icons/*": "./icons/*",
     "./styles/*": "./styles/*"
