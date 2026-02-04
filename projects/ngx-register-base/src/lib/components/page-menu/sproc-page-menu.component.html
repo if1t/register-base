@@ -1,8 +1,8 @@
 <section [class]="menuState() ? 'side-menu side-menu_opened' : 'side-menu side-menu_closed'">
   <div class="side-menu__header">
     <img
-      [src]="menuState() ? ICONS_SRC.MENU : ICONS_SRC.MENU_CLOSED"
-      alt="Group Icon"
+      [src]="menuState() ? openLogoSrc() : closedLogoSrc()"
+      alt="Logo Icon"
       class="side-menu__header__logo"
     />
     <img
@@ -54,7 +54,7 @@
   >
     @if (icon) {
       <span class="menu-item__icon">
-        <img [alt]="icon" [width]="16" [height]="16" [ngSrc]="'assets/sibdigital-page-menu/page-menu/' + icon + '.svg'">
+        <img [alt]="icon" [width]="16" [height]="16" [ngSrc]="menuIconsSrc() + icon + '.svg'">
       </span>
     }
     <span class="menu-item__title"> {{ navigation_item.title }} </span>
@@ -98,7 +98,7 @@
         <img
           [height]="16"
           [width]="16"
-          [ngSrc]="'assets/sibdigital-page-menu/page-menu/' + icon + '.svg'" alt="Menu Chevron"/>
+          [ngSrc]="menuIconsSrc() + icon + '.svg'" alt="Menu Chevron"/>
       </a>
     }
     <ng-container

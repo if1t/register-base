@@ -14,19 +14,19 @@ import {
   EPageMenuIconsSrc,
   SIDE_MENU_CLOSED_WIDTH,
   SIDE_MENU_OPENED_WIDTH,
-} from './schema/sibdigital-page-menu.consts';
+} from './schema/sproc-page-menu.consts';
 import { Router, RouterLink } from '@angular/router';
-import { AbstractMenuStateService, IClsMenuItem } from './schema/sibdigital-page-menu.types';
-import { PAGE_MENU_STATE } from './schema/sibdigital-page-menu.tokens';
+import { AbstractMenuStateService, IClsMenuItem } from './schema/sproc-page-menu.types';
+import { PAGE_MENU_STATE } from './schema/sproc-page-menu.tokens';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { INavigation } from './schema/sibdigital-page-menu.schema';
+import { INavigation } from './schema/sproc-page-menu.schema';
 import { AsyncPipe, NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'sibdigital-page-menu',
-  templateUrl: './sibdigital-page-menu.component.html',
-  styleUrls: ['./sibdigital-page-menu.component.less'],
+  selector: 'sproc-page-menu',
+  templateUrl: './sproc-page-menu.component.html',
+  styleUrls: ['./sproc-page-menu.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [RouterLink, NgTemplateOutlet, NgClass, AsyncPipe, NgOptimizedImage],
@@ -49,8 +49,11 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ]),
   ],
 })
-export class SibdigitalPageMenuComponent implements OnInit {
+export class SprocPageMenuComponent implements OnInit {
   public menuItems = input.required<IClsMenuItem[]>();
+  public menuIconsSrc = input<string>('');
+  public openLogoSrc = input<string>('');
+  public closedLogoSrc = input<string>('');
   public findActiveSection =
     input.required<(reset: () => void, findRoute: (routeToFind: string) => void) => void>();
 
@@ -72,6 +75,7 @@ export class SibdigitalPageMenuComponent implements OnInit {
   protected selectedItem = computed(() =>
     this.selectedSection() ? this.codeToItem[this.selectedSection()] : null
   );
+
   // Хранит parent элементы выбранного пункта меню
   protected parentItems = computed(() => {
     const item = this.selectedItem();

@@ -17,6 +17,7 @@
   },
   "private": true,
   "dependencies": {
+    "ngx-register-base": "file:dist/ngx-register-base",
     "@angular/animations": "^18.2.0",
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",

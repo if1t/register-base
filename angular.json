@@ -56,11 +56,6 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "dist/ngx-sproc-kit/assets/sibdigital-page-menu",
-                "output": "assets/sibdigital-page-menu"
-              },
-              {
-                "glob": "**/*",
                 "input": "projects/test-app/public"
               },
               {
