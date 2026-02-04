@@ -1,6 +1,6 @@
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
 
-export default function (): Rule {
+export function updatePrefix(): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     tree.visit((filePath) => {
       if (!filePath.endsWith('.html') && !filePath.endsWith('.ts')) {

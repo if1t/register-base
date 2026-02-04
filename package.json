@@ -7,8 +7,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build ngx-sproc-kit",
-    "watch": "ng build ngx-sproc-kit --watch --configuration development",
+    "build:lib": "ng build ngx-sproc-kit",
+    "postbuild:lib": "tsc -p ./projects/ngx-sproc-kit/schematics/tsconfig.schematics.json",
+    "watch:lib": "ng build ngx-sproc-kit --watch --configuration development",
     "eslint:report": "yarn eslint ./projects -f html -o dist/eslint/report.html",
     "eslint:changes": "bash eslint-only-changed-develop",
     "stylelint:report": "mkdir -p dist/stylelint && npx stylelint **/*.less --custom-formatter ./stylelint-formatter.js",
@@ -17,7 +18,7 @@
   },
   "private": true,
   "dependencies": {
-    "ngx-register-base": "file:dist/ngx-sproc-kit",
+    "ngx-register-base": "file:./dist/ngx-sproc-kit/ngx-sproc-kit-1.0.0.tgz",
     "@angular/animations": "^18.2.0",
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",

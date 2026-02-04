@@ -1,13 +1,11 @@
 {
   "name": "ngx-sproc-kit",
   "version": "1.0.0",
-  "ng-update": {
-    "migrations": "./schematics/migration/migration-collection.json"
-  },
   "exports": {
     "./icons/*": "./icons/*",
     "./styles/*": "./styles/*"
   },
+  "schematics": "./schematics/collection.json",
   "peerDependencies": {
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",

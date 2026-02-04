@@ -1,0 +1,17 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": true,
+    "outDir": "../../../dist/ngx-sproc-kit/schematics",
+    "rootDir": ".",
+    "module": "ES2022",
+    "composite": false,
+    "incremental": false,
+    "tsBuildInfoFile": null,
+    "verbatimModuleSyntax": false,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts", "**/*.json"],
+  "exclude": ["./**/*.spec.ts"]
+}

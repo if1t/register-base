@@ -8389,8 +8389,9 @@ ngx-mask@17.0.4:
   dependencies:
     tslib "^2.3.0"
 
-"ngx-register-base@file:dist/ngx-sproc-kit":
+"ngx-register-base@file:./dist/ngx-sproc-kit/ngx-sproc-kit-1.0.0.tgz":
   version "1.0.0"
+  resolved "file:./dist/ngx-sproc-kit/ngx-sproc-kit-1.0.0.tgz#68a2ccf0eec76a3851621d802bbed194322622e8"
   dependencies:
     tslib "^2.3.0"
 
