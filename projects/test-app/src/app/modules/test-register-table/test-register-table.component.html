@@ -1,12 +1,12 @@
 <header [style.height.px]="52">
-  <sproc-filter-button [filterApplied]="true" (filterToggle)="filterToggle()"></sproc-filter-button>
+  <sma-filter-button [filterApplied]="true" (filterToggle)="filterToggle()"></sma-filter-button>
 </header>
 <div class="filter-register-table-wrapper" [attr.filters-open]="filtersAreOpened">
-  <sproc-register-table-filter>
-    <!--      <sproc-contract-table-filter [filtersForm]="filtersForm"> </sproc-contract-table-filter>-->
-  </sproc-register-table-filter>
+  <sma-register-table-filter>
+    <!--      <sma-contract-table-filter [filtersForm]="filtersForm"> </sma-contract-table-filter>-->
+  </sma-register-table-filter>
 
-  <sproc-register-table
+  <sma-register-table
     [rowData]="data"
     [columns]="columns"
     [columnsData]="columnsData"
@@ -17,5 +17,5 @@
     [isSelectloading]="selectedRecordsLoading$ | async"
     [page]="page$ | async"
     [limit]="limit$ | async"
-  ></sproc-register-table>
+  ></sma-register-table>
 </div>

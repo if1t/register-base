@@ -12,9 +12,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "paths": {
-      "ngx-sproc-kit": [
-        "./dist/ngx-sproc-kit"
-      ]
+      "ngx-register-base": ["./dist/ngx-sproc-kit"]
     },
     "esModuleInterop": true,
     "sourceMap": true,

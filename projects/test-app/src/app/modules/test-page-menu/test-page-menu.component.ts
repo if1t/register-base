@@ -2,7 +2,8 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   PAGE_MENU_STATE,
   SIDE_MENU_CLOSED_WIDTH,
-  SIDE_MENU_OPENED_WIDTH, SprocPageMenuComponent,
+  SIDE_MENU_OPENED_WIDTH,
+  SprocPageMenuComponent,
 } from 'ngx-register-base';
 import { menu } from './mock-data/page-menu-mock';
 import { MenuStateService } from './service/menu-state.service';
