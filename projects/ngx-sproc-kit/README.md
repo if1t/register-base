@@ -10,8 +10,8 @@
     ... ,
     {
       "glob": "**/*",
-      "input": "node_modules/ngx-sproc-kit/icons",
-      "output": "assets/ngx-sproc-kit/icons"
+      "input": "node_modules/ngx-register-base/icons",
+      "output": "assets/ngx-register-base/icons"
     }
   ]
 }
@@ -21,29 +21,29 @@
 
 ```json
 {
-  "styles": [ ... , "ngx-sproc-kit/styles/styles.less"]
+  "styles": [ ... , "ngx-register-base/styles/styles.less"]
 }
 ```
 
 ## Формирование кода
 
-Выполните команду `ng generate component component-name --project ngx-sproc-kit`, чтобы сгенерировать новый компонент. Вы также можете использовать `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-sproc-kit`.
+Выполните команду `ng generate component component-name --project ngx-register-base`, чтобы сгенерировать новый компонент. Вы также можете использовать `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-register-base`.
 
-> Примечание: Не забудьте добавить `--project ngx-sproc-kit`, иначе компонент будет добавлен в проект по умолчанию в файле `angular.json`.
+> Примечание: Не забудьте добавить `--project ngx-register-base`, иначе компонент будет добавлен в проект по умолчанию в файле `angular.json`.
 
 ## Сборка
 
-Выполните команду `yarn build` для сборки проекта. Артефакты сборки будут сохранены в каталоге `dist/`.
+Выполните команду `ng build ngx-register-base` для сборки проекта. Артефакты сборки будут сохранены в каталоге `dist/`.
 
 ## Публикация
 
 Повышение версии библиотеки при помощи команд `npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]`.
 
-После сборки библиотеки с помощью `yarn build`, перейдите в папку dist `cd dist/ngx-sproc-kit` и запустите `npm publish`.
+После сборки библиотеки с помощью `ng build ngx-register-base`, перейдите в папку dist `cd dist/ngx-register-base` и запустите `npm publish`.
 
 ## Запуск unit-тестов
 
-Запустите `ng test ngx-sproc-kit`, чтобы выполнить модульные тесты через [Karma](https://karma-runner.github.io).
+Запустите `ng test ngx-register-base`, чтобы выполнить модульные тесты через [Karma](https://karma-runner.github.io).
 
 ## Дополнительная помощь
 

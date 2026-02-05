@@ -7,34 +7,34 @@
 
 1. В **angular.json** Добавить ассеты меню (выше определения директории assets проекта). Путь - app -> architect -> build -> options -> assets:
 
-   ```
-   {
-     "glob": "**/*",
-     "input": "node_modules/ngx-sproc-kit/assets/sibdigital-page-menu",
-     "output": "assets/sibdigital-page-menu"
-   },
-   ```
+    ```
+    {
+      "glob": "**/*",
+      "input": "node_modules/ngx-register-base/assets/sibdigital-page-menu",
+      "output": "assets/sibdigital-page-menu"
+    },
+    ```
 
 2. Для использования компонента необходимо реализовать абстрактный класс сервиса [**AbstractMenuStateService**](/TODO)
-3. Создать инстанс сервиса с использованием токена **PAGE_MENU_STATE** и сервисом, который был создан на первом пункте:
-4. ```
+1. Создать инстанс сервиса с использованием токена **PAGE_MENU_STATE** и сервисом, который был создан на первом пункте:
+2.
+   ```
    {
      provide: PAGE_MENU_STATE,
      useExisting: MenuStateService,
    },
    ```
 
-5. Добавить компонент
-
-   ```angular2html
-
-   <sibdigital-page-menu
-     [findActiveSection]="findActiveSession" -> Реализация метода нахождения активной сессии
-     [menuItems]="menu" -> Массив объектов типа IClsMenuItem
-     >
-     Для отображения данных внизу меню используется провайдер ng-content
-   </sibdigital-page-menu>
-   ```
+1. Добавить компонент
+    ```angular2html
+    
+    <sibdigital-page-menu
+      [findActiveSection]="findActiveSession" -> Реализация метода нахождения активной сессии
+      [menuItems]="menu" -> Массив объектов типа IClsMenuItem
+      >
+      Для отображения данных внизу меню используется провайдер ng-content
+    </sibdigital-page-menu>
+    ```
 
 ### Переменные стилей для переопределения:
 

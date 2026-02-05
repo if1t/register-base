@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 export enum SvgSrc {
-  WARNING = 'assets/ngx-sproc-kit/icons/icons/circle-exclamation-empty.svg',
+  WARNING = 'assets/ngx-register-base/icons/icons/circle-exclamation-empty.svg',
 }
 
 @Component({
