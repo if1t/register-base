@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "updatePrefix": {
+      "version": "1.0.0",
+      "factory": "./ng-update/update-prefix/index#updatePrefix",
+      "description": "Replace sma- prefix with sproc-"
+    }
+  }
+}

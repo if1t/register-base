@@ -1,11 +1,18 @@
 {
   "name": "ngx-register-base",
-  "version": "0.1.2",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc -p tsconfig.schematics.json",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json schematics/migration-collection.json ../../dist/ngx-register-base/"
+  },
+  "schematics": "./schematics/collection.json",
+  "ng-update": {
+    "migrations": "./schematics/migration-collection.json"
+  },
   "exports": {
     "./icons/*": "./icons/*",
     "./styles/*": "./styles/*"
   },
-  "schematics": "./schematics/collection.json",
   "peerDependencies": {
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",
@@ -32,6 +39,10 @@
   },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "copyfiles": "file:../../node_modules/copyfiles",
+    "typescript": "file:../../node_modules/typescript"
   },
   "sideEffects": false
 }
