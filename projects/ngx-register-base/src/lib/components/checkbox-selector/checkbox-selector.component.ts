@@ -19,7 +19,7 @@ import { ERegisterObjectState } from '../../types/register-base.types';
 import { SelectedObjectsStateService } from '../../services/selected-objects-state.service';
 
 @Component({
-  selector: 'sma-checkbox-selector',
+  selector: 'sproc-checkbox-selector',
   templateUrl: './checkbox-selector.component.html',
   styleUrls: ['./checkbox-selector.component.less'],
   standalone: true,

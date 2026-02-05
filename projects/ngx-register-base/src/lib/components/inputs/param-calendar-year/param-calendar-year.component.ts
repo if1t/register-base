@@ -4,7 +4,7 @@ import { TuiSizeL, TuiSizeM } from '@taiga-ui/core';
 import { ParamBase } from '../../../core/param/param-base';
 
 @Component({
-  selector: 'sma-param-calendar-year',
+  selector: 'sproc-param-calendar-year',
   templateUrl: './param-calendar-year.component.html',
   styleUrls: ['./param-calendar-year.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

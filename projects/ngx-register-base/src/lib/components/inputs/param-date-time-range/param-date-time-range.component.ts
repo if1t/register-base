@@ -19,7 +19,7 @@ export type InputDateTimeRangeSaveValue = {
 } | null;
 
 @Component({
-  selector: 'sma-param-date-time-range',
+  selector: 'sproc-param-date-time-range',
   templateUrl: './param-date-time-range.component.html',
   styleUrls: ['./param-date-time-range.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

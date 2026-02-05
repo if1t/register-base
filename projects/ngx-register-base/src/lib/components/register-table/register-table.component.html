@@ -20,13 +20,13 @@
                 [style.width.px]="CHECKBOX_SELECTOR_WIDTH_PX"
                 [sorter]="null"
               >
-                <sma-checkbox-selector
+                <sproc-checkbox-selector
                   [selected]="selectedIds()"
                   [totalRecords]="totalRecords()"
                   [loading]="isSelectloading()"
                   [disabled]="checkboxDisabled()"
                   (onApply)="selectChanged.emit($event)"
-                ></sma-checkbox-selector>
+                ></sproc-checkbox-selector>
               </th>
             }
             @for (columnData of columnsData(); track columnData) {
@@ -212,7 +212,7 @@
     </tui-loader>
   </tui-scrollbar>
 
-  <sma-paginator
+  <sproc-paginator
     class="register-table__paginator"
     [page]="page()"
     [rows]="limit()"
@@ -224,5 +224,5 @@
     (paginatorChange)="paginatorChange.emit($event)"
     [disabled]="paginatorDisabled()"
   >
-  </sma-paginator>
+  </sproc-paginator>
 </section>

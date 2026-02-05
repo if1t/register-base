@@ -31,7 +31,7 @@ import { FiltersService, FiltersStateService } from '../../services';
 import { MENU_STATE_SERVICE } from './register-table-filter.consts';
 
 @Component({
-  selector: 'sma-register-table-filter',
+  selector: 'sproc-register-table-filter',
   templateUrl: './register-table-filter.component.html',
   styleUrls: ['./register-table-filter.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

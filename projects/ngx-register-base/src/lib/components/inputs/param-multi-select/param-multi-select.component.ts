@@ -45,7 +45,7 @@ import { distinctUntilChangedJSONs } from '../../../utils';
 import { PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS } from '../../../consts/params.consts';
 
 @Component({
-  selector: 'sma-param-multi-select',
+  selector: 'sproc-param-multi-select',
   templateUrl: './param-multi-select.component.html',
   styleUrls: ['./param-multi-select.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

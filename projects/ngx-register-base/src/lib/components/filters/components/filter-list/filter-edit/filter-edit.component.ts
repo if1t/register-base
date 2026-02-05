@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { FiltersStateService } from '../../../../../services';
 
 @Component({
-  selector: 'sma-filter-edit',
+  selector: 'sproc-filter-edit',
   templateUrl: './filter-edit.component.html',
   styleUrls: ['./filter-edit.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
