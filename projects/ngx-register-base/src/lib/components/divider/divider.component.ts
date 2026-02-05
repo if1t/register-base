@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'sma-divider',
+  selector: 'sproc-divider',
   templateUrl: './divider.component.html',
   styleUrls: ['./divider.component.less'],
   standalone: true,

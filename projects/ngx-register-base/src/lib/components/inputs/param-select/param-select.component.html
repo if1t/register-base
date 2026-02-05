@@ -1,6 +1,6 @@
 <ng-container [ngTemplateOutlet]="readmode ? readTemplate : editTemplate">
   <ng-template #readTemplate>
-    <div class="container container--read" [attr.sma-param-style]="paramStyle">
+    <div class="container container--read" [attr.sproc-param-style]="paramStyle">
       @if (label) {
         <ng-container [ngSwitch]="paramStyle">
           <ng-template ngSwitchCase="filter">
@@ -21,7 +21,7 @@
     </div>
   </ng-template>
   <ng-template #editTemplate>
-    <div class="container container--edit" [attr.sma-param-style]="paramStyle">
+    <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
       <div *ngIf="label" class="label-wrapper">
         <span class="label">{{ label }}</span>
         <span *ngIf="required" class="required">*</span>
@@ -30,7 +30,7 @@
       @if (searchable) {
         <tui-textfield
           tuiTextfieldSize="m"
-          tuiAppearance="sma-input-appearance"
+          tuiAppearance="sproc-input-appearance"
           tuiChevron
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
@@ -58,7 +58,7 @@
       } @else {
         <tui-textfield
           tuiTextfieldSize="m"
-          tuiAppearance="sma-input-appearance"
+          tuiAppearance="sproc-input-appearance"
           tuiChevron
           [tuiTextfieldLabelOutside]="true"
           [tuiTextfieldCleaner]="true"
@@ -91,7 +91,7 @@
       <ng-template #textfieldIcons>
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
-            <sma-param-invalid-icon></sma-param-invalid-icon>
+            <sproc-param-invalid-icon></sproc-param-invalid-icon>
           }
         </div>
       </ng-template>

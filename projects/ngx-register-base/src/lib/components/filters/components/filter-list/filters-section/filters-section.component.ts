@@ -12,7 +12,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs/operators';
 
 @Component({
-  selector: 'sma-filters-section',
+  selector: 'sproc-filters-section',
   templateUrl: './filters-section.component.html',
   styleUrls: ['./filters-section.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

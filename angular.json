@@ -7,7 +7,7 @@
       "projectType": "library",
       "root": "projects/ngx-register-base",
       "sourceRoot": "projects/ngx-register-base/src",
-      "prefix": "lib",
+      "prefix": "sproc",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -54,11 +54,6 @@
             "tsConfig": "projects/test-app/tsconfig.app.json",
             "inlineStyleLanguage": "less",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "dist/ngx-register-base/assets/sibdigital-page-menu",
-                "output": "assets/sibdigital-page-menu"
-              },
               {
                 "glob": "**/*",
                 "input": "projects/test-app/public"

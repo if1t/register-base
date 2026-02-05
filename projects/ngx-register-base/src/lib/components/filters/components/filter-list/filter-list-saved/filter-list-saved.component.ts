@@ -25,7 +25,7 @@ interface IFilterSavedItem {
 }
 
 @Component({
-  selector: 'sma-filter-list-saved',
+  selector: 'sproc-filter-list-saved',
   templateUrl: './filter-list-saved.component.html',
   styleUrls: ['./filter-list-saved.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

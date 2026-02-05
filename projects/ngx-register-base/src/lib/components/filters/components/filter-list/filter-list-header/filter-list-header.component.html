@@ -5,7 +5,7 @@
   <h4 *ngSwitchCase="FilterState.ON_SAVE_FILTER">Сохранить фильтр</h4>
 </ng-container>
 
-<div class="sma-filter-list-header-actions-button">
+<div class="sproc-filter-list-header-actions-button">
   <ng-container [ngSwitch]="filterState$ | async">
     <ng-container
       *ngSwitchCase="FilterState.FILTER_LIST"
@@ -44,7 +44,7 @@
       />
     </button>
 
-    <sma-divider layout="vertical"></sma-divider>
+    <sproc-divider layout="vertical"></sproc-divider>
   </ng-container>
 
   <button
@@ -67,7 +67,7 @@
     (click)="onSave()"
   ></button>
 
-  <sma-divider layout="vertical"></sma-divider>
+  <sproc-divider layout="vertical"></sproc-divider>
 
   <button
     icon="selection-check-simple"

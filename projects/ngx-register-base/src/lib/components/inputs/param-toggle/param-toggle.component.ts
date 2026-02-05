@@ -3,7 +3,7 @@ import { ParamBase } from '../../../core/param/param-base';
 import { TuiSizeM, TuiSizeS } from '@taiga-ui/core';
 
 @Component({
-  selector: 'sma-param-toggle',
+  selector: 'sproc-param-toggle',
   templateUrl: './param-toggle.component.html',
   styleUrls: ['./param-toggle.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

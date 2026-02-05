@@ -17,7 +17,7 @@ import { EInputsAction, EInputsState, GqlFields } from '../../../../../types';
 import { FiltersStateService } from '../../../../../services';
 
 @Component({
-  selector: 'sma-filter-list-header',
+  selector: 'sproc-filter-list-header',
   templateUrl: './filter-list-header.component.html',
   styleUrls: ['./filter-list-header.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

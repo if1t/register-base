@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'sma-sliding-panel',
+  selector: 'sproc-sliding-panel',
   templateUrl: './sliding-panel.component.html',
   styleUrls: ['./sliding-panel.component.less'],
 })

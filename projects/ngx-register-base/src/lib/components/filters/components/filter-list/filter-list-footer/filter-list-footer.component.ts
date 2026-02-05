@@ -17,7 +17,7 @@ import { FiltersStateService } from '../../../../../services';
 import { getLastSegmentOfPathName } from '../../../../../utils/get-url-segment';
 
 @Component({
-  selector: 'sma-filter-list-footer',
+  selector: 'sproc-filter-list-footer',
   templateUrl: './filter-list-footer.component.html',
   styleUrls: ['./filter-list-footer.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,

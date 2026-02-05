@@ -27,7 +27,7 @@ export enum SvgSrc {
 }
 
 @Component({
-  selector: 'sma-paginator',
+  selector: 'sproc-paginator',
   imports: [
     DividerComponent,
     CommonModule,

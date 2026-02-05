@@ -1,4 +1,4 @@
-<div class="sma-filter-list-saved">
+<div class="sproc-filter-list-saved">
   <prizm-loader [showLoader]="$any(loading$ | async)" [overlay]="true">
     <span *ngIf="savedItems.length === 0" class="input-text-12px"
       >Сохраненых фильтров не найдено
@@ -6,12 +6,12 @@
     <div
       *ngFor="let item of savedItems; let i = index"
       [class.selected]="item.selected"
-      class="sma-filter-list-saved-item"
+      class="sproc-filter-list-saved-item"
       (click)="onSelect(item.id)"
     >
       <div class="input-text-12px">{{ item.name }}</div>
 
-      <div class="sma-filter-list-saved-item-action-buttons">
+      <div class="sproc-filter-list-saved-item-action-buttons">
         <button
           [icon]="item.favorite ? 'social-star-fill' : 'social-star'"
           prizmIconButton

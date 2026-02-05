@@ -8,7 +8,7 @@ import { TuiTextarea } from '@taiga-ui/kit';
 import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
 
 @Component({
-  selector: 'sma-param-textarea',
+  selector: 'sproc-param-textarea',
   templateUrl: './param-textarea.component.html',
   styleUrls: ['./param-textarea.component.less'],
   standalone: true,

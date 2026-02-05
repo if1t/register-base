@@ -26,7 +26,12 @@ import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store'
 
 @Component({
   standalone: true,
-  imports: [FilterButtonComponent, RegisterTableComponent, RegisterTableFilterModule, AsyncPipe],
+  imports: [
+    FilterButtonComponent,
+    RegisterTableComponent,
+    RegisterTableFilterModule,
+    AsyncPipe,
+  ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
   providers: [
@@ -52,6 +57,7 @@ export class TestRegisterTableComponent<T> extends RegisterBase<ITestTable> {
   override fetchTotalObjects = this.baseStore!.fetchTotal;
   override objectsSubscription = this.baseStore!.fetchObjects;
   override baseFilter = (user: IUserProfile | undefined) => ({});
+
   override buildFilter(
     limit?: number,
     offset?: number,
@@ -60,6 +66,7 @@ export class TestRegisterTableComponent<T> extends RegisterBase<ITestTable> {
   ): IHasuraQueryFilter<any> {
     return {};
   }
+
   protected override get buildForm(): FormGroupWrapper<any> {
     return new FormGroupWrapper({});
   }

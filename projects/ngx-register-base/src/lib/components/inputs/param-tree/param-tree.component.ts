@@ -24,7 +24,7 @@ import {
 
 /** Компонент иерархического списка */
 @Component({
-  selector: 'sma-param-tree',
+  selector: 'sproc-param-tree',
   standalone: true,
   imports: [TuiTree, TuiLabel, TuiCheckbox, FormsModule, AsyncPipe, TuiLoader],
   templateUrl: './param-tree.component.html',

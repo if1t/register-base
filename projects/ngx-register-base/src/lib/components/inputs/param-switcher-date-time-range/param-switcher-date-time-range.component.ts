@@ -14,7 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMonth } from '../../../consts/month.consts';
 
 @Component({
-  selector: 'sma-param-switcher-date-time-range',
+  selector: 'sproc-param-switcher-date-time-range',
   templateUrl: './param-switcher-date-time-range.component.html',
   styleUrls: ['./param-switcher-date-time-range.component.less'],
 })
