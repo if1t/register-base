@@ -1,0 +1,37 @@
+// Контейнер модального окна
+.modal-form(@width: auto) {
+  display: flex;
+  flex-direction: column;
+  width: @width;
+}
+
+// Контент модального окна
+.modal-form__content(@padding: 24px, @gap: 16px) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: @padding;
+  gap: @gap;
+  align-self: stretch;
+}
+
+// Футер модального окна
+.modal-form__footer(@padding: 8px 16px, @gap: 8px) {
+  display: flex;
+  align-items: flex-start;
+  gap: @gap;
+  flex: 1 0 0;
+  align-self: stretch;
+  border-top: 1px solid var(--table-stroke, var(--uzu-gray-200));
+  padding: @padding;
+}
+
+// Заголовок модального окна
+.modal-form__title() {
+  color: var(--text-main);
+  text-align: center;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+}

@@ -1,0 +1,33 @@
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--uzu-space-md);
+}
+
+.top-actions .icon-btn {
+  height: var(--uzu-size-button-height);
+  padding: 0 var(--uzu-space-sm);
+  border-radius: var(--uzu-radius-lg);
+  min-width: var(--uzu-size-button-min-width);
+}
+
+.top-actions .icon-btn tui-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.top-actions .icon-btn.delete {
+  background: var(--uzu-gray-100);
+}
+
+.top-actions .icon-btn.delete tui-icon {
+  color: var(--color-danger);
+}
+
+.top-actions .icon-btn.delete[disabled] tui-icon {
+  color: var(--uzu-gray-400);
+}
+
+.top-actions .icon-btn.delete:hover:not([disabled]) tui-icon {
+  color: var(--color-danger-hover);
+}
