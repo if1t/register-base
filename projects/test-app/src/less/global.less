@@ -1,0 +1,16 @@
+.selectable {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+// TODO hotfix переопределение пагинатора в библиотеке register-base
+sproc-register-table {
+  sproc-paginator {
+    .content>.selected-panel {
+      >*:not(:first-child) {
+        display: none !important;
+      }
+    }
+  }
+}

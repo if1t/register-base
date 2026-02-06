@@ -1,0 +1,47 @@
+// Контейнер карточки
+.card-form(@padding: 16px) {
+  display: block;
+  padding: @padding;
+}
+
+// Сетка карточки
+.card-grid(@columns: 1fr 1fr, @gap: 24px) {
+  display: grid;
+  grid-template-columns: @columns;
+  gap: @gap;
+}
+
+// Колонка карточки
+.card-col() {
+  display: flex;
+  flex-direction: column;
+}
+
+// Правая колонка карточки
+.card-right-col(@minHeight: 200px) {
+  min-height: @minHeight;
+}
+
+// Область формы в карточке
+.card-form__form(@gap: 8px, @maxWidth: 460px) {
+  display: flex;
+  flex-direction: column;
+  gap: @gap;
+  max-width: @maxWidth;
+}
+
+// Вспомогательные стили для лейблов и инпутов
+.card-form__label() {
+  color: var(--text);
+}
+
+.card-form__input() {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+// Блок действий (кнопки)
+.card-form__actions(@marginTop: 16px) {
+  margin-top: @marginTop;
+}
