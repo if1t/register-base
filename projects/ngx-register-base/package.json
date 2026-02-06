@@ -1,6 +1,6 @@
 {
   "name": "ngx-register-base",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build": "tsc -p tsconfig.schematics.json",
     "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json schematics/migration-collection.json ../../dist/ngx-register-base/"
