@@ -1,0 +1,35 @@
+[tuiButton] {
+  &[data-appearance='success'] {
+    background: var(--brand-success);
+    color: var(--main-white);
+  }
+
+  &[data-appearance='danger'],
+  &[data-appearance='accent'] {
+    background: var(--brand-danger);
+    color: var(--main-white);
+  }
+
+  &[data-appearance^='outline'] {
+    border-radius: 2px;
+    border-width: 1px;
+    border-style: solid;
+
+    &[data-appearance='outline'] {
+      border-color: var(--brand-blue);
+    }
+
+    &[data-appearance='outline-grayscale'],
+    &[data-appearance='secondary'][data-appearance-type='outline'] {
+      border-color: var(--button-secondary-stroke);
+    }
+  }
+
+  &[data-size='m'] {
+    font-weight: 300 !important;
+  }
+
+  &[data-size='l'] {
+    font-weight: 400 !important;
+  }
+}

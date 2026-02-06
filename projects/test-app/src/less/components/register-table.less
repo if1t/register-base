@@ -1,0 +1,55 @@
+// Общие стили для таблиц
+.register-table__common() {
+  .cell__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    .btn-action {
+      height: 16px;
+      width: 16px;
+      color: var(--gray);
+    }
+  }
+
+  .icon-btn.delete {
+    color: var(--color-danger) !important;
+
+    &:hover:not([disabled]) {
+      color: var(--color-danger-hover) !important;
+    }
+  }
+
+  // TODO: заменить на настройку ширины колонок, когда появится конфигуратор таблицы
+  ::ng-deep sproc-register-table .register-table__scrollable .table {
+    width: 100% !important;
+    min-width: 100%;
+  }
+
+  ::ng-deep sproc-register-table .register-table__scrollable .table th,
+  ::ng-deep sproc-register-table .register-table__scrollable .table td {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  ::ng-deep
+    [_nghost-ng-c2179170108]
+    .register-table__scrollable[_ngcontent-ng-c2179170108]
+    .register-table__loader[_ngcontent-ng-c2179170108]
+    table[_ngcontent-ng-c2179170108]
+    .empty-layer[_ngcontent-ng-c2179170108] {
+    display: none;
+  }
+}
+
+.register-filter-common() {
+  display: flex;
+  flex-direction: column;
+  gap: var(--uzu-space-sm);
+  margin: 10px;
+
+  ::ng-deep [tuiAppearance][data-appearance="textfield"]{
+    border-radius: 10px;
+  }
+}
