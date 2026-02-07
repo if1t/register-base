@@ -8,7 +8,6 @@ import {
   IClsMenuItemInput,
 } from 'ngx-register-base';
 import { MENU_CONSTRUCTOR_MOCK } from '../mock-data/menu-constructor-mock';
-import { prizmIconsTempProductGradeAccordingToSpecification } from '@prizm-ui/icons/base/source';
 
 @Injectable()
 export class MenuConstructorService extends SprocAbstractMenuConstructorStore {
