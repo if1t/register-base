@@ -1,0 +1,95 @@
+<div class="menu-constructor">
+  <div class="pane editor">
+    <div class="pane-header">
+      <h2>Редактор меню</h2>
+      <div class="buttons">
+        <button [disabled]="$any(loading$ | async)" class="btn secondary" (click)="addNewItem()">
+          +
+        </button>
+        <button [disabled]="$any(loading$ | async)" class="btn secondary" (click)="reset()">
+          Сбросить
+        </button>
+        <button [disabled]="$any(loading$ | async)" class="btn primary" (click)="save()">
+          Сохранить
+        </button>
+        <button [disabled]="$any(loading$ | async)" class="btn primary" (click)="handleFold(false)">
+          Раскрыть все элементы
+        </button>
+        <button [disabled]="$any(loading$ | async)" class="btn primary" (click)="handleFold(true)">
+          Скрыть все элементы
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="list-wrapper"
+      cdkDropList
+      [cdkDropListData]="visibleFlatTree()"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListLockAxis]="'y'"
+    >
+      @for (node of visibleFlatTree(); track node.id + '-' + node.order_num) {
+        <div
+          class="node"
+          [style.marginLeft.px]="node.depth * 24"
+          [class.dragged]="isDragged(node)"
+          cdkDrag
+          (cdkDragStarted)="dragStarted(node)"
+          (cdkDragEnded)="dragEnded()"
+        >
+          <div class="node-bar" cdkDragHandle>
+            @if (hasChildren(node)) {
+              <button
+                class="collapse-btn"
+                (click)="toggleCollapse(node); $event.stopPropagation()"
+                [title]="node.collapsed ? 'Развернуть' : 'Свернуть'"
+              >
+                {{ node.collapsed ? '▶' : '▼' }}
+              </button>
+            }
+
+            @if (node.title === ROOT_TITLE) {
+              <span class="root-title">Корневой элемент</span>
+            } @else {
+              <div class="left-control">
+                <span class="grip">⋮⋮</span>
+                <input class="inp title" [(ngModel)]="node.title" placeholder="Название" />
+                <input
+                  class="inp code"
+                  [required]="true"
+                  [(ngModel)]="node.code"
+                  placeholder="code"
+                />
+                <input class="inp route" [(ngModel)]="node.route" placeholder="route" />
+                <input class="inp icon" [(ngModel)]="node.icon" placeholder="icon" />
+                <input class="inp roles" [(ngModel)]="node.allowed_roles" placeholder="Роли" />
+              </div>
+
+              <div class="depth-controls">
+                <button class="btn small" (click)="outdent(node)">←</button>
+                <button class="btn small" (click)="indent(node)">→</button>
+                @if (hasChildren(node)) {
+                  <button class="btn small" (click)="outdentBranch(node)">⇐</button>
+                  <button class="btn small" (click)="indentBranch(node)">⇒</button>
+                }
+                <button class="btn small" (click)="deleteItem(node)">Удалить</button>
+              </div>
+            }
+          </div>
+
+          <ng-template cdkDragPreview>
+            <div class="drag-branch-preview">
+              <div
+                class="preview-bar"
+                *ngFor="let n of draggedBranch()"
+                [style.marginLeft.px]="(n.depth - node.depth) * 20"
+              >
+                {{ n.title }}
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      }
+    </div>
+  </div>
+</div>
