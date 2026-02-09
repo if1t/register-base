@@ -50,13 +50,20 @@
         class="flex-1"
       >
         <input
-          tuiTextfield
-          numberOnly
+          tuiInputNumber
           placeholder="Введите число"
+          [max]="inputMaxValue()"
           [ngModel]="inputValue()"
           (ngModelChange)="inputValueChanges($event)"
           (focusin)="onInputFocus()"
         />
+
+        @if (inputDescription()) {
+          <tui-icon
+            icon="/assets/icons/figma-icons/circle-question-empty.svg"
+            [tuiTooltip]="inputDescription()"
+          />
+        }
       </tui-textfield>
     </div>
     <div class="dropdown__footer">

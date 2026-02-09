@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   input,
@@ -8,15 +9,14 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { TuiButtonLoading, TuiCheckbox } from '@taiga-ui/kit';
-import { TuiButton, TuiDropdown, TuiTextfield } from '@taiga-ui/core';
+import { SelectionTypes, ApplySelectionTypes } from './checkbox-selector.types';
+import { TuiButtonLoading, TuiCheckbox, TuiInputNumber, TuiTooltip } from '@taiga-ui/kit';
+import { TuiButton, TuiDropdown, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { FormsModule } from '@angular/forms';
 import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { ScalarUUID } from 'hasura';
-import { NumberOnlyDirective } from '../../directives/number/number-only.directive';
-import { ApplySelectionTypes, SelectionTypes } from './checkbox-selector.types';
-import { ERegisterObjectState } from '../../types/register-base.types';
-import { SelectedObjectsStateService } from '../../services/selected-objects-state.service';
+import { ERegisterObjectState } from '../../types';
+import { SelectedObjectsStateService } from '../../services';
 
 @Component({
   selector: 'sproc-checkbox-selector',
@@ -31,8 +31,9 @@ import { SelectedObjectsStateService } from '../../services/selected-objects-sta
     TuiTextfieldControllerModule,
     TuiButton,
     TuiButtonLoading,
-    NumberOnlyDirective,
-    NumberOnlyDirective,
+    TuiInputNumber,
+    TuiTooltip,
+    TuiIcon,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -51,7 +52,18 @@ export class CheckboxSelectorComponent {
 
   protected isOpen = signal(false);
   protected selectedElement = signal<SelectionTypes | null>(null);
-  protected inputValue = signal('');
+  protected inputValue = signal<number | null>(null);
+
+  protected readonly inputMaxValue = input<number | null>(null);
+  protected readonly inputDescription = computed(() => {
+    const max = this.inputMaxValue();
+
+    if (max === null) {
+      return '';
+    }
+
+    return `Максимум для ввода - ${max}`;
+  });
 
   protected stateObjects = this._selectedService?.state;
   protected stateUnfetchedObjects = this._selectedService?.stateUnfetchedObjects;
@@ -87,7 +99,7 @@ export class CheckboxSelectorComponent {
     }
 
     if (result === SelectionTypes.COUNT) {
-      result = Number(this.inputValue());
+      result = this.inputValue();
     }
 
     this.onApply.emit(result);
@@ -150,13 +162,13 @@ export class CheckboxSelectorComponent {
     }
   }
 
-  protected inputValueChanges(value: string): void {
+  protected inputValueChanges(value: number): void {
     this.selectedElement.set(SelectionTypes.COUNT);
     this.inputValue.set(value);
   }
 
   protected dropSelection(): void {
-    this.inputValue.set('');
+    this.inputValue.set(null);
     this.selectedElement.set(null);
     this.onApply.emit(null);
     this.close();
