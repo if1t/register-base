@@ -43,6 +43,7 @@ export class CheckboxSelectorComponent {
   public selected = input(new Set<ScalarUUID>());
   public disabled = input(false);
   public loading = input<boolean | null>(false);
+  public inputMaxValue = input<number | null>(null);
 
   public onApply = output<ApplySelectionTypes>();
 
@@ -54,7 +55,6 @@ export class CheckboxSelectorComponent {
   protected selectedElement = signal<SelectionTypes | null>(null);
   protected inputValue = signal<number | null>(null);
 
-  protected readonly inputMaxValue = input<number | null>(null);
   protected readonly inputDescription = computed(() => {
     const max = this.inputMaxValue();
 
