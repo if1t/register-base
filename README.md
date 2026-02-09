@@ -43,10 +43,11 @@ yarn install
 
 ## Публикация библиотеки
 
-1. Увеличить версию рабочего пространства и библиотеки `yarn version major | minor | patch`.
+1. Увеличить версию рабочего пространства и библиотеки `yarn version --major|minor|patch`.
 2. Собрать библиотеку.
-3. Пройти в собравшийся каталог: `cd /dist/ngx-register-base`.
-4. npm publish.
+3. Пройти в собравшийся каталог `cd /dist/ngx-register-base`.
+4. Авторизация в NPM `npm login`.
+5. Публикация пакета в NPM репозиторий `npm publish`.
 
 ## Настройка плагинов проекта
 
