@@ -1,0 +1,17 @@
+@import 'indicator';
+
+:host {
+  .loader {
+    height: 100%;
+  }
+
+  ::ng-deep {
+    .label-wrapper.applied {
+      &::after {
+        .indicator(5px, var(--brand-danger));
+
+        margin-left: 5px;
+      }
+    }
+  }
+}

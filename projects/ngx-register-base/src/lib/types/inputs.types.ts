@@ -2,6 +2,7 @@ import { FormControl } from '@angular/forms';
 import { WhereBoolExp } from 'hasura';
 import { BehaviorSubject } from 'rxjs';
 import { JsonValue } from 'type-fest';
+import { WritableSignal } from '@angular/core';
 
 export enum EInputsState {
   HIDDEN,
@@ -35,6 +36,8 @@ export interface IInputControl<ValueType = any, SavedValueType = any>
   extends FormControl<ValueType> {
   saved_value$: BehaviorSubject<SavedValueType | null>;
   gql_value: InputControlGqlValue;
+  /** По полю применена фильтрация */
+  applied?: WritableSignal<boolean>;
 }
 
 export type InputControlSaveValue = JsonValue | null;

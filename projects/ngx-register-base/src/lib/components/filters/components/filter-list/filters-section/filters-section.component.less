@@ -1,4 +1,5 @@
 @import 'fonts';
+@import 'indicator';
 
 :host {
   display: flex;
@@ -17,37 +18,19 @@
 
     .title {
       display: flex;
+      align-items: center;
+      height: 20px;
 
       &__font {
         .main-subtitle;
       }
 
-      &__wrapper {
-        &--relative {
-          position: relative;
+      &--has-filters {
+        &::after {
+          .indicator(6px, var(--brand-danger));
+
+          margin-left: 5px;
         }
-
-        &--absolute {
-          position: absolute;
-        }
-      }
-    }
-
-    .indicator {
-      &__wrapper {
-        width: 14px;
-        height: 14px;
-        padding-left: 4px;
-      }
-
-      &__icon {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-      }
-
-      &--danger {
-        background-color: var(--brand-danger);
       }
     }
   }

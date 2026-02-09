@@ -7,8 +7,9 @@
     [total]="total$ | async"
     [acceptButtonDisabled]="acceptButtonDisabled"
     [applyButtonDisabled]="applyButtonDisabled"
-    (applyFilter)="onApplyFilter($event)"
     [filterListHeaderTitle]="filterListHeaderTitle"
+    (pinnedChange)="closeMenu($event)"
+    (applyFilter)="onApplyFilter($event)"
   ></sproc-filter-list-header>
 
   <ng-container [ngSwitch]="filterState$ | async">
@@ -32,7 +33,13 @@
     </div>
 
     <ng-template #filtersTemplate>
-      <ng-content></ng-content>
+      @defer (on viewport) {
+        <ng-content />
+      } @loading (minimum 1s) {
+        <tui-loader size="m" class="loader"></tui-loader>
+      } @placeholder {
+        <span>...</span>
+      }
     </ng-template>
   </ng-container>
 

@@ -30,15 +30,18 @@ export class FilterListFooterComponent implements OnInit {
   @Output() apply: EventEmitter<GqlFields> = new EventEmitter<GqlFields>();
 
   private readonly _dr = inject(DestroyRef);
-  private readonly _router = inject(Router);
-  private readonly _filterStateService = inject(FiltersStateService<any>);
-  private readonly _filterListService = inject(FilterListService);
 
   public readonly filterState$ = this._filterStateService.state$.pipe(
     map((filterState) => filterState.state)
   );
 
   public readonly FilterState = EInputsState;
+
+  constructor(
+    private readonly _router: Router,
+    private readonly _filterStateService: FiltersStateService<any>,
+    private readonly _filterListService: FilterListService
+  ) {}
 
   public ngOnInit(): void {
     this._filterListService.modulePath = getLastSegmentOfPathName(this._router.url);

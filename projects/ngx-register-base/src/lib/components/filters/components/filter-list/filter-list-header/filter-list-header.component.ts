@@ -32,13 +32,11 @@ export class FilterListHeaderComponent implements OnInit {
   @Input() applyButtonDisabled = false;
   @Input() filterListHeaderTitle = 'Фильтр';
 
-  @Output() applyFilter: EventEmitter<GqlFields> = new EventEmitter<GqlFields>();
-  @Output() resetFilter: EventEmitter<void> = new EventEmitter<void>();
+  @Output() pinnedChange = new EventEmitter<boolean>();
+  @Output() applyFilter = new EventEmitter<GqlFields>();
+  @Output() resetFilter = new EventEmitter<void>();
 
   private readonly _dr = inject(DestroyRef);
-  private readonly _filterStateService = inject(FiltersStateService);
-  private readonly _filterListService = inject(FilterListService);
-  private readonly _router = inject(Router);
 
   public readonly count$ = this._filterStateService.count$;
   public readonly filterState$ = this._filterStateService.state$.pipe(
@@ -46,6 +44,12 @@ export class FilterListHeaderComponent implements OnInit {
   );
 
   public readonly FilterState = EInputsState;
+
+  constructor(
+    private readonly _router: Router,
+    private readonly _filterStateService: FiltersStateService<any>,
+    private readonly _filterListService: FilterListService
+  ) {}
 
   public ngOnInit(): void {
     this._filterListService.modulePath = getLastSegmentOfPathName(this._router.url);
@@ -58,6 +62,7 @@ export class FilterListHeaderComponent implements OnInit {
 
   public onTogglePin(): void {
     this._filterStateService.togglePin();
+    this.pinnedChange.emit(this._filterStateService.isPin);
     this._filterListService.savePinnedFilters();
   }
 
