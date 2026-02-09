@@ -24,6 +24,7 @@
                   [selected]="selectedIds()"
                   [totalRecords]="totalRecords()"
                   [loading]="isSelectloading()"
+                  [inputMaxValue]="checkboxInputMaxValue()"
                   [disabled]="checkboxDisabled()"
                   (onApply)="selectChanged.emit($event)"
                 ></sproc-checkbox-selector>

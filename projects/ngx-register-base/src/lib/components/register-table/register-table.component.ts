@@ -156,9 +156,11 @@ export class RegisterTableComponent implements OnDestroy {
   public emptyText = input<string>('Нет данных');
   /** Дизейбл сортировки */
   public sortingDisabled = input(false);
+  /** Максимальное значения выбора чекбоксов через поле ввода */
+  public checkboxInputMaxValue = input<number | null>(null);
   /** Дизейбл выбора чекбоксов */
   public checkboxDisabled = input(false);
-  /** Дизейбл выбора чекбоксов */
+  /** Дизейбл пагинации */
   public paginatorDisabled = input(false);
 
   public selectedCounter = computed(() => {
