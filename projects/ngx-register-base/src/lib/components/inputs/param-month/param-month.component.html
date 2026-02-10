@@ -22,11 +22,10 @@
   </ng-template>
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
-      <div *ngIf="label" class="label-wrapper">
-        <span class="label">
+      <div *ngIf="label" class="label-wrapper" [class.applied]="applied()">
+        <span class="label" [class.required]="required">
           {{ label }}
         </span>
-        <span *ngIf="required" class="required">*</span>
         <img
           *ngIf="hint"
           src="assets/ngx-register-base/icons/circle-info-empty.svg"
