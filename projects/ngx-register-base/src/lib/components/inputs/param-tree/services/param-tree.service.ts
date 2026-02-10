@@ -24,8 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ILoadConfig, ITreeNode, SmaTreeLoader } from '../types/param-tree.types';
 import { TREE_LOADER } from '../tokens/param-tree.tokens';
 import { just } from '../../../../utils';
-
-const DEBOUNCE_TIME_FOR_SYNC_NEXT_VALUES = 250;
+import { DEBOUNCE_TIME_FOR_SYNC_NEXT_VALUES } from '../consts/param-tree.consts';
 
 @Injectable()
 export class ParamTreeService<T> {
@@ -73,7 +72,8 @@ export class ParamTreeService<T> {
           iif(() => !!load.config?.opened, this._recursiveLoad(load.node), just())
         ),
         map(() => this._firstLevelNodes),
-        startWith([this._loading])
+        startWith([this._loading]),
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe((nodes) => {
         this._nodes$.next(nodes);

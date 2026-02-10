@@ -7,14 +7,14 @@
         <tui-tree
           class="tui_tree--not-collapsed"
           [value]="node"
-          [content]="nodeTemplate"
+          [content]="contentTemplate"
           [childrenHandler]="childrenHandler"
         >
         </tui-tree>
       } @else {
         <tui-tree
           [value]="node"
-          [content]="nodeTemplate"
+          [content]="contentTemplate"
           [childrenHandler]="childrenHandler"
           [tuiTreeController]="!!defaultNodeOpenedState()"
           [map]="openedNodesState()"
@@ -26,16 +26,23 @@
   }
 </div>
 
-<ng-template #nodeTemplate let-node>
+<ng-template #contentTemplate let-node>
+  @let isChecked = checkedNodesState().get(node);
+
   @if (node === TREE_LOADER) {
     <tui-loader [showLoader]="true" [overlay]="true" size="s"></tui-loader>
+  } @else if (nodeTemplate()) {
+    <ng-container
+      [ngTemplateOutlet]="nodeTemplate()"
+      [ngTemplateOutletContext]="{ node, isChecked, onChecked }"
+    ></ng-container>
   } @else {
     <label tuiLabel class="tree-custom-class__label-checkbox-container">
       <input
         size="s"
         tuiCheckbox
         type="checkbox"
-        [ngModel]="checkedNodesState().get(node)"
+        [ngModel]="isChecked"
         (ngModelChange)="onChecked(node, $event)"
       />
       <small>{{ node.name }}</small>
