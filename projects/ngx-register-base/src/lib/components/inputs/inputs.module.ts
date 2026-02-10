@@ -38,7 +38,6 @@ import { PrizmSharedModule } from '../../utils/prizm.shared.module';
 import { PrizmInputMultiSelectModule } from '@prizm-ui/components';
 import { ParamDeleteContentBtnComponent } from './sub-components/param-delete-content-icon/param-delete-content-btn.component';
 import { ParamInvalidIconComponent } from './sub-components/param-invalid-icon/param-invalid-icon.component';
-import { ParamClearButtonComponent } from './sub-components/param-clear-button/param-clear-button.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +79,6 @@ import { ParamClearButtonComponent } from './sub-components/param-clear-button/p
     ParamTextareaComponent,
     TuiInputYearModule,
     FormatDatePipe,
-    ParamClearButtonComponent,
     ParamDeleteContentBtnComponent,
     ParamInvalidIconComponent,
   ],
