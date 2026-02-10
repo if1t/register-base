@@ -22,17 +22,20 @@
   </ng-template>
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
-      <div *ngIf="label" class="label-wrapper">
-        <span class="label">{{ label }}</span>
-        <span *ngIf="required" class="required">*</span>
+      <div *ngIf="label" class="label-wrapper" [class.applied]="applied()">
+        <span class="label" [class.required]="required">
+          {{ label }}
+        </span>
       </div>
 
       <tui-textfield
         [tuiTextfieldSize]="size()"
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="true"
+        (click)="click()"
       >
         <tui-input-year
+          #yearInput
           [formControl]="control"
           [max]="max()"
           [min]="min()"
