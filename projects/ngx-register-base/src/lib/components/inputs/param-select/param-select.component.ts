@@ -106,6 +106,7 @@ export class ParamSelectComponent
   override buildShowedValue = input(
     (value: IFilterSelectValue | null): string => value?.name ?? '-'
   );
+  public strict = input<boolean>(true);
 
   @Output() onSelect = new EventEmitter<IFilterSelectValue>();
 
@@ -205,7 +206,8 @@ export class ParamSelectComponent
         tap(() => {
           this.loading = false;
           this.cdr.markForCheck();
-        })
+        }),
+        takeUntilDestroyed(this.dr)
       )
       .subscribe();
   }
