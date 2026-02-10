@@ -219,11 +219,10 @@ export class ParamMultiSelectComponent
         if (this.itemSelectAll()) {
           if (
             this.items.length - values.length === 1 &&
-            values.filter((elem) => elem.id === SELECT_ALL_ID).length === 0
-          ) {
+            values.filter((elem) => elem.id === SELECT_ALL_ID).length === 0 &&
             controlValue.includes(this.selectAllItem)
-              ? this.control.setValue([], { emitEvent: false })
-              : this.control.setValue(this.items);
+          ) {
+            this.control.setValue([], { emitEvent: false });
           }
 
           if (values?.some((elem) => elem.id === SELECT_ALL_ID)) {
@@ -299,7 +298,8 @@ export class ParamMultiSelectComponent
           }
           this.loading = false;
           this.cdr.markForCheck();
-        })
+        }),
+        takeUntilDestroyed(this.dr)
       )
       .subscribe(() => {
         this.choosedHint =
@@ -309,52 +309,6 @@ export class ParamMultiSelectComponent
             .join(', ') ?? '';
       });
   }
-
-  protected addListeners(): void {
-    if (!this.searchable) {
-      return;
-    }
-
-    of(null)
-      .pipe(delay(300))
-      .subscribe(() => {
-        const elements = this.document.querySelectorAll('.input-search');
-        for (let i = 0; i < elements.length; i++) {
-          const founded = elements.item(i);
-          const item = founded?.parentElement;
-          if (founded && item && item.textContent?.trim() === 'Поиск') {
-            founded.addEventListener('input', (event: any) => {
-              const value = event?.target?.attributes?.prizmhint?.value;
-              this.onSearch$.next(value);
-            });
-            founded.addEventListener('paste', (event: any) => {
-              const clipboardData = event?.clipboardData;
-              const pastedData = clipboardData?.getData('Text');
-              this.onSearch$.next(pastedData);
-            });
-            break;
-          }
-        }
-        this.cdr.markForCheck();
-      });
-  }
-
-  protected sortItems(selectedItemIDs?: string[]): void {
-    const ids = selectedItemIDs || this._getSelectedItemIDs();
-
-    this.items.sort((a: any, b: any) => {
-      const aIsSelected = ids?.includes(a.id) ? 1 : 0;
-      const bIsSelected = ids?.includes(b.id) ? 1 : 0;
-      return bIsSelected - aIsSelected;
-    });
-    this.items = this.items.filter((elem: any) => elem.id !== this.selectAllItem.id);
-    this.itemsChange.emit(this.items);
-    if (this.itemSelectAll() && this.items.length > 0) {
-      this.items.unshift(this.selectAllItem);
-    }
-  }
-
-  protected customClear(): void {}
 
   private _subscribeOnClearButton(): void {
     this.onClearButtonSubscription?.unsubscribe();
@@ -391,13 +345,10 @@ export class ParamMultiSelectComponent
           }
           this.cachedString = value;
           return of(null);
-        })
+        }),
+        takeUntilDestroyed(this.dr)
       )
       .subscribe();
-  }
-
-  protected removeAllSelectedItems(): void {
-    this.control?.setValue([]);
   }
 
   private _getSelectedItemIDs(searchValue?: string): string[] | undefined {

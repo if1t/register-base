@@ -1,22 +1,25 @@
 @import 'fonts';
+@import 'common-param';
 
 :host {
+  @customZIndex: 22;
+
   .choosed {
     display: flex;
     cursor: pointer;
     align-items: center;
     position: absolute;
     justify-content: space-between;
-    z-index: 2;
+    z-index: @customZIndex;
     border-radius: 2px;
-    height: 20px;
+    height: 16px;
   }
 
   .choosed-many {
     color: var(--main-black);
-    background: var(--chip-background);
+    background: var(--input-hover-background-color);
     padding-left: 8px;
-    width: 85px;
+    width: 80px;
 
     .table-text-12px;
   }
@@ -35,82 +38,15 @@
 
   .container {
     &--read {
-      &[sproc-param-style='card'] {
-        display: flex;
-        align-items: flex-start;
-        gap: 4px;
-        padding: 8px 0;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-
-        .dashed-row {
-          display: flex;
-          height: 16px;
-          align-items: center;
-          flex: 1 0 0;
-          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
-          min-width: 20px;
-        }
-
-        .value {
-          max-width: 210px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          color: #000000 !important;
-          .card-content-text !important;
-        }
-      }
-
-      &[sproc-param-style='filter'] {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        align-self: stretch;
-        gap: 4px;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: 100%;
-        }
-
-        .label {
-          .default-label;
-        }
-
-        .dashed-row {
-          display: flex;
-          height: 16px;
-          align-items: center;
-          flex: 1 0 0;
-          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
-          min-width: 20px;
-        }
-
-        .value {
-          .main-body-text-14px;
-
-          color: var(--text-main);
-        }
-      }
+      .read-style-card;
+      .read-style-filter;
     }
 
     &--edit {
-      &[sproc-param-style='card'] {
-        height: 52px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
+      .edit-style-card;
+      .edit-style-filter;
 
+      &[sproc-param-style='card'] {
         .label-wrapper {
           .default-label-wrapper;
 
@@ -119,43 +55,17 @@
           justify-content: space-between;
         }
 
-        .label {
-          margin-bottom: 1px;
-
-          .default-label;
-        }
-
         .placeholder {
           .input-text-14px;
         }
       }
 
       &[sproc-param-style='filter'] {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-
         .placeholder {
           margin-left: 8px;
 
           .input-text-12px;
         }
-      }
-
-      .required {
-        .input-label;
-
-        color: var(--brand-danger);
       }
 
       .selected-item-wrapper {
@@ -169,27 +79,10 @@
         justify-content: space-between;
         border-radius: 2px;
         background: var(--chip-background);
-        font-size: 14px;
-        line-height: 16px;
         color: var(--main-black);
         cursor: pointer;
-      }
-    }
 
-    .default-label-wrapper {
-      display: flex;
-      gap: 4px;
-    }
-
-    .default-label {
-      .input-label;
-
-      color: var(--main-black);
-
-      &.required::after {
-        content: '*';
-        color: var(--brand-danger);
-        margin-left: 2px;
+        .input-text-14px;
       }
     }
   }
