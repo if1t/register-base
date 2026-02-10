@@ -34,4 +34,8 @@ export class ParamTextComponent extends ParamBase<string | null, string | null> 
   override buildShowedValue = input((value: string | null): string => value?.toString() ?? '-');
   stringifyText = input((value: string) => value);
   maskOptions = input<MaskitoOptions | null>(null);
+  /** сообщение об ошибке для текстового поля */
+  public errorMessage = input<string>('');
+  /** Максимальное кол-во символов */
+  public maxLength = input(0);
 }
