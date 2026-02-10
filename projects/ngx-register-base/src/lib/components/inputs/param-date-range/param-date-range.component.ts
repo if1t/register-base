@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
-import { PrizmDay, PrizmDayRange } from '@prizm-ui/components';
+import { PrizmDay, PrizmDayLike, PrizmDayRange } from '@prizm-ui/components';
 import { ParamDateBase } from '../../../core/param/param-date-base';
 import { FormatterSavedValueType, ParserSavedValueType } from '../../../types/params.types';
 import { EDatePattern } from '../../../directives/date/date-time.types';
+import { TuiDay } from '@taiga-ui/cdk';
 
 export type InputDateRangeSavedValue = { from: string; to: string } | null;
 
@@ -16,9 +17,12 @@ export class ParamDateRangeComponent extends ParamDateBase<
   PrizmDayRange | null,
   InputDateRangeSavedValue
 > {
+  public maxLength = input<PrizmDayLike | null>(null);
+  /** текст сообщения об ошибке */
+  public errorMessage = input<string>('');
   override placeholder = input('Выберите период');
-  @Input() min: PrizmDay | undefined;
-  @Input() max: PrizmDay | undefined;
+  @Input() min: TuiDay | PrizmDay | undefined;
+  @Input() max: TuiDay | PrizmDay | undefined;
   @Input() override set formatSavedValue(
     formatter: FormatterSavedValueType<PrizmDayRange | null, InputDateRangeSavedValue> | undefined
   ) {
