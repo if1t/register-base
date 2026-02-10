@@ -1,0 +1,161 @@
+@import '@taiga-ui/core/styles/taiga-ui-local';
+
+tui-multi-select[tuiAppearance][data-appearance='sma-input-appearance'] {
+  div .t-icons :has(> tui-arrow) {
+    tui-arrow {
+      tui-icon {
+        --t-icon: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
+      }
+    }
+  }
+
+  input {
+    border: none !important;
+  }
+
+  tui-icon.t-cleaner::after {
+    display: none !important;
+  }
+
+  &:hover {
+    tui-icon.t-cleaner::after {
+      display: block !important;
+    }
+  }
+}
+
+[sma-param-style='filter'] {
+  [tuiAppearance][data-appearance='textfield'] {
+    border: none;
+    border-bottom: 1px solid var(--stroke1);
+  }
+
+  tui-textfield[tuiChevron][tuiIcons]::after {
+    margin-inline-end: -22px !important;
+    --t-icon-end: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
+  }
+}
+
+[sma-param-style='card'] {
+  [tuiAppearance][data-appearance='textfield'] {
+    .input-text-14px;
+
+    .t-value-content {
+      width: 100%;
+      max-width: calc(100% - 16px);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .t-absolute-wrapper {
+      margin-left: 16px;
+    }
+    .t-arrow {
+      margin-right: 15px;
+    }
+    .t-text {
+      color: var(--main-black);
+      padding-bottom: 1px;
+    }
+    .t-clear {
+      padding-right: 10px;
+    }
+    border: 1px solid var(--stroke1);
+
+    &::after {
+      border: none !important;
+    }
+
+    // Стили для taiga chips
+    .t-tags {
+      flex-wrap: revert !important;
+      padding-left: 16px;
+      align-items: center;
+      border-radius: 2px !important;
+
+      tui-icon:after {
+        background: var(--icon-hover-color);
+        mask: url('/assets/icons/close.svg') no-repeat center / contain;
+      }
+    }
+    .t-tag {
+      height: 16px;
+    }
+    div.t-tag {
+      background-color: var(--input-hover-background-color);
+      border-radius: 2px !important;
+      height: 16px;
+    }
+  }
+
+  tui-textfield[tuiChevron][tuiIcons]::after {
+    margin-inline-end: -12px !important;
+    --t-icon-end: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
+  }
+}
+
+[tuiAppearance][data-appearance='sma-input-appearance'] {
+  .transition(~'background, box-shadow, border');
+
+  // .t-clear - класс селекта,.t-cleaner у других инпутов
+  [tuiIconButton].t-cleaner::before,
+  [tuiIconButton].t-clear::before {
+    display: none !important;
+  }
+
+  &:hover {
+    [tuiIconButton].t-cleaner::before,
+    [tuiIconButton].t-clear::before {
+      display: block !important;
+    }
+
+    .t-clear {
+      padding-right: 10px;
+    }
+  }
+
+  border-radius: 2px;
+  outline: unset;
+  border: unset;
+
+  .t-cleaner {
+    --t-icon: url('/assets/ngx-register-base/icons/delete-content.svg') !important;
+
+    &::after {
+      --t-icon: url('/assets/ngx-register-base/icons/delete-content.svg') !important;
+    }
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid var(--stroke1);
+    padding-inline-end: unset !important;
+  }
+
+  [tuiAppearance][data-appearance='textfield'] {
+    outline: none;
+    box-shadow: unset;
+
+    .t-content {
+      padding-right: 0;
+    }
+
+    .wrapper-hover({
+      background: var(--brand-disabled);
+    });
+
+    .wrapper-focus({
+      border-color: var(--tui-background-accent-1);
+      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed);
+    });
+
+    :has(._chevron-rotated) {
+      transform: rotate(180deg);
+    }
+
+    &::after {
+      border: none;
+      border-bottom: 1px solid var(--stroke1);
+    }
+  }
+}
