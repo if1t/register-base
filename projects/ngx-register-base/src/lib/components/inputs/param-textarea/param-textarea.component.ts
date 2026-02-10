@@ -4,7 +4,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { TuiAppearance, TuiHint, TuiTextfield } from '@taiga-ui/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
-import { TuiTextarea } from '@taiga-ui/kit';
+import { TuiTextarea, TuiTextareaLimit } from '@taiga-ui/kit';
 import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
 
 @Component({
@@ -22,15 +22,19 @@ import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/
     TuiTextfieldControllerModule,
     TuiAppearance,
     TuiTextarea,
+    TuiTextareaLimit,
   ],
 })
 export class ParamTextareaComponent extends ParamBase<string | null, string | null> {
-  public override placeholder = input<string>('Введите значение');
+  public override placeholder = input('Введите значение');
   public override buildShowedValue = input(
     (value: string | null): string => value?.toString() ?? '-'
   );
+
   /** Минимальное кол-во строк в инпуте */
-  public min = input<number>(6);
+  public min = input(6);
   /** Максимальное кол-во строк в инпуте */
-  public max = input<number>(6);
+  public max = input(6);
+  /** Максимальное кол-во символов */
+  public maxLength = input(0);
 }
