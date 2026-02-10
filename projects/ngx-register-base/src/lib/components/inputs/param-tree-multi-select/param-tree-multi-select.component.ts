@@ -7,10 +7,11 @@ import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { ITreeNode } from '../param-tree/types/param-tree.types';
 import { ParamTreeComponent } from '../param-tree/param-tree.component';
 import { ParamTreeService } from '../param-tree/services/param-tree.service';
-import { TREE_LOADER } from '../param-tree/tokens/param-tree.tokens';
+import { TREE_LOADING_NODE } from '../param-tree/consts/param-tree.consts';
 import { FastQueryStore } from '../../../store/fast-query-store.service';
 import { ParamSelectBase } from '../../../core/param/param-select-base';
 import { distinctUntilChangedJSONs } from '../../../utils';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any };
 
@@ -34,7 +35,7 @@ export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any }
   styleUrl: './param-tree-multi-select.component.less',
   providers: [
     ParamTreeService,
-    { provide: TUI_TREE_LOADING, useValue: TREE_LOADER },
+    { provide: TUI_TREE_LOADING, useValue: TREE_LOADING_NODE },
     FastQueryStore,
   ],
 })
@@ -75,13 +76,11 @@ export class ParamTreeMultiSelectComponent<T> extends ParamSelectBase<
   }
 
   private _subscribeForUpdateCheckedNodes(): void {
-    this.control.valueChanges.pipe(distinctUntilChangedJSONs()).subscribe((value) => {
-      if (value) {
-        this.checkedNodes.set(value);
-      } else {
-        this.checkedNodes.set([]);
-      }
-    });
+    this.control.valueChanges
+      .pipe(distinctUntilChangedJSONs(), takeUntilDestroyed(this.dr))
+      .subscribe((value) => {
+        this.checkedNodes.set(value ?? []);
+      });
   }
 
   protected setSelectedNodes(node: ITreeNode<T>[]): void {
