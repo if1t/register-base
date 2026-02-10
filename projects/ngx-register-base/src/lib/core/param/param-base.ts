@@ -2,6 +2,7 @@ import {
   AfterContentInit,
   AfterViewInit,
   ChangeDetectorRef,
+  computed,
   DestroyRef,
   Directive,
   forwardRef,
@@ -117,6 +118,8 @@ export abstract class ParamBase<
 
   protected showedValue = '';
 
+  protected readonly applied = computed(() => this.control.applied?.() ?? false);
+
   constructor(private _injector: Injector) {
     if (this._ngControl) {
       this._ngControl.valueAccessor = this;
@@ -206,6 +209,10 @@ export abstract class ParamBase<
       .subscribe((value) => {
         this.control.gql_value = this.formatterGqlValue(value, this._injector);
         this._updateShowedValue(value);
+
+        if (this.isNotEmpty()) {
+          this.control.applied?.set(false);
+        }
       });
   }
 
