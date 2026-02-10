@@ -1,112 +1,19 @@
-@import 'fonts';
+@import 'src/less/fonts';
+@import 'src/less/common-param';
 
 :host {
   .container {
     &--read {
-      &[sproc-param-style='card'] {
-        display: flex;
-        align-items: flex-start;
-        gap: 4px;
-        padding: 8px 0;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-
-        .dashed-row {
-          display: flex;
-          height: 16px;
-          align-items: center;
-          flex: 1 0 0;
-          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
-          min-width: 20px;
-        }
-
-        .value {
-          max-width: 210px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          color: #000000 !important;
-          .card-content-text !important;
-        }
-      }
-
-      &[sproc-param-style='filter'] {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        align-self: stretch;
-        gap: 4px;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: 100%;
-        }
-
-        .label {
-          .default-label;
-        }
-
-        .dashed-row {
-          display: flex;
-          height: 16px;
-          align-items: center;
-          flex: 1 0 0;
-          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
-          min-width: 20px;
-        }
-
-        .value {
-          .main-body-text-14px;
-
-          color: var(--text-main);
-        }
-      }
+      .read-style-card;
+      .read-style-filter;
     }
 
     &--edit {
-      &[sproc-param-style='card'] {
-        height: 52px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        padding: 0 2px;
+      .edit-style-card;
+      .edit-style-filter;
 
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-
+      &[sma-param-style='card'] {
         ::ng-deep {
-          .prizm-input-form:not(.prizm-input-form-focused) {
-            background: inherit;
-            border: 1px solid var(--input-stroke);
-            padding: 0 3.5px 0 8px;
-          }
-
-          .prizm-input-form .prizm-input-form-focused {
-            background: inherit;
-            border: 1px solid var(--input-stroke);
-          }
-
-          .prizm-input-form-inner {
-            min-height: 32px;
-            height: 32px;
-          }
-
           input {
             .input-text-14px;
 
@@ -115,40 +22,8 @@
         }
       }
 
-      &[sproc-param-style='filter'] {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-
+      &[sma-param-style='filter'] {
         ::ng-deep {
-          .prizm-input-form:not(.prizm-input-form-focused) {
-            background: inherit;
-            border: none;
-            border-bottom: 1px solid var(--input-stroke);
-            padding: 0 3.5px 0 8px;
-          }
-
-          .prizm-input-form .prizm-input-form-focused {
-            background: inherit;
-            border: 1px !important;
-            border-bottom: 1px solid var(--input-stroke);
-          }
-
-          .prizm-input-form-inner {
-            min-height: 32px;
-            height: 32px;
-          }
-
           input {
             .input-text-12px;
 
@@ -157,22 +32,36 @@
         }
       }
 
-      .required {
-        .input-label;
+      ::ng-deep {
+        tui-textfield {
+          --t-icon-end: url('/assets/icons/calendar-custom.svg') !important;
 
-        color: var(--brand-danger);
+          &::after {
+            padding-top: 14px;
+            width: 16px !important;
+            height: 16px !important;
+          }
+        }
       }
     }
+  }
 
-    .default-label-wrapper {
-      display: flex;
-      gap: 4px;
+  ::ng-deep{
+    tui-textfield[tuiIcons] .t-content {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
     }
 
-    .default-label {
-      .input-label;
-
-      color: var(--main-black);
+    tui-textfield[tuiIcons]::after {
+      content: '';
+      width: 16px !important;
+      height: 16px !important;
+      background-size: 16px 16px !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      order: 2;
+      align-self: center;
     }
   }
 }

@@ -22,15 +22,18 @@
   </ng-template>
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
-      <div *ngIf="label" class="label-wrapper">
-        <span class="label">{{ label }}</span>
-        <span *ngIf="required" class="required">*</span>
+      <div *ngIf="label" class="label-wrapper" [class.applied]="applied()">
+        <span class="label" [class.required]="required">
+          {{ label }}
+        </span>
       </div>
 
       <tui-textfield
         tuiAppearance="sproc-input-appearance"
         tuiTextfieldSize="m"
         [tuiTextfieldLabelOutside]="true"
+        [style.--t-icon-end]="'url(/assets/ngx-register-base/icons/calendar-blank.svg)'"
+        [style.--t-icon-size]="'16px'"
       >
         <input
           tuiInputDate
