@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 FILES=$(git diff --diff-filter=d --name-only origin/develop | grep -E '\.less$')
 if [ -n "$FILES" ]; then
-  mkdir -p dist/stylelint && npx stylelint  --aei $FILES --custom-formatter ./stylelint-formatter.js
+  npx stylelint --aei $FILES --custom-formatter=./stylelint-formatter/index.js -o ./dist/sma-ui-mfe-main-app-reports/stylelint-report.html
 else
   echo "No files found into diff with develop for lint with Stylelint."
   exit 0

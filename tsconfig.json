@@ -11,6 +11,9 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "paths": {
+      "ngx-register-base": ["./dist/ngx-register-base"]
+    },
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
