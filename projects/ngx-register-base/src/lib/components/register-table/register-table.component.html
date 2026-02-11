@@ -7,93 +7,115 @@
         stickyRelative
         [columns]="columnsWithCheckboxes()"
         [style.width.px]="tableWidth()"
-        [tuiSortBy]="''"
+        tuiSortBy=""
         (sortChange)="sortChange($event)"
       >
-        <thead class="register-table__thead">
-          <tr tuiThGroup>
-            @if (checkboxColumn()) {
-              <th
-                tuiTh
-                *tuiHead="CHECKBOX_SELECTOR_KEY"
-                class="register-table__cell-icon register-table__cell-checkbox-selector"
-                [style.width.px]="CHECKBOX_SELECTOR_WIDTH_PX"
-                [sorter]="null"
-              >
-                <sproc-checkbox-selector
-                  [selected]="selectedIds()"
-                  [totalRecords]="totalRecords()"
-                  [loading]="isSelectloading()"
-                  [inputMaxValue]="checkboxInputMaxValue()"
-                  [disabled]="checkboxDisabled()"
-                  (onApply)="selectChanged.emit($event)"
-                ></sproc-checkbox-selector>
-              </th>
-            }
-            @for (columnData of columnsData(); track columnData) {
-              @let thType = columnData.type;
-              @let thName = columnData.name;
-              @let sortable = checkAvailableColumnSorting(columnData);
-              @let resizeBlocked = checkResizeBlocked(columnData);
-              <th
-                tuiTh
-                *tuiHead="thName"
-                [ngClass]="['register-table__th', thType | classByType]"
-                [stickyLeft]="thName | stickyColumn: stickyLeftIds()"
-                [stylesOnSticky]="stickyThStyle"
-                [style]="columnData.headerStyle ?? ''"
-                [resizable]="!resizeBlocked"
-                [style.min-width.px]="getThWidth(thName)"
-                [style.width.px]="getThWidth(thName)"
-                [style.max-width.px]="getThWidth(thName)"
-                [tuiSortable]="sortable"
-                [sorter]="sortable ? setThName(thName) : null"
-                [attr.order]="columnOrders.get(thName)?.options?.order"
-                [tuiHint]="columnData.tooltipText ?? null"
-                (tuiResized)="thResizeChanges(columnData.name, $event)"
-              >
-                @switch (thType) {
-                  @case (EColumnDataType.ICON) {
-                    <tui-icon
-                      class="register-table--icon-color"
-                      [icon]="columnData.value!"
-                    ></tui-icon>
-                  }
-                  @case (EColumnDataType.ICON_SVG) {
-                    <img [src]="columnData.value" [alt]="thName" />
-                  }
-                  @case (EColumnDataType.TEXT) {
-                    @if (columnData.svgSrc) {
-                      <img [src]="columnData.svgSrc" [alt]="thName" />
+        <thead>
+          @for (hrow of headerRows(); track $index) {
+            <tr tuiThGroup>
+              @if ($first && checkboxColumn()) {
+                <th
+                  tuiTh
+                  *tuiHead="CHECKBOX_SELECTOR_KEY"
+                  class="register-table__th-background--table-cell-blue register-table__cell-icon register-table__cell-checkbox-selector"
+                  [style.width.px]="CHECKBOX_SELECTOR_WIDTH_PX"
+                  [sorter]="null"
+                  [rowSpan]="maxDepth()"
+                >
+                  <sproc-checkbox-selector
+                    [selected]="selectedIds()"
+                    [totalRecords]="totalRecords()"
+                    [loading]="isSelectloading()"
+                    [disabled]="checkboxDisabled()"
+                    (onApply)="selectChanged.emit($event)"
+                  ></sproc-checkbox-selector>
+                </th>
+              }
+              @for (cell of hrow; track cell.col.name) {
+                @let thClass = cell.col.class ?? '';
+                @let thType = cell.col.type;
+                @let thName = cell.col.name;
+                @let sortable = checkAvailableColumnSorting(cell.col);
+                @let resizeBlocked = checkResizeBlocked(cell.col);
+                <th
+                  tuiTh
+                  tuiResizable
+                  *tuiHead="thName"
+                  [ngClass]="['register-table__th', thType | classByType, thClass]"
+                  [stickyLeft]="cell.col.fixed ?? (thName | stickyColumn: stickyLeftIds())"
+                  [stickyRight]="cell.col.fixed ?? (thName | stickyColumn: stickyRightIds())"
+                  [stylesOnSticky]="stickyThStyle"
+                  [style]="cell.col.headerStyle ?? ''"
+                  [style.min-width.px]="getThWidth(thName)"
+                  [style.width.px]="getThWidth(thName)"
+                  [style.max-width.px]="getThWidth(thName)"
+                  [tuiSortable]="sortable"
+                  [sorter]="sortable ? setThName(thName) : null"
+                  [tuiHint]="cell.col.tooltipText ?? null"
+                  [rowSpan]="cell.rowspan"
+                  [colSpan]="cell.colspan"
+                  [attr.order]="columnOrders.get(thName)?.options?.order"
+                >
+                  @if (cell.col.isHeadTemplate) {
+                    @let thProjection = getProjectionHeaderByName(thName);
+
+                    @if (thProjection) {
+                      <ng-container
+                        [ngTemplateOutlet]="thProjection"
+                        [ngTemplateOutletContext]="{
+                          $implicit: cell.col,
+                        }"
+                      ></ng-container>
                     }
-                    <span
-                      class="text-overflow--ellipsis"
-                      [ngStyle]="columnData.textStyle ?? null"
-                      [innerHTML]="columnData.value"
-                    >
-                      {{ columnData.value }}
-                    </span>
+                  } @else {
+                    @switch (thType) {
+                      @case (EColumnDataType.ICON) {
+                        <tui-icon
+                          class="register-table--icon-color"
+                          [icon]="cell.col.value!"
+                        ></tui-icon>
+                      }
+                      @case (EColumnDataType.ICON_SVG) {
+                        <img [src]="cell.col.value" [alt]="thName" />
+                      }
+                      @case (EColumnDataType.TEXT) {
+                        @if (cell.col.svgSrc) {
+                          <img [src]="cell.col.svgSrc" [alt]="thName" />
+                        }
+                        <span class="text-overflow--ellipsis" [ngStyle]="cell.col.textStyle">
+                          {{ cell.col.value }}
+                        </span>
+                      }
+                      @case (EColumnDataType.NUM) {
+                        <span [ngStyle]="cell.col.textStyle">
+                          {{ cell.col.value }}
+                        </span>
+                      }
+                      @case (EColumnDataType.DATE) {
+                        <span [ngStyle]="cell.col.textStyle">
+                          {{ cell.col.value }}
+                        </span>
+                      }
+                      @case (EColumnDataType.CHECKBOX) {
+                        {{ cell.col.value }}
+                      }
+                    }
                   }
-                  @case (EColumnDataType.NUM) {
-                    <span [ngStyle]="columnData.textStyle ?? null" [innerHTML]="columnData.value">
-                      {{ columnData.value }}
-                    </span>
+                  @if (!resizeBlocked) {
+                    <div
+                      class="register-table__cell-resizer"
+                      [tuiResizer]="[1, 0]"
+                      (tuiSizeChange)="thResizeChanges(cell.col.name, $event[0])"
+                      (click)="$event.stopPropagation()"
+                    ></div>
                   }
-                  @case (EColumnDataType.DATE) {
-                    <span [ngStyle]="columnData.textStyle ?? null" [innerHTML]="columnData.value">
-                      {{ columnData.value }}
-                    </span>
-                  }
-                  @case (EColumnDataType.CHECKBOX) {
-                    {{ columnData.value }}
-                  }
-                }
-              </th>
-            }
-          </tr>
+                </th>
+              }
+            </tr>
+          }
         </thead>
         @let rows = rowData();
-        <tbody tuiTbody [data]="rows">
+        <tbody tuiTbody>
           @for (row of rows; track row.id) {
             @let state = stateObjects?.();
             @let trSelected =
@@ -128,27 +150,32 @@
                   />
                 </td>
               }
-              @for (columnData of columnsData(); track columnData) {
+              @for (columnData of leaves(); track columnData.name) {
                 @let tdType = columnData.type;
                 @let tdKey = columnData.name;
                 @let tdValue = row[tdKey];
+                @let tdClass = columnData.classTd ?? '';
+
                 <td
                   tuiTd
                   *tuiCell="tdKey"
-                  [class]="tdType | classByType: 'td'"
+                  [ngClass]="[tdType | classByType: 'td', tdClass]"
                   [stickyLeft]="tdKey | stickyColumn: stickyLeftIds()"
+                  [stickyRight]="tdKey | stickyColumn: stickyRightIds()"
                   [stylesOnSticky]="stickyTdStyle"
                 >
-                  @let tdProjection = getProjectedColumnByName(tdKey);
+                  @if (columnData.isTemplate) {
+                    @let tdProjection = getProjectionCellByName(tdKey);
 
-                  @if (columnData.isTemplate && tdProjection) {
-                    <ng-container
-                      [ngTemplateOutlet]="tdProjection"
-                      [ngTemplateOutletContext]="{
-                        $implicit: tdValue,
-                        row,
-                      }"
-                    ></ng-container>
+                    @if (tdProjection) {
+                      <ng-container
+                        [ngTemplateOutlet]="tdProjection"
+                        [ngTemplateOutletContext]="{
+                          $implicit: tdValue,
+                          row,
+                        }"
+                      ></ng-container>
+                    }
                   } @else {
                     @switch (tdType) {
                       @case (EColumnDataType.ICON) {
@@ -170,7 +197,7 @@
                           size="s"
                           type="checkbox"
                           class="checkbox"
-                          [checked]="tdValue"
+                          [checked]="!!tdValue"
                           [disabled]="true"
                         />
                       }
@@ -224,6 +251,7 @@
     [selectedCounter]="selectedCounter()"
     (paginatorChange)="paginatorChange.emit($event)"
     [disabled]="paginatorDisabled()"
+    [isLoading]="isPaginatorLoading()"
   >
   </sproc-paginator>
 </section>

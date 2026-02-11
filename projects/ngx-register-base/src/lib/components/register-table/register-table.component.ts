@@ -20,54 +20,53 @@ import { DomIntersectionService } from '../../services/dom-intersection.service'
 import { TuiHint, TuiIcon, TuiLoader, TuiScrollbar } from '@taiga-ui/core';
 import { TuiTable, TuiTableSortChange } from '@taiga-ui/addon-table';
 import { AsyncPipe, DecimalPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
-import { PrizmTableCellSorter } from '@prizm-ui/components';
-import { ColumnDataTypes, EColumnDataType, IColumnData, ThWidthEntry } from './model/schema';
+import {
+  ColumnDataTypes,
+  EColumnDataType,
+  IColumnData,
+  RegisterTableCellSorter,
+  ThWidthEntry,
+} from './model/schema';
 import { TuiCheckbox } from '@taiga-ui/kit';
+import { EDatePattern, ETimezone } from '../../directives/date/date-time.types';
 import {
   outputFromObservable,
   takeUntilDestroyed,
   toObservable,
   toSignal,
 } from '@angular/core/rxjs-interop';
+import { HeaderTemplateDirective } from './directives/header-template.directive';
 import { DateTimeService } from '../../services/date-time.service';
+import { CellTemplateDirective } from './directives/cell-template.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  BehaviorSubject,
-  combineLatest,
-  debounceTime,
-  filter,
-  map,
-  Observable,
-  skip,
-  Subject,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs';
-import { ScalarUUID } from 'hasura';
-import { FormatDatePipe } from '../../directives/date/format-date.pipe';
+import { KEY_PRESSED, KeyPressedService } from '../../services/key-pressed.service';
+import { EOrder, THS_WIDTH_CHANGES_DEBOUNCE_TIME_MLS } from '../../consts/register-base.consts';
 import { ClassByTypePipe } from './pipes/class-by-type.pipe';
 import { StickyColumnPipe } from './pipes/sticky-column.pipe';
-import { CheckboxSelectorComponent } from '../checkbox-selector/checkbox-selector.component';
-import { StickyDirective, StickyRelativeDirective } from '../../directives';
-import { KEY_PRESSED, KeyPressedService } from '../../services/key-pressed.service';
-import { CellTemplateDirective } from './directives/cell-template.directive';
-import { SelectedObjectsStateService } from '../../services/selected-objects-state.service';
-import { distinctUntilChangedJSONs } from '../../utils';
-import {
-  EOrder,
-  invertState,
-  THS_WIDTH_CHANGES_DEBOUNCE_TIME_MLS,
-} from '../../consts/register-base.consts';
-import { ERegisterObjectState, IRegisterObject } from '../../types/register-base.types';
-import { EDatePattern, ETimezone } from '../../directives/date/date-time.types';
-import { ApplySelectionTypes } from '../checkbox-selector/checkbox-selector.types';
 import {
   CHECKBOX_SELECTOR_KEY,
   CHECKBOX_SELECTOR_WIDTH_PX,
   MIN_COL_WIDTH_PX,
 } from './consts/register-table.consts';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounceTime,
+  map,
+  skip,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { CheckboxSelectorComponent } from '../checkbox-selector/checkbox-selector.component';
+import { distinctUntilChangedJSONs } from '../../utils';
+import { StickyDirective, StickyRelativeDirective } from '../../directives';
+import { ScalarUUID } from 'hasura';
+import { ERegisterObjectState, IRegisterObject } from '../../types';
+import { ApplySelectionTypes } from '../checkbox-selector/checkbox-selector.types';
+import { SelectedObjectsStateService } from '../../services';
+import { TuiResizable, TuiResizer } from '@taiga-ui/cdk';
+import { FormatDatePipe } from '../../directives/date/format-date.pipe';
 import { IPaginatorOutput } from '../paginator/types/paginator.types';
 import { PaginatorComponent } from '../paginator/paginator.component';
 
@@ -99,6 +98,8 @@ import { PaginatorComponent } from '../paginator/paginator.component';
     StickyDirective,
     StickyRelativeDirective,
     TuiIcon,
+    TuiResizer,
+    TuiResizable,
   ],
   providers: [
     DomIntersectionService,
@@ -111,8 +112,10 @@ import { PaginatorComponent } from '../paginator/paginator.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterTableComponent implements OnDestroy {
-  /** Переданный контент, темплейты с директивой CellTemplateDirective */
-  public cellTemplateDirectives = contentChildren<CellTemplateDirective>(CellTemplateDirective);
+  /** Переданный контент для заголовков таблицы, темплейты с директивой HeaderTemplateDirective */
+  public headerTemplates = contentChildren<HeaderTemplateDirective>(HeaderTemplateDirective);
+  /** Переданный контент для ячеек таблицы, темплейты с директивой CellTemplateDirective */
+  public cellTemplates = contentChildren<CellTemplateDirective>(CellTemplateDirective);
 
   /** Элементы строк таблицы */
   public bodyRows = viewChildren('bodyRow', { read: ElementRef });
@@ -120,6 +123,8 @@ export class RegisterTableComponent implements OnDestroy {
   public scrollbar = viewChild(TuiScrollbar, { read: ElementRef });
   /** Состояние загрузки данных таблицы */
   public isLoading = input.required<boolean | null>();
+  /** Состояние загрузки данных пагинации */
+  public isPaginatorLoading = input<boolean>(false);
   /** Номер страницы */
   public page = input.required<number | null>();
   /** Количество записей на одной странице */
@@ -132,6 +137,8 @@ export class RegisterTableComponent implements OnDestroy {
   public columnsData = input.required<IColumnData[]>();
   /** Идентификаторы фиксированных слева столбцов */
   public stickyLeftIds = input<string[] | undefined>();
+  /** Идентификаторы фиксированных слева столбцов */
+  public stickyRightIds = input<string[] | undefined>();
   /** Всего записей */
   public totalRecords = input.required<number>();
   /** Всего записей, без учета фильтра */
@@ -160,7 +167,7 @@ export class RegisterTableComponent implements OnDestroy {
   public checkboxInputMaxValue = input<number | null>(null);
   /** Дизейбл выбора чекбоксов */
   public checkboxDisabled = input(false);
-  /** Дизейбл пагинации */
+  /** Дизейбл выбора чекбоксов */
   public paginatorDisabled = input(false);
 
   public selectedCounter = computed(() => {
@@ -170,6 +177,7 @@ export class RegisterTableComponent implements OnDestroy {
     const isNotSelected = unfetchedObjects !== ERegisterObjectState.SELECTED;
 
     if (selectedSize === null) {
+      this._deprecatedSelectedRowsCounter();
       return this.selectedIds().size;
     }
 
@@ -197,7 +205,7 @@ export class RegisterTableComponent implements OnDestroy {
   /** Событие нажатия на строку */
   public rowSelected = output<{ row: any[]; count: number }>();
   /** Событие сортировки значений в таблице */
-  public sort = output<PrizmTableCellSorter<any>[]>();
+  public sort = output<RegisterTableCellSorter<any>[]>();
   /** Событие изменения ширины колонки */
   private readonly _thsWidthMap = computed(
     () => new Map(this.columnsData().map(({ name, width }) => [name, new BehaviorSubject(width)]))
@@ -231,8 +239,7 @@ export class RegisterTableComponent implements OnDestroy {
           )
         )
       ).pipe(map((visibleRows) => visibleRows.filter((visibleRow) => !!visibleRow)))
-    ),
-    takeUntilDestroyed(this.destroyRef)
+    )
   );
   public visibleRowsChange = outputFromObservable<any[]>(this._observerRowsVisibilityDOM$);
 
@@ -280,49 +287,57 @@ export class RegisterTableComponent implements OnDestroy {
 
   protected stateObjects = this._selectedService?.state;
 
+  protected visibleColumnsTree = computed(() =>
+    this._filterVisibleColumns(this.columnsData(), this.columns())
+  );
+  protected maxDepth = computed(() => this._getMaxDepth(this.visibleColumnsTree()));
+  protected leaves = computed(() => this._getFlatLeaves(this.visibleColumnsTree()));
+
+  protected headerRows = computed(() => {
+    const maxDepth = this.maxDepth();
+    const rows: { col: IColumnData; rowspan: number; colspan: number }[][] = Array.from(
+      { length: maxDepth },
+      () => []
+    );
+
+    if (maxDepth === 0) {
+      return rows;
+    }
+
+    for (const col of this.visibleColumnsTree()) {
+      this._buildHeaderRecursive(col, 0, maxDepth, rows);
+    }
+
+    return rows;
+  });
+
+  private _deprecatedSelectedRowsCounter = signal(0);
+
   protected readonly timeZoneChanges$ = this.dts.isTimeZoneChanged$;
 
-  protected readonly columnOrders = new Map<string, PrizmTableCellSorter<any>>();
+  protected readonly columnOrders = new Map<string, RegisterTableCellSorter<any>>();
 
-  private readonly _projectedColumnsMap = new Map<string, TemplateRef<any>>();
+  private readonly _projectedHeadersMap = new Map<string, TemplateRef<any>>();
+  private readonly _projectedCellsMap = new Map<string, TemplateRef<any>>();
 
   private readonly _clickedRow$ = new Subject<unknown>();
 
   private readonly _hoveredRow$ = new BehaviorSubject<unknown>(null);
 
-  private readonly _prevShiftRow$ = new BehaviorSubject<unknown>(null);
-  protected readonly waitOnePreviousShiftRow$: () => Observable<unknown> = () =>
-    this._prevShiftRow$.asObservable().pipe(take(1));
-
   protected lastSelectedRow: unknown;
 
   constructor() {
     this._setScrollPositionAfterDataLoading();
+    this._projectHeaderTemplates();
     this._projectCellTemplates();
     // TODO удалить метод, как только перестанет использоваться is_visible по проекту
     this._syncRowVisibilityDOM();
 
     effect(() => {
-      if (this.stateObjects?.()) {
-        this._shift.isPressed$
-          .pipe(
-            tap((isPressed) => {
-              if (!isPressed) {
-                this._prevShiftRow$.next(null);
-              }
-            }),
-            filter(Boolean),
-            switchMap(() =>
-              this._clickedRow$.asObservable().pipe(
-                tap((clickedRow) => {
-                  this._prevShiftRow$.next(clickedRow);
-                }),
-                takeUntil(this._shift.isPressed$.pipe(filter((isPressed) => !isPressed)))
-              )
-            ),
-            takeUntilDestroyed(this.destroyRef)
-          )
-          .subscribe();
+      const data = this.rowData();
+
+      if (data.length > 0 && !this.lastSelectedRow) {
+        [this.lastSelectedRow] = data;
       }
     });
   }
@@ -343,27 +358,42 @@ export class RegisterTableComponent implements OnDestroy {
     });
   }
 
+  private _projectHeaderTemplates(): void {
+    effect(() => {
+      this._projectedHeadersMap.clear();
+      for (const template of this.headerTemplates()) {
+        this._projectedHeadersMap.set(template.headerTemplateName(), template.tpl);
+      }
+    });
+  }
+
   private _projectCellTemplates(): void {
     effect(() => {
-      this._projectedColumnsMap.clear();
-      for (const cellTemplates of this.cellTemplateDirectives()) {
-        this._projectedColumnsMap.set(cellTemplates.cellTemplateName, cellTemplates.tpl);
+      this._projectedCellsMap.clear();
+      for (const template of this.cellTemplates()) {
+        this._projectedCellsMap.set(template.cellTemplateName, template.tpl);
       }
     });
   }
 
   private _syncRowVisibilityDOM(): void {
-    this._observerRowsVisibilityDOM$.subscribe();
+    this._observerRowsVisibilityDOM$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 
   public ngOnDestroy(): void {
+    this._clickedRow$.complete();
+    this._hoveredRow$.complete();
     for (const subject of this._thsWidthMap().values()) {
       subject.complete();
     }
   }
 
-  protected getProjectedColumnByName(name: string): TemplateRef<any> | undefined {
-    return this._projectedColumnsMap.get(name);
+  protected getProjectionHeaderByName(name: string): TemplateRef<any> | undefined {
+    return this._projectedHeadersMap.get(name);
+  }
+
+  protected getProjectionCellByName(name: string): TemplateRef<any> | undefined {
+    return this._projectedCellsMap.get(name);
   }
 
   protected sortChange({ sortComparator }: TuiTableSortChange<Partial<Record<string, any>>>): void {
@@ -384,7 +414,10 @@ export class RegisterTableComponent implements OnDestroy {
     this.sort.emit([...this.columnOrders.values()]);
   }
 
-  private updateColumnOrder(id: string, columnOrder: PrizmTableCellSorter<any> | undefined): void {
+  private updateColumnOrder(
+    id: string,
+    columnOrder: RegisterTableCellSorter<any> | undefined
+  ): void {
     if (columnOrder) {
       const { options } = columnOrder;
       const { order } = options;
@@ -436,40 +469,41 @@ export class RegisterTableComponent implements OnDestroy {
 
     // TODO оставить только if после SMA2-3134
     if (stateObjects) {
-      this.waitOnePreviousShiftRow$().subscribe((prevShiftRow) => {
+      if (event.shiftKey) {
+        this._changeRangeRowsState(stateObjects, this.lastSelectedRow, row);
+      } else {
         if (event.ctrlKey) {
           this._changeOnlyRowState(stateObjects, row, true);
-        } else if (event.shiftKey) {
-          if (prevShiftRow) {
-            this._changeRangeRowsState(stateObjects, prevShiftRow, row);
-          }
         } else {
           this._changeOnlyRowState(stateObjects, row);
         }
+        this.lastSelectedRow = row;
+      }
 
-        this.rowClick.emit(row);
+      this.rowClick.emit(row);
 
-        const selectedObjects = this._selectedService?.selectedValues();
+      const selectedObjects = this._selectedService?.selectedValues();
 
-        if (selectedObjects) {
-          this.rowSelected.emit({
-            row: [...selectedObjects],
-            count: selectedObjects.size,
-          });
-        }
-      });
+      if (selectedObjects) {
+        this.rowSelected.emit({
+          row: [...selectedObjects],
+          count: selectedObjects.size,
+        });
+      }
 
       this._clickedRow$.next(row);
       return;
     }
 
-    if (event.ctrlKey) {
-      this._selectOnlyRow(row, true);
-    } else if (event.shiftKey) {
+    if (event.shiftKey) {
       this._selectRangeRows(this.lastSelectedRow, row);
     } else {
+      if (event.ctrlKey) {
+        this._selectOnlyRow(row, true);
+      } else {
+        this._selectOnlyRow(row);
+      }
       this.lastSelectedRow = row;
-      this._selectOnlyRow(row);
     }
 
     this.rowClick.emit(row);
@@ -492,13 +526,14 @@ export class RegisterTableComponent implements OnDestroy {
     const id = row.id as string;
     const wasSelected = state.get(id)?.state === ERegisterObjectState.SELECTED;
 
-    if (!saveSelected) {
+    if (saveSelected) {
+      this.updateStateObjectByKey(id, {
+        state: wasSelected ? ERegisterObjectState.UNSELECTED : ERegisterObjectState.SELECTED,
+      });
+    } else {
       this.updateAllStateObjectsByState(ERegisterObjectState.UNSELECTED);
+      this.updateStateObjectByKey(id, { state: ERegisterObjectState.SELECTED });
     }
-
-    this.updateStateObjectByKey(id, {
-      state: wasSelected ? ERegisterObjectState.UNSELECTED : ERegisterObjectState.SELECTED,
-    });
   }
 
   private _selectOnlyRow(row: unknown, saveSelected?: boolean): void {
@@ -510,18 +545,25 @@ export class RegisterTableComponent implements OnDestroy {
     const id = row.id as string;
     const wasSelected = this.selectedIds().has(id);
 
-    if (!saveSelected) {
+    if (saveSelected) {
+      if (wasSelected) {
+        this.selectedIds().delete(id);
+        this.selectedObjects().delete(row);
+      } else {
+        this.selectedIds().add(id);
+        this.selectedObjects().add(row);
+      }
+    } else {
       this.selectedIds().clear();
       this.selectedObjects().clear();
-    }
-
-    if (wasSelected) {
-      this.selectedIds().delete(id);
-      this.selectedObjects().delete(row);
-    } else {
       this.selectedIds().add(id);
       this.selectedObjects().add(row);
     }
+    this._emitDeprecatedSelectedRows();
+  }
+
+  private _emitDeprecatedSelectedRows(): void {
+    this._deprecatedSelectedRowsCounter.update((value) => value + 1);
   }
 
   private _changeRangeRowsState(
@@ -529,6 +571,8 @@ export class RegisterTableComponent implements OnDestroy {
     previousRow: unknown,
     currentRow: unknown
   ): void {
+    this.updateAllStateObjectsByState(ERegisterObjectState.UNSELECTED);
+
     let prevIndex = this.rowData().indexOf(previousRow);
     let currIndex = this.rowData().indexOf(currentRow);
 
@@ -547,21 +591,7 @@ export class RegisterTableComponent implements OnDestroy {
     const slicedStateObjects = new Map(
       [...stateObjects].filter(([key]) => idsObjectsShouldSelected.has(key))
     );
-    const [{ state: firstElementState }] = [...slicedStateObjects.values()];
 
-    // Если выбранный диапазон элементов имеет одинаковое состояние выбора
-    if ([...slicedStateObjects.values()].every(({ state }) => state === firstElementState)) {
-      const invertedState = invertState(firstElementState);
-
-      // Назначаем всему выбранному диапазону противоположное состояние
-      for (const key of slicedStateObjects.keys()) {
-        this.updateStateObjectByKey(key, { state: invertedState });
-      }
-
-      return;
-    }
-
-    // Иначе всему выбранному диапазону назначаем состояние выбора
     for (const key of slicedStateObjects.keys()) {
       this.updateStateObjectByKey(key, { state: ERegisterObjectState.SELECTED });
     }
@@ -584,6 +614,7 @@ export class RegisterTableComponent implements OnDestroy {
 
     this.selectedIds().clear();
     this.selectedObjects().clear();
+    this._emitDeprecatedSelectedRows();
 
     for (const item of itemsShouldSelected) {
       this.selectedIds().add(item.id);
@@ -629,11 +660,11 @@ export class RegisterTableComponent implements OnDestroy {
 
   protected markRowBeforeSelect(row: unknown): boolean {
     const shiftPressed = this._shift.isPressed();
-    const prevShiftRow = this._prevShiftRow$.getValue();
+    const prevRow = this.lastSelectedRow;
     const hoveredRow = this._hoveredRow$.getValue();
 
-    if (shiftPressed && prevShiftRow && hoveredRow) {
-      let beforeIndex = this.rowData().indexOf(prevShiftRow);
+    if (shiftPressed && prevRow && hoveredRow) {
+      let beforeIndex = this.rowData().indexOf(prevRow);
       let afterIndex = this.rowData().indexOf(hoveredRow);
 
       if (beforeIndex > afterIndex) {
@@ -648,5 +679,65 @@ export class RegisterTableComponent implements OnDestroy {
     }
 
     return false;
+  }
+
+  private _buildHeaderRecursive(
+    col: IColumnData,
+    level: number,
+    maxDepth: number,
+    rows: { col: IColumnData; rowspan: number; colspan: number }[][]
+  ): number {
+    const children = col.children || [];
+    const hasChildren = children.length > 0;
+
+    const customRowspan = col.rowspan || 1;
+    const nextLevel = level + customRowspan;
+
+    let colspan = 0;
+
+    if (hasChildren) {
+      for (const child of children) {
+        colspan += this._buildHeaderRecursive(child, nextLevel, maxDepth, rows);
+      }
+    } else {
+      colspan = 1;
+    }
+
+    const rowspan = hasChildren ? customRowspan : maxDepth - level;
+
+    if (rows[level]) {
+      rows[level].push({ col, rowspan, colspan });
+    }
+
+    return colspan;
+  }
+
+  private _getFlatLeaves(columns: IColumnData[]): IColumnData[] {
+    return columns.flatMap((col) => {
+      if (col.children && col.children.length > 0) {
+        return this._getFlatLeaves(col.children);
+      }
+      return [col];
+    });
+  }
+
+  private _filterVisibleColumns(columns: IColumnData[], showedNames: string[]): IColumnData[] {
+    return columns
+      .map((col) => {
+        if (col.children && col.children.length > 0) {
+          const visibleChildren = this._filterVisibleColumns(col.children, showedNames);
+          return { ...col, children: visibleChildren };
+        }
+        return col;
+      })
+      .filter((col) => showedNames.includes(col.name) || (col.children && col.children.length > 0));
+  }
+
+  private _getMaxDepth(columns: IColumnData[]): number {
+    if (!columns || columns.length === 0) {
+      return 0;
+    }
+
+    return 1 + Math.max(...columns.map((c) => this._getMaxDepth(c.children || [])));
   }
 }

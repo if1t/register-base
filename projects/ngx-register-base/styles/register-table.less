@@ -15,40 +15,56 @@
   height: 100%;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   gap: 8px;
   padding: 8px 12px 8px 16px;
 }
 
-sproc-register-table .register-table {
-  &__thead {
-    th {
-      background: #e6f1f8 !important;
+.is-deleted-template {
+  text-align: center;
+  padding: 0 8px;
+  width: 90px;
+  color: #ffffff;
+  font-weight: 500;
+  border-radius: 2px;
+
+  &[is_deleted='true'] {
+    background: var(--deleted-color);
+  }
+
+  &[is_deleted='false'] {
+    background: var(--brand-success);
+  }
+}
+
+.register-table__th-background--table-cell-blue {
+  --tui-background-base: var(--table-cell-blue);
+}
+
+.register-table__th {
+  .register-table__th-background--table-cell-blue;
+
+  position: relative;
+
+  .t-sort {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    tui-icon {
+      content: url('../icons/triangle-up-down.svg');
     }
   }
 
-  &__th {
-    .t-sort {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-
-      tui-icon {
-        content: url('../icons/triangle-up-down.svg');
-      }
+  &[order='asc'] {
+    .t-sort tui-icon {
+      content: url('../icons/triangle-up-selected.svg');
     }
+  }
 
-    &[order='asc'] {
-      .t-sort tui-icon {
-        content: url('../icons/triangle-up-selected.svg');
-      }
-    }
-
-    &[order='desc'] {
-      .t-sort tui-icon {
-        content: url('../icons/triangle-down-selected.svg');
-      }
+  &[order='desc'] {
+    .t-sort tui-icon {
+      content: url('../icons/triangle-down-selected.svg');
     }
   }
 }

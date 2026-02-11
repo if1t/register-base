@@ -1,4 +1,5 @@
 @import 'fonts';
+@import 'classes';
 
 @contentHeight: calc(100vh - var(--header-height) - var(--footer-height));
 @headerHeight: 40px;
@@ -51,13 +52,18 @@
             position: sticky;
             left: 0;
             z-index: 21;
+
+            input {
+              vertical-align: middle;
+            }
           }
 
-          &.register-table__cell-text {
-            color: var(--main-black);
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+          &.register-table__cell-checkbox {
+            text-align: center;
+
+            input {
+              vertical-align: middle;
+            }
           }
 
           &.register-table__cell-icon {
@@ -67,15 +73,24 @@
             vertical-align: middle;
           }
 
-          &.register-table__cell-checkbox {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
+          &.register-table__cell-text {
+            .truncate-text();
 
-            prizm-checkbox {
-              width: 16px;
-            }
+            color: var(--main-black);
+          }
+
+          &.register-table__cell-num {
+            .truncate-text();
+
+            color: var(--main-black);
+            text-align: right;
+          }
+
+          &.register-table__cell-date {
+            .truncate-text();
+
+            color: var(--main-black);
+            text-align: center;
           }
         }
 
@@ -89,6 +104,19 @@
           &.register-table__cell-icon .register-table--icon-color {
             font-size: 16px;
             color: var(--main-black);
+          }
+
+          .register-table__cell-resizer {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            transition: background 1s;
+
+            &:hover {
+              background: var(--brand-active);
+            }
           }
         }
 
