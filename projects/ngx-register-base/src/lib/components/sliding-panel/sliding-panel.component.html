@@ -3,10 +3,8 @@
     <ng-content select="[header]"></ng-content>
   </div>
 
-  <prizm-scrollbar [style.height]="scrollbarHeight">
-    <div [style.padding-bottom.px]="footerOffsetHeight">
-      <ng-content></ng-content>
-    </div>
+  <prizm-scrollbar class="scrolled-content">
+    <ng-content />
   </prizm-scrollbar>
 
   <div #footerContainer>
