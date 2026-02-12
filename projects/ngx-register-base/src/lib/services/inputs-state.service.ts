@@ -1,9 +1,9 @@
 import { DestroyRef, inject, Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { EInputsAction, EInputsState, GqlFields, IInputsState } from '../types/inputs.types';
-import { PrizmTableCellSorter } from '@prizm-ui/components';
+import { EInputsAction, EInputsState, GqlFields, IInputsState } from '../types';
 import { Router } from '@angular/router';
-import { getLastSegmentOfPathName } from '../utils/get-url-segment';
+import { getLastSegmentOfPathName } from '../utils';
+import { RegisterTableCellSorter } from '../components';
 
 export const DEFAULT_LIMIT = 30;
 
@@ -15,7 +15,7 @@ export class InputsStateService<T = any> implements OnDestroy {
   protected readonly _limit$ = new BehaviorSubject<number | null>(null);
   protected readonly _offset$ = new BehaviorSubject<number>(0);
   protected readonly _count$ = new BehaviorSubject<number>(0);
-  protected readonly _sorter$ = new BehaviorSubject<PrizmTableCellSorter<T>[]>([]);
+  protected readonly _sorter$ = new BehaviorSubject<RegisterTableCellSorter<T>[]>([]);
   protected readonly _name$ = new BehaviorSubject<string>('');
   protected readonly _state$ = new BehaviorSubject<IInputsState>({
     state: EInputsState.HIDDEN,
@@ -93,7 +93,7 @@ export class InputsStateService<T = any> implements OnDestroy {
     this._offset$.next(offset);
   }
 
-  public setSorter(sort: PrizmTableCellSorter<any>[]): void {
+  public setSorter(sort: RegisterTableCellSorter<T>[]): void {
     this._sorter$.next(sort);
   }
 
@@ -139,7 +139,7 @@ export class InputsStateService<T = any> implements OnDestroy {
     return this._count$.getValue();
   }
 
-  public get sorter(): PrizmTableCellSorter<T>[] {
+  public get sorter(): RegisterTableCellSorter<T>[] {
     return this._sorter$.getValue();
   }
 
