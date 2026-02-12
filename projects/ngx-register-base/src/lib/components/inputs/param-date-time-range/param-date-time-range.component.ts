@@ -19,6 +19,7 @@ export type InputDateTimeRangeSaveValue = {
   to: string;
 } | null;
 
+// TODO не открывается пикер дат
 @Component({
   selector: 'sproc-param-date-time-range',
   templateUrl: './param-date-time-range.component.html',

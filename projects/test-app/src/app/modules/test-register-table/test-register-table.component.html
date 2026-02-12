@@ -3,7 +3,113 @@
 </header>
 <div class="filter-register-table-wrapper" [attr.filters-open]="filtersAreOpened">
   <sproc-register-table-filter>
-    <!--      <sproc-contract-table-filter [filtersForm]="filtersForm"> </sproc-contract-table-filter>-->
+    <form [formGroup]="filtersForm" class="param-container">
+      <sproc-param-text
+        label="param-text"
+        paramStyle="filter"
+        [formControlName]="name.TEXT"
+        [formatGqlValue]="gql[name.TEXT]"
+        placeholder="Введите текст"
+        [maxLength]="20"
+      />
+      <sproc-param-textarea
+        label="param-textarea"
+        paramStyle="filter"
+        [formControlName]="name.TEXTAREA"
+        [formatGqlValue]="gql[name.TEXTAREA]"
+        placeholder="Введите текст"
+        [maxLength]="50"
+      />
+      <sproc-param-text
+        label="param-text numberOnly"
+        paramStyle="filter"
+        numberOnly
+        [formControlName]="name.NUMB"
+        [formatGqlValue]="gql[name.NUMB]"
+        placeholder="Введите число"
+        [maxLength]="6"
+      />
+      <sproc-param-toggle
+        label="param-toggle"
+        paramStyle="filter"
+        [formControlName]="name.TOGGLE"
+        [formatGqlValue]="gql[name.TOGGLE]"
+      />
+      <sproc-param-calendar-year
+        label="param-calendar-year"
+        paramStyle="filter"
+        [formControlName]="name.CALENDAR_YEAR"
+        [formatGqlValue]="gql[name.CALENDAR_YEAR]"
+        placeholder="Выберите год"
+      />
+      <sproc-param-month
+        label="param-month"
+        paramStyle="filter"
+        [formControlName]="name.MONTH"
+        [formatGqlValue]="gql[name.MONTH]"
+        placeholder="Выберите месяц"
+      />
+      <sproc-param-month-range
+        label="param-month-range"
+        paramStyle="filter"
+        [formControlName]="name.MONTH_RANGE"
+        [formatGqlValue]="gql[name.MONTH_RANGE]"
+        placeholder="Выберите период месяцев"
+      />
+      <sproc-param-date
+        label="param-date"
+        paramStyle="filter"
+        [formControlName]="name.DATE"
+        [formatGqlValue]="gql[name.DATE]"
+        placeholder="Выберите дату"
+      />
+
+      <sproc-param-date-range
+        label="param-date-range"
+        paramStyle="filter"
+        [formControlName]="name.DATE_RANGE"
+        [formatGqlValue]="gql[name.DATE_RANGE]"
+        placeholder="Выберите период дат"
+      />
+      <sproc-param-date-time
+        label="param-date-time"
+        paramStyle="filter"
+        [formControlName]="name.DATE_TIME"
+        [formatGqlValue]="gql[name.DATE_TIME]"
+        placeholder="Выберите дату и время"
+      />
+      <sproc-param-date-time-range
+        label="param-date-time-range"
+        paramStyle="filter"
+        [formControlName]="name.DATE_TIME_RANGE"
+        [formatGqlValue]="gql[name.DATE_TIME_RANGE]"
+        placeholder="Выберите период даты и времени"
+      />
+      <sproc-param-select
+        label="param-select"
+        paramStyle="filter"
+        [items]="testItems"
+        [formControlName]="name.SELECT"
+        [formatGqlValue]="gql[name.SELECT]"
+        [searchable]="true"
+        placeholder="Выберите элемент"
+      />
+      <sproc-param-multi-select
+        label="param-multi-select"
+        paramStyle="filter"
+        [items]="testItems"
+        [formControlName]="name.MULTI_SELECT"
+        [formatGqlValue]="gql[name.MULTI_SELECT]"
+        [searchable]="true"
+        placeholder="Выберите элементы"
+      />
+      <!--      <sproc-param-custom />-->
+      <!--      <sproc-param-switcher />-->
+      <!--      <sproc-param-switcher-date-time-range />-->
+      <!--      <sproc-param-tree />-->
+      <!--      <sproc-param-tree-multi-select />-->
+      <!--      <sproc-param-tree-select />-->
+    </form>
   </sproc-register-table-filter>
 
   <sproc-register-table

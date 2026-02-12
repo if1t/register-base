@@ -7,6 +7,7 @@ import { TuiDay } from '@taiga-ui/cdk';
 
 export type InputDateRangeSavedValue = { from: string; to: string } | null;
 
+// TODO не открывается пикер дат
 @Component({
   selector: 'sproc-param-date-range',
   templateUrl: './param-date-range.component.html',

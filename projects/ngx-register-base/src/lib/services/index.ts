@@ -1,3 +1,4 @@
+export { DateTimeService } from './date-time.service';
 export { SelectedObjectsStateService } from './selected-objects-state.service';
 export { FiltersService } from './filter/filters.service';
 export { FiltersStateService } from './filter/filters-state.service';
