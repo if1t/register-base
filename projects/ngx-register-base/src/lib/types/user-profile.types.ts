@@ -1,4 +1,4 @@
-export interface IUserProfile {
+export interface IUserProfile<PermissionType = any> {
   id: string;
   username?: string;
   firstName?: string;
@@ -8,7 +8,7 @@ export interface IUserProfile {
   groups?: string[];
   groups_name?: string[];
   token?: string;
-  permissions?: any[];
+  permissions?: PermissionType[];
   attributes?: IUserAttributes[];
 }
 

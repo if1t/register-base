@@ -1,4 +1,4 @@
-import { IFilterSelectValue } from '../types/params.types';
+import { IFilterSelectValue } from '../types';
 
 export const SELECT_ALL_ID = '-1';
 export const SELECT_ALL_NAME = 'Выбрать все';

@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { EInputsAction, EInputsState, GqlFields, IInputsState } from '../types';
 import { Router } from '@angular/router';
 import { getLastSegmentOfPathName } from '../utils';
-import { RegisterTableCellSorter } from '../components';
+import { RegisterTableCellSorter } from '../components/register-table/model/schema';
 
 export const DEFAULT_LIMIT = 30;
 
