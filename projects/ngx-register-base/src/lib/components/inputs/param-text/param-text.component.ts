@@ -37,5 +37,5 @@ export class ParamTextComponent extends ParamBase<string | null, string | null> 
   /** сообщение об ошибке для текстового поля */
   public errorMessage = input<string>('');
   /** Максимальное кол-во символов */
-  public maxLength = input(0);
+  public maxLength = input(-1);
 }

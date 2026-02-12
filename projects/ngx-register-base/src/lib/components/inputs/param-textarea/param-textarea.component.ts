@@ -36,5 +36,5 @@ export class ParamTextareaComponent extends ParamBase<string | null, string | nu
   /** Максимальное кол-во строк в инпуте */
   public max = input(6);
   /** Максимальное кол-во символов */
-  public maxLength = input(0);
+  public maxLength = input(-1);
 }
