@@ -13,7 +13,7 @@ export class InputsService<FormType> implements OnDestroy {
   protected readonly unsubscribe$ = new Subject<void>();
 
   private readonly _searchInput: IInputControl<string | null> | undefined;
-  protected inputs!: FormGroupWrapper<FormType>;
+  public inputs!: FormGroupWrapper<FormType>;
 
   constructor(private readonly injector: Injector) {
     this.config = this.injector.get(INPUTS_STATE_CONFIG_KEY, {});
@@ -96,6 +96,8 @@ export class InputsService<FormType> implements OnDestroy {
       if (control.gql_value) {
         filter.push(control.gql_value);
       }
+
+      control.applied?.set(!!control.gql_value);
     }
 
     if (this.searchValue && this.searchInput?.gql_value) {
