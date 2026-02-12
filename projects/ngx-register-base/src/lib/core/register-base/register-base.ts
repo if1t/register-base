@@ -24,9 +24,6 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import _ from 'lodash';
-import { ScalarUUID } from 'hasura';
 import {
   ERegisterObjectState,
   IRegisterBase,
@@ -34,34 +31,45 @@ import {
   ITpUserSettings,
   ITpUserSettingsSettingsFilter,
   ObjectsSubscriptionConfig,
-} from '../../types/register-base.types';
-import { FiltersService } from '../../services/filter/filters.service';
-import { FiltersStateService } from '../../services/filter/filters-state.service';
-import { FiltersTransmitService } from '../../services/filter/filters-transmit.service';
+  IUserProfile,
+  EInputsAction,
+  EInputsState,
+  GqlField,
+  GqlFields,
+} from '../../types';
+import {
+  EColumnStatus,
+  IColumnSettings,
+  IColumnSettingsChanges,
+} from '../../components/column-settings/types/column-settings.types';
+import {
+  IColumnData,
+  IHasuraQueryFilter,
+  RegisterTableCellSorter,
+  ThWidthEntry,
+} from '../../components';
+import {
+  ApplySelectionTypes,
+  SelectionTypes,
+} from '../../components/checkbox-selector/checkbox-selector.types';
+import {
+  FiltersStateService,
+  FiltersService,
+  FiltersTransmitService,
+  SelectedObjectsStateService,
+} from '../../services';
 import {
   SEARCH_INPUT_DEBOUNCE_TIME_MLS,
   SETTINGS_TYPE,
   USER_PROFILE_LOADER,
   USER_SETTINGS_LOADER,
 } from '../../consts/register-base.consts';
-import { SelectedObjectsStateService } from '../../services/selected-objects-state.service';
-import {
-  IColumnData,
-  IHasuraQueryFilter,
-  RegisterTableCellSorter,
-  ThWidthEntry,
-} from '../../components/register-table/model/schema';
-import { FormGroupWrapper } from '../form-group-wrapper/form-group-wrapper';
-import { EInputsAction, EInputsState, GqlField, GqlFields } from '../../types/inputs.types';
-import { getLastSegmentOfPathName } from '../../utils/get-url-segment';
-import { IUserProfile } from '../../types/user-profile.types';
-import {
-  ApplySelectionTypes,
-  SelectionTypes,
-} from '../../components/checkbox-selector/checkbox-selector.types';
+import { getLastSegmentOfPathName, isNonNull } from '../../utils';
+import { FormGroupWrapper } from '../form-group-wrapper';
 import { DEFAULT_LIMIT } from '../../services/inputs-state.service';
-import { isNonNull } from '../../utils';
-import { IColumnSettingsChanges } from '../../components/column-settings/types/column-settings.types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import _ from 'lodash';
+import { ScalarUUID } from 'hasura';
 import { RegisterBaseStore } from './register-base.store';
 
 @Directive()
@@ -225,14 +233,11 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
 
   protected constructor(
     protected readonly injector: Injector,
-    columnsData: IColumnData[],
-    isMultiHead: boolean = false
+    columnsData: IColumnData[]
   ) {
     this.columnsData = columnsData;
     this._defaultColumnsWidths = new Map(columnsData.map((col) => [col.name, col.width]));
-    this.columns = isMultiHead
-      ? columnsData.flatMap((cd) => this._buildChildfreeColumnData(cd))
-      : columnsData.map((cd) => cd.name);
+    this.columns = this._getDefaultColumnsRecursive(columnsData);
     this._subscribeOnSettings();
     this._fetchSavedPageRowsLimit();
     const state = this.router.getCurrentNavigation()?.extras?.state;
@@ -391,12 +396,12 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
     this.selectedService?.setStateObjectByKey(key, updates);
   }
 
-  protected clearSelections(): void {
+  protected clearSelections(data?: T[]): void {
     this.selectedIds.clear();
     this.selectedObjects.clear();
 
     if (this.selectedService) {
-      this.selectedService?.resetState(this.data);
+      this.selectedService?.resetState(data);
       this.buildActions({
         row: [],
         count: 0,
@@ -408,8 +413,8 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
     const filter = this.buildFilter(this.limit, this.offset, this._filterState);
     this.currentFilter = filter;
 
-    this.objectsSubscription({ filter });
     this.clearSelections();
+    this.objectsSubscription({ filter });
   }
 
   protected buildActions(_data: { row: T[]; count: number }): void {}
@@ -522,7 +527,7 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
     } else if (typeof value === 'number') {
       this._selectFirstNStateObjects(value);
     } else {
-      this.clearSelections();
+      this.clearSelections(this.data);
     }
 
     this.buildActions({
@@ -622,18 +627,41 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
 
   public updateColumnSettings({ settings }: IColumnSettingsChanges): void {
     if (settings) {
-      this.stickyLeftIds = settings.stickyLeft.map((el) => el.id);
-      this.stickyRightIds = settings.stickyRight
-        .filter((el) => el.status === 'default')
-        .map((el) => el.id);
+      this.stickyLeftIds = this._getColumnIdsRecursive(settings.stickyLeft);
+      this.stickyRightIds = this._getColumnIdsRecursive(
+        settings.stickyRight,
+        (el) => el.status === EColumnStatus.DEFAULT
+      );
       this.columns = [
         ...this.stickyLeftIds,
-        ...settings.columns.filter((el) => el.status === 'default').map((el) => el.id),
+        ...this._getColumnIdsRecursive(
+          settings.columns,
+          (el) => el.status === EColumnStatus.DEFAULT
+        ),
         ...this.stickyRightIds,
       ];
     }
 
     this.cdr.markForCheck();
+  }
+
+  private _getColumnIdsRecursive(
+    columns: IColumnSettings[],
+    predicate?: (value: IColumnSettings, index: number, array: IColumnSettings[]) => unknown
+  ): string[] {
+    const filteredColumns = predicate
+      ? columns.filter((col, index, array) => predicate(col, index, array))
+      : columns;
+
+    return filteredColumns.flatMap((column) => {
+      const { id, children } = column;
+
+      if (children) {
+        return [id, ...this._getColumnIdsRecursive(children, predicate)];
+      }
+
+      return [id];
+    });
   }
 
   public updateSort(sort: RegisterTableCellSorter<any>[]): void {
@@ -805,13 +833,16 @@ export abstract class RegisterBase<T extends IRegisterBase, Form = any>
     return isNotSelected ? selectedSize : this.dataCount - unselectedSize;
   }
 
-  private _buildChildfreeColumnData(column: IColumnData): string[] {
-    const result: string[] = [];
-    result.push(column.name);
-    if (column.children) {
-      result.push(...column.children.flatMap((child) => this._buildChildfreeColumnData(child)));
-    }
-    return result;
+  private _getDefaultColumnsRecursive(columnsData: IColumnData[]): string[] {
+    return columnsData.flatMap((column) => {
+      const { name, children } = column;
+
+      if (children) {
+        return [name, ...this._getDefaultColumnsRecursive(children)];
+      }
+
+      return [name];
+    });
   }
 
   protected get notAllFetched(): boolean {

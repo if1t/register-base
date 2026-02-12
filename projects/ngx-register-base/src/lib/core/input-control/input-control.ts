@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { IInputControl, InputControlGqlValue } from '../../types/inputs.types';
 import { signal, WritableSignal } from '@angular/core';
 
-export const InputControl = class InputControl<ValueType = any, SavedValueType = any>
+export class InputControl<ValueType = any, SavedValueType = any>
   extends FormControl
   implements IInputControl<ValueType, SavedValueType>
 {
@@ -27,4 +27,4 @@ export const InputControl = class InputControl<ValueType = any, SavedValueType =
     this.saved_value$ = new BehaviorSubject<SavedValueType | null>(null);
     this.applied = signal(false);
   }
-};
+}
