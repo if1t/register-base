@@ -39,4 +39,5 @@ export interface ITestFilter {
   [EControlName.DATE_TIME_RANGE]: PrizmDateTimeRange | null;
   [EControlName.SELECT]: IFilterSelectValue | null;
   [EControlName.MULTI_SELECT]: IFilterSelectValue[] | null;
+  [EControlName.SWITCHER]: number | null;
 }

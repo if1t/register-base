@@ -103,8 +103,14 @@
         [searchable]="true"
         placeholder="Выберите элементы"
       />
+      <sproc-param-switcher
+        label="param-switcher"
+        [formControlName]="name.SWITCHER"
+        [formatGqlValue]="gql[name.SWITCHER]"
+        [switchers]="methodSwitchers"
+        [required]="true"
+      />
       <!--      <sproc-param-custom />-->
-      <!--      <sproc-param-switcher />-->
       <!--      <sproc-param-switcher-date-time-range />-->
       <!--      <sproc-param-tree />-->
       <!--      <sproc-param-tree-multi-select />-->

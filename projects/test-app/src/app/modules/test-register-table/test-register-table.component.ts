@@ -39,6 +39,7 @@ import {
   PrizmDayRange,
   PrizmMonth,
   PrizmMonthRange,
+  PrizmSwitcherItem,
 } from '@prizm-ui/components';
 import { TuiDay } from '@taiga-ui/cdk';
 
@@ -80,6 +81,11 @@ export class TestRegisterTableComponent
   name = EControlName;
   gql = GqlTest;
   testItems = TestItems;
+  methodSwitchers: PrizmSwitcherItem<number>[] = [
+    { id: 1, title: '1' },
+    { id: 2, title: '2' },
+    { id: 3, title: '3' },
+  ];
 
   constructor(injector: Injector) {
     super(injector, columnsData);
@@ -121,6 +127,7 @@ export class TestRegisterTableComponent
       [EControlName.DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
       [EControlName.SELECT]: new InputControl<IFilterSelectValue | null>(null),
       [EControlName.MULTI_SELECT]: new InputControl<IFilterSelectValue[] | null>(null),
+      [EControlName.SWITCHER]: new InputControl<number | null>(null),
     });
   }
 }

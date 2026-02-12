@@ -27,6 +27,7 @@ export enum EControlName {
   DATE_TIME_RANGE = 'date-time-range',
   SELECT = 'select',
   MULTI_SELECT = 'multi-select',
+  SWITCHER = 'switcher',
 }
 
 const TextGqlValue: FormatterGqlValueType<string | null> = (value: string | null) =>
@@ -117,6 +118,16 @@ const MultiSelectGqlValue: FormatterGqlValueType<IFilterSelectValue[] | null> = 
   };
 };
 
+const SwitcherGqlValue: FormatterGqlValueType<number | null> = (value: number | null) => {
+  if (value === null) {
+    return undefined;
+  }
+
+  return {
+    switcherVar: { _eq: value },
+  };
+};
+
 export const GqlTest = {
   [EControlName.TEXT]: TextGqlValue,
   [EControlName.TEXTAREA]: TextGqlValue,
@@ -131,6 +142,7 @@ export const GqlTest = {
   [EControlName.DATE_TIME_RANGE]: DateTimeRangeGqlValue,
   [EControlName.SELECT]: SelectGqlValue,
   [EControlName.MULTI_SELECT]: MultiSelectGqlValue,
+  [EControlName.SWITCHER]: SwitcherGqlValue,
 };
 
 export const TestItems: IFilterSelectValue[] = Array.from({ length: 50 }, (_, i) => ({
