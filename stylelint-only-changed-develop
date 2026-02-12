@@ -2,7 +2,7 @@
 
 FILES=$(git diff --diff-filter=d --name-only origin/develop | grep -E '\.less$')
 if [ -n "$FILES" ]; then
-  npx stylelint --aei $FILES --custom-formatter=./stylelint-formatter/index.js -o ./dist/sma-ui-mfe-main-app-reports/stylelint-report.html
+  npx stylelint --aei $FILES --custom-formatter ./stylelint-formatter.js -o ./dist/stylelint/only-changed-develop-report.html
 else
   echo "No files found into diff with develop for lint with Stylelint."
   exit 0

@@ -2,7 +2,7 @@
 
 FILES=$(git diff --diff-filter=d --name-only origin/develop | grep -E '\.(ts)$' | xargs)
 if [ -n "$FILES" ]; then
-  npx eslint $FILES --no-inline-config --no-error-on-unmatched-pattern -f node_modules/eslint-detailed-reporter/lib/detailed.js -o ./dist/sma-ui-mfe-main-app-reports/eslint-report.html
+  npx eslint $FILES --no-inline-config --no-error-on-unmatched-pattern -f node_modules/eslint-detailed-reporter/lib/detailed.js -o ./dist/eslint/only-changed-develop-report.html
 else
   echo "No files found into diff with develop for lint with Eslint."
   exit 0
