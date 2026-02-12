@@ -3,6 +3,7 @@ import { PrizmDay, PrizmTime } from '@prizm-ui/components';
 export enum EDatePattern {
   MONTH_YEAR = 'MM.yyyy',
   DATE = 'dd.MM.yyyy',
+  SHORT_YEAR_DATE = 'dd.MM.yy',
   DATE_TIME_WITHOUT_SECONDS = 'dd.MM.yyyy HH:mm',
   DATE_TIME = 'dd.MM.yyyy HH:mm:ss',
   YEAR_MONTH_DAY = 'yyyy-MM-dd',
@@ -14,10 +15,13 @@ export enum EDatePattern {
   DATE_TIME_FOR_TRACKER = 'YYYY-MM-DD HH:mm:ss',
   DATE_TIME_FOR_TRACKER_NOT_SIMPLE = 'yyyy-MM-dd HH:mm:ss',
   TUI_YMD = 'YMD',
+  DAY = 'd',
+  HOUR_MINUTE = 'HH:mm',
 }
 
 export enum EMomentPattern {
   YYYY_MM_DD = 'YYYY-MM-DD',
+  YYYYMMDD = 'yyyy/MM/DD',
 }
 
 export enum ETimezone {

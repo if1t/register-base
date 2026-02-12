@@ -3,8 +3,15 @@ import { format } from 'date-fns';
 import moment, { Moment } from 'moment-timezone';
 import { BehaviorSubject } from 'rxjs';
 import { STORED_TIMEZONE } from '../consts/date-time.consts';
-import { PrizmDateTimeRange, PrizmDayRange, PrizmTime, PrizmTimeRange } from '@prizm-ui/components';
 import { EDatePattern, ETimezone, SmaPrizmDateTime } from '../directives/date/date-time.types';
+import {
+  PrizmDateTimeRange,
+  PrizmDay,
+  PrizmDayRange,
+  PrizmTime,
+  PrizmTimeRange,
+} from '@prizm-ui/components';
+import { TuiDay } from '@taiga-ui/cdk';
 
 export interface ITimeZone {
   time_diff: string;
@@ -19,7 +26,7 @@ export interface ICurrentTime_TZ {
 
 // Не менять формат, названия и ' ' оставлять всегда
 // 'UTC ' - оставлять
-// если менять,изменить фильтры в ДО
+// Eсли менять,изменить фильтры в ДО
 export const timezoneSelectItems = [
   'UTC +00:00',
   'Europe/Moscow +03:00',
@@ -38,31 +45,40 @@ export const TIME_ZONES: ITimeZone[] = [
   },
   {
     value: 'Europe/Moscow',
-    string: '+03:00 Системный, ГПН-БС, ГПН-ГЕО, ГПН-НС, ГПН-ТП, ГПН-Щ, МНГП, НТЦ, Парадная, СПД',
+    string: '+03:00 Москва',
     time_diff: ETimezone.MSK,
   },
   {
     value: 'Asia/Aqtau',
-    string:
-      '+05:00 ГПН-А, ГПН-БГП, ГПН-З, ГПН-ИТО, ГПН-М, ГПН-Н, ГПН-О, ГПН-Р, ГПН-С, ГПН-Х, ГПН-Я, МРТ, МсНГ, МЭН, ННГГФ, НТН, НЭН, СН-МНГ',
+    string: '+05:00 Тюмень',
     time_diff: ETimezone.AQT,
   },
   {
     value: 'Asia/Novosibirsk',
-    string: '+07:00 ГПН-В, МНГ-Г, ТН-ВНК',
+    string: '+07:00 Томск',
     time_diff: ETimezone.NVS,
   },
   {
     value: 'Asia/Irkutsk',
-    string: '+08:00',
+    string: '+08:00 Иркутск',
     time_diff: ETimezone.IRK,
   },
   {
     value: 'Asia/Yakutsk',
-    string: '+09:00',
+    string: '+09:00 Якутск',
     time_diff: ETimezone.YAK,
   },
 ];
+
+export const TIME_ZONE_HINTS: Record<string, string> = {
+  '+00:00': '+00:00 UTC',
+  '+03:00': 'ГПН-БС, ГПН-ГЕО, ГПН-НС, ГПН-ТП, ГПН-Щ, МНГП, НТЦ, Парадная, СПД',
+  '+05:00':
+    'ГПН-А, ГПН-БГП, ГПН-З, ГПН-ИТО, ГПН-М, ГПН-Н, ГПН-О, ГПН-Р, ГПН-С, ГПН-Х, ГПН-Я, МРТ, МсНГ, МЭН, ННГГФ, НТН, НЭН, СН-МНГ',
+  '+07:00': 'ГПН-В, МНГ-Г, ИН-ВНК',
+  '+08:00': 'Игнялинское м/р',
+  '+09:00': 'Чаяндинское м/р, Тымпучиканское м/р, Вакунайское м/р, Тас-Юряхское м/р',
+};
 
 @Injectable({
   providedIn: 'root',
@@ -161,43 +177,6 @@ export class DateTimeService {
     const [day, month, year] = date.split('/');
 
     return `${day}.${month}.${year}`;
-  }
-
-  /** @deprecated use parseDate(iso: string, pattern: string): string method */
-  public parseDateToDDMMYYYY_HHMM(dateString: string): string {
-    const options: Intl.DateTimeFormatOptions = {
-      hour12: false,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    };
-
-    const _date = this.isoToLocalDate(dateString).toLocaleString('en-GB', options);
-    const [datePart, timePart] = _date.split(', ');
-    const [day, month, year] = datePart.split('/');
-
-    return `${day}.${month}.${year} ${timePart}`;
-  }
-
-  /** @deprecated use parseDate(iso: string, pattern: string): string method */
-  public parseDateToDDMMYYYY_HHMMSS(dateString: string): string {
-    const options: Intl.DateTimeFormatOptions = {
-      hour12: false,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    };
-
-    const _date = this.isoToLocalDate(dateString).toLocaleString('en-GB', options);
-    const [datePart, timePart] = _date.split(', ');
-    const [day, month, year] = datePart.split('/');
-
-    return `${day}.${month}.${year} ${timePart}`;
   }
 
   public isoToLocalDate(iso: string, tzDiff?: string): Date {
@@ -394,5 +373,27 @@ export class DateTimeService {
     }
 
     return date;
+  }
+
+  public getTuiDayFromString(date: string): TuiDay {
+    const localDate = this.isoToLocalDate(date);
+    return new TuiDay(localDate.getFullYear(), localDate.getMonth(), localDate.getDate());
+  }
+
+  public getTuiDayFromDate(date: Date): TuiDay {
+    return new TuiDay(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  public transferTuiDayToString(date: TuiDay | null, pattern?: EDatePattern): string | null {
+    return date ? format(date.toLocalNativeDate(), pattern ?? EDatePattern.YEAR_MONTH_DAY) : null;
+  }
+
+  public toSmaPrizmDateTime(dateString: string): SmaPrizmDateTime {
+    const date = new Date(dateString);
+    const hours = date.getHours();
+    const min = date.getMinutes();
+    const day = PrizmDay.fromLocalNativeDate(date);
+    const time = new PrizmTime(hours, min);
+    return [day, time];
   }
 }
