@@ -1,3 +1,5 @@
+export { TREE_LOADING_NODE } from './consts/param-tree.consts';
+export { ParamTreeService } from './services/param-tree.service';
 export { SyncTreeLoaderService } from './services/sync-tree-loader.service';
 export * from './tokens/param-tree.tokens';
 export * from './types/param-tree.types';

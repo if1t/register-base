@@ -112,12 +112,13 @@
       />
       <sproc-param-switcher-date-time-range
         label="param-switcher-date-time-range"
+        paramStyle="filter"
         [formControlName]="name.SWITCHER_DATE_TIME_RANGE"
-        [formatGqlValue]="gql[name.SWITCHER_DATE_TIME_RANGE]"
-        [required]="true"
+        [forceClear]="false"
       />
+      <app-tree-wrapper />
+
       <!--      <sproc-param-custom />-->
-      <!--      <sproc-param-tree />-->
       <!--      <sproc-param-tree-multi-select />-->
       <!--      <sproc-param-tree-select />-->
     </form>

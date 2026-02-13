@@ -42,6 +42,7 @@ import {
   PrizmSwitcherItem,
 } from '@prizm-ui/components';
 import { TuiDay } from '@taiga-ui/cdk';
+import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.component';
 
 @Component({
   standalone: true,
@@ -56,6 +57,7 @@ import { TuiDay } from '@taiga-ui/cdk';
     ParamTreeComponent,
     ParamTreeMultiSelectComponent,
     ParamTreeSelectComponent,
+    TreeWrapperComponent,
   ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
