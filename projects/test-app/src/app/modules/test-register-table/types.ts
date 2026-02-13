@@ -6,7 +6,7 @@ import {
   PrizmMonthRange,
 } from '@prizm-ui/components';
 import { TuiDay } from '@taiga-ui/cdk';
-import { IFilterSelectValue, SmaPrizmDateTime } from 'ngx-register-base';
+import { IFilterSelectValue, SmaPrizmDateTime, ITreeNode } from 'ngx-register-base';
 
 export interface ITestTable {
   id: string;
@@ -41,4 +41,6 @@ export interface ITestFilter {
   [EControlName.MULTI_SELECT]: IFilterSelectValue[] | null;
   [EControlName.SWITCHER]: number | null;
   [EControlName.SWITCHER_DATE_TIME_RANGE]: PrizmDateTimeRange | null;
+  [EControlName.TREE_SELECT]: ITreeNode | null;
+  [EControlName.TREE_MULTI_SELECT]: ITreeNode[] | null;
 }

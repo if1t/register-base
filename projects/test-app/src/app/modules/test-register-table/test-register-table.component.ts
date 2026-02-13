@@ -19,11 +19,13 @@ import {
   SelectedObjectsStateService,
   USER_SETTINGS_LOADER,
   NumberOnlyDirective,
-  ParamTreeComponent,
   ParamTreeMultiSelectComponent,
   ParamTreeSelectComponent,
   SmaPrizmDateTime,
   IFilterSelectValue,
+  ITreeNode,
+  SyncTreeLoaderService,
+  TREE_LOADER,
 } from 'ngx-register-base';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -32,7 +34,7 @@ import { columnsData } from './mocks/mocks';
 import { ContractsTableStoreService } from './store';
 import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EControlName, GqlTest, TestItems } from './consts';
+import { EControlName, GqlTest, TestItems, TestLoaderNode } from './consts';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   PrizmDateTimeRange,
@@ -54,9 +56,8 @@ import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.com
     InputsModule,
     ReactiveFormsModule,
     NumberOnlyDirective,
-    ParamTreeComponent,
-    ParamTreeMultiSelectComponent,
     ParamTreeSelectComponent,
+    ParamTreeMultiSelectComponent,
     TreeWrapperComponent,
   ],
   templateUrl: './test-register-table.component.html',
@@ -69,6 +70,7 @@ import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.com
     { provide: INPUTS_STATE_CONFIG_KEY, useValue: { searchInput: true } },
     { provide: USER_SETTINGS_LOADER, useClass: SmaTpUserSettingsStore },
     { provide: RegisterBaseStore, useClass: ContractsTableStoreService },
+    { provide: TREE_LOADER, useClass: SyncTreeLoaderService },
   ],
 })
 export class TestRegisterTableComponent
@@ -83,11 +85,12 @@ export class TestRegisterTableComponent
   name = EControlName;
   gql = GqlTest;
   testItems = TestItems;
-  methodSwitchers: PrizmSwitcherItem<number>[] = [
+  testSwitchers: PrizmSwitcherItem<number>[] = [
     { id: 1, title: '1' },
     { id: 2, title: '2' },
     { id: 3, title: '3' },
   ];
+  testLoaderNode = TestLoaderNode;
 
   constructor(injector: Injector) {
     super(injector, columnsData);
@@ -131,6 +134,8 @@ export class TestRegisterTableComponent
       [EControlName.MULTI_SELECT]: new InputControl<IFilterSelectValue[] | null>(null),
       [EControlName.SWITCHER]: new InputControl<number | null>(null),
       [EControlName.SWITCHER_DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
+      [EControlName.TREE_SELECT]: new InputControl<ITreeNode | null>(null),
+      [EControlName.TREE_MULTI_SELECT]: new InputControl<ITreeNode[] | null>(null),
     });
   }
 }

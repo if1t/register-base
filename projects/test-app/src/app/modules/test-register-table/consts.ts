@@ -3,6 +3,7 @@ import {
   IFilterSelectValue,
   SmaPrizmDateTime,
   DateTimeService,
+  ITreeNode,
 } from 'ngx-register-base';
 import {
   PrizmDateTimeRange,
@@ -29,6 +30,8 @@ export enum EControlName {
   MULTI_SELECT = 'multi-select',
   SWITCHER = 'switcher',
   SWITCHER_DATE_TIME_RANGE = 'switcher-date-time-range',
+  TREE_SELECT = 'tree-select',
+  TREE_MULTI_SELECT = 'tree-multi-select',
 }
 
 const TextGqlValue: FormatterGqlValueType<string | null> = (value: string | null) =>
@@ -129,6 +132,28 @@ const SwitcherGqlValue: FormatterGqlValueType<number | null> = (value: number | 
   };
 };
 
+const TreeSelectGqlValue: FormatterGqlValueType<ITreeNode | null> = (value: ITreeNode | null) => {
+  if (value === null) {
+    return;
+  }
+
+  return {
+    treeSelectVar: { _eq: value },
+  };
+};
+
+const TreeMultiSelectGqlValue: FormatterGqlValueType<ITreeNode[] | null> = (
+  value: ITreeNode[] | null
+) => {
+  if (value === null) {
+    return;
+  }
+
+  return {
+    treeMultiSelectVar: { _eq: value },
+  };
+};
+
 const SwitcherDateTimeRangeGqlValue: FormatterGqlValueType<PrizmDateTimeRange | null> = (
   value: PrizmDateTimeRange | null,
   injector?: Injector
@@ -162,9 +187,59 @@ export const GqlTest = {
   [EControlName.MULTI_SELECT]: MultiSelectGqlValue,
   [EControlName.SWITCHER]: SwitcherGqlValue,
   [EControlName.SWITCHER_DATE_TIME_RANGE]: SwitcherDateTimeRangeGqlValue,
+  [EControlName.TREE_SELECT]: TreeSelectGqlValue,
+  [EControlName.TREE_MULTI_SELECT]: TreeMultiSelectGqlValue,
 };
 
 export const TestItems: IFilterSelectValue[] = Array.from({ length: 50 }, (_, i) => ({
   id: i,
   name: i.toString(),
 }));
+
+export const TestLoaderNode: ITreeNode = {
+  name: '',
+  children: [
+    {
+      name: '1',
+      haveChildren: true,
+      children: [
+        {
+          name: '1.1',
+        },
+        {
+          name: '1.2',
+        },
+      ],
+    },
+    {
+      name: '2',
+      haveChildren: true,
+      children: [
+        {
+          name: '2.1',
+        },
+        {
+          name: '2.2',
+          haveChildren: true,
+          children: [
+            {
+              name: '2.2.1',
+            },
+          ],
+        },
+        {
+          name: '2.3',
+        },
+      ],
+    },
+    {
+      name: '3',
+      haveChildren: true,
+      children: [
+        {
+          name: '3.1',
+        },
+      ],
+    },
+  ],
+};

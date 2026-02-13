@@ -107,7 +107,7 @@
         label="param-switcher"
         [formControlName]="name.SWITCHER"
         [formatGqlValue]="gql[name.SWITCHER]"
-        [switchers]="methodSwitchers"
+        [switchers]="testSwitchers"
         [required]="true"
       />
       <sproc-param-switcher-date-time-range
@@ -116,11 +116,23 @@
         [formControlName]="name.SWITCHER_DATE_TIME_RANGE"
         [forceClear]="false"
       />
-      <app-tree-wrapper />
+      <app-tree-wrapper [loaderNode]="testLoaderNode" />
+      <sproc-param-tree-select
+        label="param-tree-select"
+        [formControlName]="name.TREE_SELECT"
+        [formatGqlValue]="gql[name.TREE_SELECT]"
+        [loaderNode]="testLoaderNode"
+        [defaultNodeOpenedState]="false"
+      />
+      <sproc-param-tree-multi-select
+        label="param-tree-multi-select"
+        [formControlName]="name.TREE_MULTI_SELECT"
+        [formatGqlValue]="gql[name.TREE_MULTI_SELECT]"
+        [loaderNode]="testLoaderNode"
+        [defaultNodeOpenedState]="false"
+      />
 
       <!--      <sproc-param-custom />-->
-      <!--      <sproc-param-tree-multi-select />-->
-      <!--      <sproc-param-tree-select />-->
     </form>
   </sproc-register-table-filter>
 
