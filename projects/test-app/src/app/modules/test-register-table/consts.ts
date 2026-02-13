@@ -32,6 +32,7 @@ export enum EControlName {
   SWITCHER_DATE_TIME_RANGE = 'switcher-date-time-range',
   TREE_SELECT = 'tree-select',
   TREE_MULTI_SELECT = 'tree-multi-select',
+  CUSTOM = 'custom',
 }
 
 const TextGqlValue: FormatterGqlValueType<string | null> = (value: string | null) =>
@@ -132,6 +133,23 @@ const SwitcherGqlValue: FormatterGqlValueType<number | null> = (value: number | 
   };
 };
 
+const SwitcherDateTimeRangeGqlValue: FormatterGqlValueType<PrizmDateTimeRange | null> = (
+  value: PrizmDateTimeRange | null,
+  injector?: Injector
+) => {
+  const dateTimeService = injector?.get(DateTimeService);
+
+  if (!value || !dateTimeService) {
+    return;
+  }
+
+  const { from, to } = dateTimeService.prizmDateTimeRangeToNativeDates(value);
+
+  return {
+    switcherDateTimeRangeVar: { _gte: from.toISOString(), _lte: to.toISOString() },
+  };
+};
+
 const TreeSelectGqlValue: FormatterGqlValueType<ITreeNode | null> = (value: ITreeNode | null) => {
   if (value === null) {
     return;
@@ -154,20 +172,13 @@ const TreeMultiSelectGqlValue: FormatterGqlValueType<ITreeNode[] | null> = (
   };
 };
 
-const SwitcherDateTimeRangeGqlValue: FormatterGqlValueType<PrizmDateTimeRange | null> = (
-  value: PrizmDateTimeRange | null,
-  injector?: Injector
-) => {
-  const dateTimeService = injector?.get(DateTimeService);
-
-  if (!value || !dateTimeService) {
+const CustomGqlValue: FormatterGqlValueType<File | null> = (value: File | null) => {
+  if (value === null) {
     return;
   }
 
-  const { from, to } = dateTimeService.prizmDateTimeRangeToNativeDates(value);
-
   return {
-    switcherDateTimeRangeVar: { _gte: from.toISOString(), _lte: to.toISOString() },
+    customVar: { fileName: { _eq: value.name } },
   };
 };
 
@@ -189,6 +200,7 @@ export const GqlTest = {
   [EControlName.SWITCHER_DATE_TIME_RANGE]: SwitcherDateTimeRangeGqlValue,
   [EControlName.TREE_SELECT]: TreeSelectGqlValue,
   [EControlName.TREE_MULTI_SELECT]: TreeMultiSelectGqlValue,
+  [EControlName.CUSTOM]: CustomGqlValue,
 };
 
 export const TestItems: IFilterSelectValue[] = Array.from({ length: 50 }, (_, i) => ({

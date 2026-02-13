@@ -43,4 +43,5 @@ export interface ITestFilter {
   [EControlName.SWITCHER_DATE_TIME_RANGE]: PrizmDateTimeRange | null;
   [EControlName.TREE_SELECT]: ITreeNode | null;
   [EControlName.TREE_MULTI_SELECT]: ITreeNode[] | null;
+  [EControlName.CUSTOM]: File | null;
 }

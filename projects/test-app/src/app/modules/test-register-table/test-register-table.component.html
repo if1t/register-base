@@ -132,7 +132,10 @@
         [defaultNodeOpenedState]="false"
       />
 
-      <!--      <sproc-param-custom />-->
+      <sproc-param-custom [formControlName]="name.CUSTOM" [formatGqlValue]="gql[name.CUSTOM]">
+        <span>param-custom</span>
+        <input type="file" (change)="onFileSelect($event)" />
+      </sproc-param-custom>
     </form>
   </sproc-register-table-filter>
 

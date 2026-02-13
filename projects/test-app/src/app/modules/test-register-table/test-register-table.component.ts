@@ -136,6 +136,16 @@ export class TestRegisterTableComponent
       [EControlName.SWITCHER_DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
       [EControlName.TREE_SELECT]: new InputControl<ITreeNode | null>(null),
       [EControlName.TREE_MULTI_SELECT]: new InputControl<ITreeNode[] | null>(null),
+      [EControlName.CUSTOM]: new InputControl<File | null>(null),
     });
+  }
+
+  protected onFileSelect(event: any): void {
+    const target: HTMLInputElement = event.target;
+    const file = target.files?.[0];
+
+    if (file) {
+      this.filtersForm.controls[EControlName.CUSTOM].setValue(file);
+    }
   }
 }
