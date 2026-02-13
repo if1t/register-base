@@ -40,4 +40,5 @@ export interface ITestFilter {
   [EControlName.SELECT]: IFilterSelectValue | null;
   [EControlName.MULTI_SELECT]: IFilterSelectValue[] | null;
   [EControlName.SWITCHER]: number | null;
+  [EControlName.SWITCHER_DATE_TIME_RANGE]: PrizmDateTimeRange | null;
 }

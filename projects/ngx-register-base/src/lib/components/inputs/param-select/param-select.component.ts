@@ -218,7 +218,7 @@ export class ParamSelectComponent
       return [this.value[idField]];
     }
 
-    return undefined;
+    return;
   }
 
   private _buildSelectedItemIdsWhere(
@@ -229,7 +229,7 @@ export class ParamSelectComponent
     if (where && selectedItemIDs && selectedItemIDs.length > 0) {
       return { _and: [{ [idField]: { _in: selectedItemIDs } }, where] };
     }
-    return undefined;
+    return;
   }
 
   private _handleResults(

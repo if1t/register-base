@@ -128,6 +128,7 @@ export class TestRegisterTableComponent
       [EControlName.SELECT]: new InputControl<IFilterSelectValue | null>(null),
       [EControlName.MULTI_SELECT]: new InputControl<IFilterSelectValue[] | null>(null),
       [EControlName.SWITCHER]: new InputControl<number | null>(null),
+      [EControlName.SWITCHER_DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
     });
   }
 }

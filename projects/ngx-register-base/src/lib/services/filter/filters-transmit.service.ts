@@ -68,14 +68,14 @@ export class FiltersTransmitService implements OnDestroy {
       return JSON.stringify(values);
     }
 
-    return undefined;
+    return;
   }
 
   public get filters(): ITpUserSettingsSettingsFilter[] | undefined {
     const param = this._route.snapshot.queryParams[FILTERS_QUERY_PARAMS_KEY];
 
     if (param === FILTERS_QUERY_PARAMS_VALUE_EMPTY) {
-      return undefined;
+      return;
     }
 
     if (param) {

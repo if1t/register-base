@@ -28,6 +28,7 @@ export enum EControlName {
   SELECT = 'select',
   MULTI_SELECT = 'multi-select',
   SWITCHER = 'switcher',
+  SWITCHER_DATE_TIME_RANGE = 'switcher-date-time-range',
 }
 
 const TextGqlValue: FormatterGqlValueType<string | null> = (value: string | null) =>
@@ -65,7 +66,7 @@ const DateTimeGqlValue: FormatterGqlValueType<SmaPrizmDateTime | null> = (
   const dateTimeService = injector?.get(DateTimeService);
 
   if (!value || !dateTimeService) {
-    return undefined;
+    return;
   }
 
   const dateTime = dateTimeService.prizmDateTimeToNativeDate(value);
@@ -84,13 +85,13 @@ const DateTimeRangeGqlValue: FormatterGqlValueType<PrizmDateTimeRange | null> = 
   const dateTimeService = injector?.get(DateTimeService);
 
   if (!value || !dateTimeService) {
-    return undefined;
+    return;
   }
 
   const { from, to } = dateTimeService.prizmDateTimeRangeToNativeDates(value);
 
   return {
-    dateTimeRangeVar: { _gte: from, _lte: to },
+    dateTimeRangeVar: { _gte: from.toISOString(), _lte: to.toISOString() },
   };
 };
 
@@ -98,7 +99,7 @@ const SelectGqlValue: FormatterGqlValueType<IFilterSelectValue | null> = (
   value: IFilterSelectValue | null
 ) => {
   if (!value) {
-    return undefined;
+    return;
   }
 
   return {
@@ -110,7 +111,7 @@ const MultiSelectGqlValue: FormatterGqlValueType<IFilterSelectValue[] | null> = 
   value: IFilterSelectValue[] | null
 ) => {
   if (!value) {
-    return undefined;
+    return;
   }
 
   return {
@@ -120,11 +121,28 @@ const MultiSelectGqlValue: FormatterGqlValueType<IFilterSelectValue[] | null> = 
 
 const SwitcherGqlValue: FormatterGqlValueType<number | null> = (value: number | null) => {
   if (value === null) {
-    return undefined;
+    return;
   }
 
   return {
     switcherVar: { _eq: value },
+  };
+};
+
+const SwitcherDateTimeRangeGqlValue: FormatterGqlValueType<PrizmDateTimeRange | null> = (
+  value: PrizmDateTimeRange | null,
+  injector?: Injector
+) => {
+  const dateTimeService = injector?.get(DateTimeService);
+
+  if (!value || !dateTimeService) {
+    return;
+  }
+
+  const { from, to } = dateTimeService.prizmDateTimeRangeToNativeDates(value);
+
+  return {
+    switcherDateTimeRangeVar: { _gte: from.toISOString(), _lte: to.toISOString() },
   };
 };
 
@@ -143,6 +161,7 @@ export const GqlTest = {
   [EControlName.SELECT]: SelectGqlValue,
   [EControlName.MULTI_SELECT]: MultiSelectGqlValue,
   [EControlName.SWITCHER]: SwitcherGqlValue,
+  [EControlName.SWITCHER_DATE_TIME_RANGE]: SwitcherDateTimeRangeGqlValue,
 };
 
 export const TestItems: IFilterSelectValue[] = Array.from({ length: 50 }, (_, i) => ({

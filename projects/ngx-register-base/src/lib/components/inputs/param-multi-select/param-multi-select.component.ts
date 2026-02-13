@@ -356,7 +356,7 @@ export class ParamMultiSelectComponent
       return this.value?.filter((elem) => elem.id !== SELECT_ALL_ID).map((val: any) => val.id);
     }
 
-    return undefined;
+    return;
   }
 
   private _buildSelectedItemIdsWhere(
@@ -367,7 +367,7 @@ export class ParamMultiSelectComponent
     if (where && selectedItemIDs && selectedItemIDs.length > 0) {
       return { _and: [{ [idField]: { _in: selectedItemIDs } }, where] };
     }
-    return undefined;
+    return;
   }
 
   private _handleResults(

@@ -86,7 +86,7 @@ export abstract class ParamSelectBase<
     }
 
     // Если ничего не задано, возвращаем undefined
-    return undefined;
+    return;
   }
 
   protected buildNestedCondition(field: string, value: string, strict: boolean): object {
