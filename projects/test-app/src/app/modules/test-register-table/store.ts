@@ -3,8 +3,13 @@ import { tapResponse } from '@ngrx/operators';
 import { catchError, EMPTY, map, Observable, of, switchMap } from 'rxjs';
 import { PrizmTableCellSorter } from '@prizm-ui/components';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RegisterBaseStore } from 'ngx-register-base';
-import { IHasuraQueryFilter, GqlFields, ObjectsSubscriptionConfig } from 'ngx-register-base';
+import {
+  GqlFields,
+  IHasuraQueryFilter,
+  isDefined,
+  ObjectsSubscriptionConfig,
+  RegisterBaseStore,
+} from 'ngx-register-base';
 import { MutationResult } from 'apollo-angular';
 import { TABLE_DATA, TestId } from './mocks/mocks';
 
@@ -70,7 +75,15 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
           this.setLoading(true);
 
           console.log('Запрос по фильтру', { filter });
-          return of({ data: { test: TABLE_DATA } }).pipe(
+          const { offset, limit } = filter;
+
+          let filteredData = TABLE_DATA;
+
+          if (isDefined(offset) && isDefined(limit)) {
+            filteredData = TABLE_DATA.slice(filter.offset, filter.offset! + filter.limit!);
+          }
+
+          return of({ data: { test: filteredData } }).pipe(
             tapResponse(
               ({ data }) => {
                 this.setLoading(false);

@@ -120,7 +120,7 @@ export class TestRegisterTableComponent
     gqlFilter?: GqlFields,
     sorter?: RegisterTableCellSorter<ITestData>[] | undefined
   ): IHasuraQueryFilter<any> {
-    return {};
+    return this.baseStore!.buildFilter(limit, offset, gqlFilter, sorter);
   }
 
   protected override get buildForm(): FormGroupWrapper<ITestFilter> {
