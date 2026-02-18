@@ -150,6 +150,11 @@
     [isSelectloading]="selectedRecordsLoading$ | async"
     [page]="page$ | async"
     [limit]="limit$ | async"
+    (paginatorChange)="onPaginatorChange($event)"
+    (selectChanged)="selectChanged($event)"
+    (sort)="updateSort($event)"
+    (thsWidthChange)="saveThsWidthToUserSettings($event)"
+    (visibleRowsChange)="visibleData = $event"
   >
     <ng-template [cellTemplateName]="TestId.STATUS" let-data>
       <sma-status-chips [status]="data"></sma-status-chips>

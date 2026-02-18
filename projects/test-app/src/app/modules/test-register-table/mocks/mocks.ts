@@ -100,7 +100,7 @@ export const columnsData: IColumnData[] = [
     name: TestId.SMART_SERVICE,
     type: 'checkbox',
     value: TestName.SMART_SERVICE,
-    width: '40',
+    width: '100',
   },
 ];
 
