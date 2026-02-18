@@ -1,36 +1,37 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import {
+  CellTemplateDirective,
   FilterButtonComponent,
   FiltersService,
   FiltersStateService,
   FiltersTransmitService,
   FormGroupWrapper,
   GqlFields,
+  IFilterSelectValue,
   IHasuraQueryFilter,
   InputControl,
   INPUTS_STATE_CONFIG_KEY,
-  IUserProfile,
   InputsModule,
+  ITreeNode,
+  IUserProfile,
+  NumberOnlyDirective,
+  ParamTreeMultiSelectComponent,
+  ParamTreeSelectComponent,
   RegisterBase,
   RegisterBaseStore,
   RegisterTableCellSorter,
   RegisterTableComponent,
   RegisterTableFilterModule,
   SelectedObjectsStateService,
-  USER_SETTINGS_LOADER,
-  NumberOnlyDirective,
-  ParamTreeMultiSelectComponent,
-  ParamTreeSelectComponent,
   SmaPrizmDateTime,
-  IFilterSelectValue,
-  ITreeNode,
   SyncTreeLoaderService,
   TREE_LOADER,
+  USER_SETTINGS_LOADER,
 } from 'ngx-register-base';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { ITestFilter, ITestTable } from './types';
-import { columnsData } from './mocks/mocks';
+import { ITestData, ITestFilter } from './types';
+import { columnsData, TestId } from './mocks/mocks';
 import { ContractsTableStoreService } from './store';
 import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -45,6 +46,7 @@ import {
 } from '@prizm-ui/components';
 import { TuiDay } from '@taiga-ui/cdk';
 import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.component';
+import { StatusChipsComponent } from './components/status-chips/status-chips.component';
 
 @Component({
   standalone: true,
@@ -59,6 +61,8 @@ import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.com
     ParamTreeSelectComponent,
     ParamTreeMultiSelectComponent,
     TreeWrapperComponent,
+    CellTemplateDirective,
+    StatusChipsComponent,
   ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
@@ -74,9 +78,11 @@ import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.com
   ],
 })
 export class TestRegisterTableComponent
-  extends RegisterBase<ITestTable, ITestFilter>
+  extends RegisterBase<ITestData, ITestFilter>
   implements OnInit
 {
+  protected readonly TestId = TestId;
+
   override totalNotFiltered$ = this.baseStore!.total$;
   override routes: any[] = [];
   override actionCompleted$ = new ReplaySubject<boolean>();
@@ -103,8 +109,8 @@ export class TestRegisterTableComponent
   public override ngOnInit(): void {
     super.ngOnInit();
 
-    this.stateService.gqlValues$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((values) => {
-      console.log(values);
+    this.baseStore!.objects$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((values) => {
+      this.setData(values);
     });
   }
 
@@ -112,7 +118,7 @@ export class TestRegisterTableComponent
     limit?: number,
     offset?: number,
     gqlFilter?: GqlFields,
-    sorter?: RegisterTableCellSorter<ITestTable>[] | undefined
+    sorter?: RegisterTableCellSorter<ITestData>[] | undefined
   ): IHasuraQueryFilter<any> {
     return {};
   }

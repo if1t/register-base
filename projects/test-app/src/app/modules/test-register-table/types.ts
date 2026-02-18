@@ -7,6 +7,7 @@ import {
 } from '@prizm-ui/components';
 import { TuiDay } from '@taiga-ui/cdk';
 import { IFilterSelectValue, SmaPrizmDateTime, ITreeNode } from 'ngx-register-base';
+import { TestId } from './mocks/mocks';
 
 export interface ITestTable {
   id: string;
@@ -23,6 +24,21 @@ export interface ITestTable {
   contractor_id: string | null;
   contractor_name: string | null;
   cost_cost: number | null;
+}
+
+export interface ITestData {
+  id: string;
+  [TestId.CODE]: string;
+  [TestId.CONTRACT_NUMBER]: string;
+  [TestId.SUBSIDIARY]: string;
+  [TestId.CONTRACTOR]: string;
+  [TestId.AGREEMENT_DATE]: string;
+  [TestId.COST]: number;
+  [TestId.DATE_START]: string;
+  [TestId.DATE_FINISH]: string;
+  [TestId.STATUS]: string;
+  [TestId.NAME]: string;
+  [TestId.SMART_SERVICE]: boolean;
 }
 
 export interface ITestFilter {

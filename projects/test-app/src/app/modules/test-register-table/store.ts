@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { RegisterBaseStore } from 'ngx-register-base';
 import { IHasuraQueryFilter, GqlFields, ObjectsSubscriptionConfig } from 'ngx-register-base';
 import { MutationResult } from 'apollo-angular';
+import { TABLE_DATA, TestId } from './mocks/mocks';
 
 export interface IFilter extends IHasuraQueryFilter<any> {
   args?: { p_date_start: string };
@@ -51,7 +52,7 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
     if (sorter) {
       for (const cellSorter of sorter) {
         const field = cellSorter.options;
-        if (field.id === 'status_rus') {
+        if (field.id === TestId.STATUS) {
           orderBy.status = field.order;
         } else {
           orderBy[field.id] = field.order;
@@ -68,7 +69,8 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
         switchMap(({ filter, callback, noSet }) => {
           this.setLoading(true);
 
-          return of({ data: { test: [] } }).pipe(
+          console.log('Запрос по фильтру', { filter });
+          return of({ data: { test: TABLE_DATA } }).pipe(
             tapResponse(
               ({ data }) => {
                 this.setLoading(false);
@@ -77,7 +79,22 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
                 }
 
                 if (!noSet) {
-                  this.setObjects(data.test);
+                  this.setObjects(
+                    data.test.map((obj) => ({
+                      id: obj.id,
+                      [TestId.CODE]: obj.code,
+                      [TestId.CONTRACT_NUMBER]: obj.contractor_name,
+                      [TestId.SUBSIDIARY]: obj.subsidiary_short_name,
+                      [TestId.CONTRACTOR]: obj.contractor_name,
+                      [TestId.AGREEMENT_DATE]: obj.date_agreement,
+                      [TestId.COST]: obj.cost_cost,
+                      [TestId.DATE_START]: obj.date_start,
+                      [TestId.DATE_FINISH]: obj.date_finish,
+                      [TestId.STATUS]: obj.status,
+                      [TestId.NAME]: obj.name,
+                      [TestId.SMART_SERVICE]: obj.is_smart_service,
+                    }))
+                  );
                 }
               },
               (err: HttpErrorResponse) => {
@@ -100,7 +117,7 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
         switchMap(() => {
           return of({
             data: {
-              main_get_registry_agreement_aggregate: { aggregate: { count: 1 } },
+              main_get_registry_agreement_aggregate: { aggregate: { count: TABLE_DATA.length } },
             },
           }).pipe(
             map(({ data }) => {
