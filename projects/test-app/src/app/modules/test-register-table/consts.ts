@@ -255,3 +255,8 @@ export const TestLoaderNode: ITreeNode = {
     },
   ],
 };
+
+export enum ETotalType {
+  TOTAL = 'total',
+  FILTERED = 'filtered',
+}

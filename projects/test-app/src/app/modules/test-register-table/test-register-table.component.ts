@@ -83,10 +83,12 @@ export class TestRegisterTableComponent
 {
   protected readonly TestId = TestId;
 
-  override totalNotFiltered$ = this.baseStore!.total$;
+  private _store = this.baseStore as ContractsTableStoreService;
+
+  override totalNotFiltered$ = this._store.total$;
   override routes: any[] = [];
   override actionCompleted$ = new ReplaySubject<boolean>();
-  loading$ = this.baseStore!.loading$;
+  loading$ = this._store.loading$;
 
   name = EControlName;
   gql = GqlTest;
@@ -102,14 +104,15 @@ export class TestRegisterTableComponent
     super(injector, columnsData);
   }
 
-  override fetchTotalObjects = this.baseStore!.fetchTotal;
-  override objectsSubscription = this.baseStore!.fetchObjects;
+  override objectsSubscription = this._store.fetchObjects;
+  override fetchTotalObjects = this._store.fetchTotal;
+  override fetchTotalFilteredObjects = this._store.fetchFilteredTotal;
   override baseFilter = (user: IUserProfile | undefined) => ({});
 
   public override ngOnInit(): void {
     super.ngOnInit();
 
-    this.baseStore!.objects$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((values) => {
+    this._store.objects$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((values) => {
       this.setData(values);
     });
   }
@@ -120,7 +123,7 @@ export class TestRegisterTableComponent
     gqlFilter?: GqlFields,
     sorter?: RegisterTableCellSorter<ITestData>[] | undefined
   ): IHasuraQueryFilter<any> {
-    return this.baseStore!.buildFilter(limit, offset, gqlFilter, sorter);
+    return this._store.buildFilter(limit, offset, gqlFilter, sorter);
   }
 
   protected override get buildForm(): FormGroupWrapper<ITestFilter> {

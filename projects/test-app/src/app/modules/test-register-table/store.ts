@@ -12,6 +12,7 @@ import {
 } from 'ngx-register-base';
 import { MutationResult } from 'apollo-angular';
 import { TABLE_DATA, TestId } from './mocks/mocks';
+import { ETotalType } from './consts';
 
 export interface IFilter extends IHasuraQueryFilter<any> {
   args?: { p_date_start: string };
@@ -124,7 +125,7 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
       )
   );
 
-  private readonly _fetchTotalByType = () =>
+  private readonly _fetchTotalByType = (type: ETotalType) =>
     this.effect((event$: Observable<Record<string, any>>) =>
       event$.pipe(
         switchMap(() => {
@@ -135,7 +136,12 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
           }).pipe(
             map(({ data }) => {
               const count = data.main_get_registry_agreement_aggregate.aggregate?.count ?? 0;
-              this.setTotal(count);
+
+              if (type === ETotalType.TOTAL) {
+                this.setTotal(count);
+              } else if (type === ETotalType.FILTERED) {
+                this.setCount(count);
+              }
             }),
             catchError((e) => {
               this.error(e);
@@ -146,5 +152,6 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
       )
     );
 
-  readonly fetchTotal = this._fetchTotalByType();
+  override readonly fetchTotal = this._fetchTotalByType(ETotalType.TOTAL);
+  readonly fetchFilteredTotal = this._fetchTotalByType(ETotalType.FILTERED);
 }
