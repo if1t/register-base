@@ -1,0 +1,131 @@
+@import 'fonts';
+@import 'buttons';
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
+.gray {
+  color: var(--gray-icon);
+}
+
+.column-settings {
+  &__main-button {
+    .top-icon-button();
+
+    &:disabled {
+      .top-icon-button--disabled;
+    }
+  }
+
+  &__icon {
+    font-size: 16px;
+  }
+
+  &__popup {
+    top: var(--header-height);
+    width: 302px;
+    border-radius: 2px 2px 0 0;
+    box-shadow: -1px 0 12px rgba(71, 83, 38, 23%);
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0 0 16px;
+      gap: 8px;
+      border-radius: 2px 2px 0 0;
+      border-bottom: 1px solid var(--stroke1);
+      background: var(--table-header);
+      box-shadow: unset;
+
+      &__title {
+        .static-title-h4;
+
+        color: var(--main-black);
+      }
+
+      &__buttons {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .reset-button {
+          color: var(--gray-icon);
+
+          &:hover {
+            color: var(--main-black);
+          }
+        }
+
+        sma-divider {
+          height: 24px;
+        }
+
+        .close-button {
+          color: var(--brand-danger-active);
+
+          &:hover {
+            color: var(--brand-danger-hovered);
+          }
+        }
+      }
+    }
+
+    .column-container {
+      display: flex;
+      flex-direction: column;
+      // padding-bottom задается напрямую через переменную ts
+      padding-top: 8px;
+      overflow: hidden;
+
+      .subtitle {
+        display: flex;
+        align-items: center;
+        color: var(--main-black);
+
+        .main-subtitle;
+
+        &--flex-grow-1 {
+          flex-grow: 1;
+        }
+      }
+
+      .show-all {
+        color: var(--text-secondary);
+
+        .main-body-text-12px;
+
+        &:hover {
+          cursor: pointer;
+          color: var(--main-black);
+        }
+      }
+    }
+
+    .footer {
+      display: flex;
+      padding: 8px 16px;
+      align-items: center;
+
+      .save-button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.column-list {
+  display: flex;
+  flex-direction: column;
+
+  &__label-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 8px 0 12px;
+    cursor: default;
+  }
+
+  ::ng-deep &.cdk-drop-list-dragging .column-item:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}

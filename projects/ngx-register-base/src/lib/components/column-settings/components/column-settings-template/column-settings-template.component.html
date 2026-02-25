@@ -56,10 +56,10 @@
     (cdkDropListDropped)="dropIntoChildren($event)"
   >
     @for (childCol of childrenColumns; track childCol.id) {
-      <sma-column-settings-template
+      <sproc-column-settings-template
         [column]="childCol"
         [parent]="col"
-      ></sma-column-settings-template>
+      ></sproc-column-settings-template>
     }
   </tui-expand>
 }

@@ -27,11 +27,12 @@ import {
   SyncTreeLoaderService,
   TREE_LOADER,
   USER_SETTINGS_LOADER,
+  ColumnSettingsComponent,
 } from 'ngx-register-base';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ITestData, ITestFilter } from './types';
-import { columnsData, TestId } from './mocks/mocks';
+import { columnsData, defaultSettings, TestId } from './mocks/mocks';
 import { ContractsTableStoreService } from './store';
 import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -63,6 +64,7 @@ import { StatusChipsComponent } from './components/status-chips/status-chips.com
     TreeWrapperComponent,
     CellTemplateDirective,
     StatusChipsComponent,
+    ColumnSettingsComponent,
   ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
@@ -157,4 +159,6 @@ export class TestRegisterTableComponent
       this.filtersForm.controls[EControlName.CUSTOM].setValue(file);
     }
   }
+
+  protected readonly defaultSettings = defaultSettings;
 }

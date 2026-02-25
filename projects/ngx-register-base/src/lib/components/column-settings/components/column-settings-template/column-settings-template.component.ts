@@ -20,7 +20,7 @@ import {
 import { TuiExpand } from '@taiga-ui/experimental';
 
 @Component({
-  selector: 'sma-column-settings-template',
+  selector: 'sproc-column-settings-template',
   standalone: true,
   imports: [
     NgOptimizedImage,

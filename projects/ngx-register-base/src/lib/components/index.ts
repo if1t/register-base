@@ -1,3 +1,4 @@
+export * from './column-settings/index';
 export { FilterButtonComponent } from './filter-button/filter-button.component';
 export * from './filters/index';
 export * from './inputs/index';
