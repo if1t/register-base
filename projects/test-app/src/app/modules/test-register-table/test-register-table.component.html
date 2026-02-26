@@ -1,9 +1,10 @@
-<header [style.height.px]="52">
-  <sproc-filter-button [filterApplied]="true" (filterToggle)="filterToggle()"></sproc-filter-button>
+<header>
+  <sproc-filter-button [filterApplied]="true" (filterToggle)="filterToggle()" />
   <sproc-column-settings
     [defaultSettings]="defaultSettings"
     (columnsChanges)="updateColumnSettings($event)"
   />
+  <sproc-search-input [searchControl]="searchInput" [searchGqlFormatter]="TestSearchGqlFormatter" />
 </header>
 <div class="filter-register-table-wrapper" [attr.filters-open]="filtersAreOpened">
   <sproc-register-table-filter>
@@ -161,7 +162,7 @@
     (visibleRowsChange)="visibleData = $event"
   >
     <ng-template [cellTemplateName]="TestId.STATUS" let-data>
-      <sma-status-chips [status]="data"></sma-status-chips>
+      <sma-status-chips [status]="data" />
     </ng-template>
   </sproc-register-table>
 </div>

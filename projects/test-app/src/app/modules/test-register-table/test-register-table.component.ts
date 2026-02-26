@@ -28,6 +28,7 @@ import {
   TREE_LOADER,
   USER_SETTINGS_LOADER,
   ColumnSettingsComponent,
+  SearchInputComponent,
 } from 'ngx-register-base';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -36,7 +37,7 @@ import { columnsData, defaultSettings, TestId } from './mocks/mocks';
 import { ContractsTableStoreService } from './store';
 import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EControlName, GqlTest, TestItems, TestLoaderNode } from './consts';
+import { EControlName, GqlTest, TestItems, TestLoaderNode, TestSearchGqlFormatter } from './consts';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   PrizmDateTimeRange,
@@ -65,6 +66,7 @@ import { StatusChipsComponent } from './components/status-chips/status-chips.com
     CellTemplateDirective,
     StatusChipsComponent,
     ColumnSettingsComponent,
+    SearchInputComponent,
   ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
@@ -161,4 +163,5 @@ export class TestRegisterTableComponent
   }
 
   protected readonly defaultSettings = defaultSettings;
+  protected readonly TestSearchGqlFormatter = TestSearchGqlFormatter;
 }

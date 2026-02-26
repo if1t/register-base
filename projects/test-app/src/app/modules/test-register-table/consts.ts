@@ -260,3 +260,20 @@ export enum ETotalType {
   TOTAL = 'total',
   FILTERED = 'filtered',
 }
+
+export const TestSearchGqlFormatter: FormatterGqlValueType<string> = (value: string): any => {
+  const ilikeCondition = (field: string) => ({ [field]: { _ilike: `%${value.trim()}%` } });
+
+  return {
+    _or: [
+      ilikeCondition('code'),
+      ilikeCondition('imei'),
+      ilikeCondition('firmware'),
+      ilikeCondition('nnf_vehicle_model'),
+      ilikeCondition('nnf_vehicle_gos_number'),
+      { cls_contractor: ilikeCondition('name') },
+      { cls_tracker_manufacturer: ilikeCondition('name') },
+      { cls_tracker_model: ilikeCondition('name') },
+    ],
+  };
+};
