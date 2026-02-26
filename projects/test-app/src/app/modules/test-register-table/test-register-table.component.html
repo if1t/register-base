@@ -1,6 +1,6 @@
 <header [style.height.px]="52">
   <sproc-filter-button [filterApplied]="true" (filterToggle)="filterToggle()"></sproc-filter-button>
-  <sma-column-settings
+  <sproc-column-settings
     [defaultSettings]="defaultSettings"
     (columnsChanges)="updateColumnSettings($event)"
   />

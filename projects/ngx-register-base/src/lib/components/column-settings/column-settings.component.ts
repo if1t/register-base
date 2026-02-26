@@ -46,7 +46,7 @@ import { DividerComponent } from '../divider/divider.component';
 import { ITpUserSettings } from '../../types';
 
 @Component({
-  selector: 'sma-column-settings',
+  selector: 'sproc-column-settings',
   standalone: true,
   templateUrl: './column-settings.component.html',
   styleUrls: ['./column-settings.component.less'],
