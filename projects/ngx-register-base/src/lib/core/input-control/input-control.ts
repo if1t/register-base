@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { IInputControl, InputControlGqlValue } from '../../types/inputs.types';
+import { signal, WritableSignal } from '@angular/core';
 
 export class InputControl<ValueType = any, SavedValueType = any>
   extends FormControl
@@ -14,6 +15,8 @@ export class InputControl<ValueType = any, SavedValueType = any>
 {
   public saved_value$!: BehaviorSubject<SavedValueType | null>;
   public gql_value: InputControlGqlValue;
+  /** По полю применена фильтрация */
+  applied?: WritableSignal<boolean>;
 
   constructor(
     value: FormControlState<ValueType> | ValueType,
@@ -22,5 +25,6 @@ export class InputControl<ValueType = any, SavedValueType = any>
   ) {
     super(value, validatorOrOpts, asyncValidator);
     this.saved_value$ = new BehaviorSubject<SavedValueType | null>(null);
+    this.applied = signal(false);
   }
 }

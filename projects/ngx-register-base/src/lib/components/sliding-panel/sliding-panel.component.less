@@ -22,6 +22,14 @@
     &[show='false'] {
       width: 0;
     }
+
+    .scrolled-content {
+      height: calc(
+        100vh - var(--header-height) - var(--header-offset-height) - var(--footer-offset-height) -
+          var(--sub-offset-height)
+      );
+      margin-bottom: var(--footer-offset-height);
+    }
   }
 
   .divider {

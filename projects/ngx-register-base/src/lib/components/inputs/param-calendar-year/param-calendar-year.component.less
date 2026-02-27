@@ -1,4 +1,5 @@
 @import 'fonts';
+@import 'common-param';
 
 :host {
   ::ng-deep {
@@ -34,96 +35,28 @@
     [automation-id='tui-primitive-textfield__wrapper'] {
       padding-inline-start: calc(var(--t-start, 0rem) + var(--t-padding));
     }
+
+    [tuiAppearance][data-appearance='textfield'] {
+      min-height: 32px;
+    }
+
+    .t-icons {
+      margin-inline-end: 0.5rem !important;
+      min-height: 32px;
+    }
   }
 
   .container {
     &--read {
-      &[sproc-param-style='card'] {
-        display: flex;
-        align-items: flex-start;
-        gap: 4px;
-        padding: 8px 0;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-
-        .dashed-row {
-          display: flex;
-          height: 16px;
-          align-items: center;
-          flex: 1 0 0;
-          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
-          min-width: 20px;
-        }
-
-        .value {
-          max-width: 210px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          color: #000000 !important;
-          .card-content-text !important;
-        }
-      }
-
-      &[sproc-param-style='filter'] {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        align-self: stretch;
-        gap: 4px;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: 100%;
-        }
-
-        .label {
-          .default-label;
-        }
-
-        .dashed-row {
-          display: flex;
-          height: 16px;
-          align-items: center;
-          flex: 1 0 0;
-          border-bottom: 1px dashed var(--table-stroke, #d7d7d7);
-          min-width: 20px;
-        }
-
-        .value {
-          .main-body-text-14px;
-
-          color: var(--text-main);
-        }
-      }
+      .read-style-card;
+      .read-style-filter;
     }
 
     &--edit {
+      .edit-style-card;
+      .edit-style-filter;
+
       &[sproc-param-style='card'] {
-        height: 52px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-
         ::ng-deep {
           input {
             .input-text-14px;
@@ -132,39 +65,6 @@
           }
         }
       }
-
-      &[sproc-param-style='filter'] {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-
-        .label-wrapper {
-          .default-label-wrapper;
-
-          width: fit-content;
-        }
-
-        .label {
-          .default-label;
-        }
-      }
-
-      .required {
-        .input-label;
-
-        color: var(--brand-danger);
-      }
-    }
-
-    .default-label-wrapper {
-      display: flex;
-      gap: 4px;
-    }
-
-    .default-label {
-      .input-label;
-
-      color: var(--main-black);
     }
   }
 }

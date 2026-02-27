@@ -9,17 +9,19 @@ import {
   model,
   OnDestroy,
   output,
+  signal,
 } from '@angular/core';
 import { PolymorphContent, PolymorphModule } from '@prizm-ui/components';
 import { debounceTime, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiButton, TuiDataListDirective } from '@taiga-ui/core';
+import { TuiButton, TuiDataListDirective, TuiHint, TuiLoader } from '@taiga-ui/core';
 import { TuiDataListWrapperComponent, TuiPagination } from '@taiga-ui/kit';
 import { TuiComboBoxModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { IPaginatorOptions, IPaginatorOutput } from './types/paginator.types';
 import { DividerComponent } from '../divider/divider.component';
+import { NumberOnlyDirective } from '../../directives/number/number-only.directive';
 
 export enum SvgSrc {
   CHEVRONS_DOUBLE_LEFT = 'assets/ngx-register-base/icons/chevrons-double-left.svg',
@@ -40,6 +42,9 @@ export enum SvgSrc {
     TuiDataListWrapperComponent,
     TuiTextfieldControllerModule,
     TuiDataListDirective,
+    TuiLoader,
+    TuiHint,
+    NumberOnlyDirective,
   ],
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.less'],
@@ -69,6 +74,12 @@ export class PaginatorComponent implements OnDestroy {
   public rowsCountOptions = input(new Array<number>());
   public selectedCounter = input(0);
   public totalNotFiltered = input(0);
+  public isLoading = input(false);
+  /** Ограничения на количество отображаемых строк на странице */
+  public minRowsCount = input<number>(1);
+  public maxRowsCount = input<number>(99);
+  protected isIncorrectRowsCount = signal(false);
+  protected rowsCountErrorMessage = signal('');
 
   public paginatorChange = output<IPaginatorOutput>();
   public pageChange = output<number>();
@@ -121,6 +132,26 @@ export class PaginatorComponent implements OnDestroy {
   }
 
   protected changeRows(rows: NumberInput): void {
+    const rowsCount = Number(rows);
+
+    if (!rowsCount) {
+      this.rowsCountErrorMessage.set('');
+      this.isIncorrectRowsCount.set(false);
+      return;
+    }
+
+    const min = this.minRowsCount();
+    const max = this.maxRowsCount();
+
+    if (rowsCount < min || rowsCount > max) {
+      this.rowsCountErrorMessage.set(`Поле принимает значение от ${min} до ${max}`);
+      this.isIncorrectRowsCount.set(true);
+      return;
+    }
+
+    this.rowsCountErrorMessage.set('');
+    this.isIncorrectRowsCount.set(false);
+
     if (this.currentRows === rows) {
       return;
     }

@@ -23,11 +23,10 @@
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
       @if (label) {
-        <div class="label-wrapper">
-          <span class="label">{{ label }}</span>
-          @if (required) {
-            <span class="required">*</span>
-          }
+        <div class="label-wrapper" [class.applied]="applied()">
+          <span class="label" [class.required]="required">
+            {{ label }}
+          </span>
         </div>
       }
       <tui-textfield

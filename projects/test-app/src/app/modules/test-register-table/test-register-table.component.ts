@@ -1,28 +1,54 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import {
+  CellTemplateDirective,
   FilterButtonComponent,
   FiltersService,
   FiltersStateService,
   FiltersTransmitService,
   FormGroupWrapper,
+  GqlFields,
+  IFilterSelectValue,
+  IHasuraQueryFilter,
+  InputControl,
   INPUTS_STATE_CONFIG_KEY,
+  InputsModule,
+  ITreeNode,
+  IUserProfile,
+  NumberOnlyDirective,
+  ParamTreeMultiSelectComponent,
+  ParamTreeSelectComponent,
   RegisterBase,
   RegisterBaseStore,
+  RegisterTableCellSorter,
   RegisterTableComponent,
   RegisterTableFilterModule,
   SelectedObjectsStateService,
-  IHasuraQueryFilter,
-  RegisterTableCellSorter,
-  GqlFields,
-  IUserProfile,
+  SmaPrizmDateTime,
+  SyncTreeLoaderService,
+  TREE_LOADER,
   USER_SETTINGS_LOADER,
+  ColumnSettingsComponent,
+  SearchInputComponent,
 } from 'ngx-register-base';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { ITestTable } from './types';
-import { columnsData } from './mocks/mocks';
+import { ITestData, ITestFilter } from './types';
+import { columnsData, defaultSettings, TestId } from './mocks/mocks';
 import { ContractsTableStoreService } from './store';
 import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EControlName, GqlTest, TestItems, TestLoaderNode, TestSearchGqlFormatter } from './consts';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  PrizmDateTimeRange,
+  PrizmDayRange,
+  PrizmMonth,
+  PrizmMonthRange,
+  PrizmSwitcherItem,
+} from '@prizm-ui/components';
+import { TuiDay } from '@taiga-ui/cdk';
+import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.component';
+import { StatusChipsComponent } from './components/status-chips/status-chips.component';
 
 @Component({
   standalone: true,
@@ -31,6 +57,16 @@ import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store'
     RegisterTableComponent,
     RegisterTableFilterModule,
     AsyncPipe,
+    InputsModule,
+    ReactiveFormsModule,
+    NumberOnlyDirective,
+    ParamTreeSelectComponent,
+    ParamTreeMultiSelectComponent,
+    TreeWrapperComponent,
+    CellTemplateDirective,
+    StatusChipsComponent,
+    ColumnSettingsComponent,
+    SearchInputComponent,
   ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
@@ -42,32 +78,90 @@ import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store'
     { provide: INPUTS_STATE_CONFIG_KEY, useValue: { searchInput: true } },
     { provide: USER_SETTINGS_LOADER, useClass: SmaTpUserSettingsStore },
     { provide: RegisterBaseStore, useClass: ContractsTableStoreService },
+    { provide: TREE_LOADER, useClass: SyncTreeLoaderService },
   ],
 })
-export class TestRegisterTableComponent<T> extends RegisterBase<ITestTable> {
-  override totalNotFiltered$ = this.baseStore!.total$;
+export class TestRegisterTableComponent
+  extends RegisterBase<ITestData, ITestFilter>
+  implements OnInit
+{
+  protected readonly TestId = TestId;
+
+  private _store = this.baseStore as ContractsTableStoreService;
+
+  override totalNotFiltered$ = this._store.total$;
   override routes: any[] = [];
   override actionCompleted$ = new ReplaySubject<boolean>();
-  loading$ = this.baseStore!.loading$;
+  loading$ = this._store.loading$;
+
+  name = EControlName;
+  gql = GqlTest;
+  testItems = TestItems;
+  testSwitchers: PrizmSwitcherItem<number>[] = [
+    { id: 1, title: '1' },
+    { id: 2, title: '2' },
+    { id: 3, title: '3' },
+  ];
+  testLoaderNode = TestLoaderNode;
 
   constructor(injector: Injector) {
     super(injector, columnsData);
   }
 
-  override fetchTotalObjects = this.baseStore!.fetchTotal;
-  override objectsSubscription = this.baseStore!.fetchObjects;
+  override objectsSubscription = this._store.fetchObjects;
+  override fetchTotalObjects = this._store.fetchTotal;
+  override fetchTotalFilteredObjects = this._store.fetchFilteredTotal;
   override baseFilter = (user: IUserProfile | undefined) => ({});
+
+  public override ngOnInit(): void {
+    super.ngOnInit();
+
+    this._store.objects$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((values) => {
+      this.setData(values);
+    });
+  }
 
   override buildFilter(
     limit?: number,
     offset?: number,
     gqlFilter?: GqlFields,
-    sorter?: RegisterTableCellSorter<ITestTable>[] | undefined
+    sorter?: RegisterTableCellSorter<ITestData>[] | undefined
   ): IHasuraQueryFilter<any> {
-    return {};
+    return this._store.buildFilter(limit, offset, gqlFilter, sorter);
   }
 
-  protected override get buildForm(): FormGroupWrapper<any> {
-    return new FormGroupWrapper({});
+  protected override get buildForm(): FormGroupWrapper<ITestFilter> {
+    return new FormGroupWrapper<ITestFilter>({
+      [EControlName.TEXT]: new InputControl<string | null>(null),
+      [EControlName.TEXTAREA]: new InputControl<string | null>(null),
+      [EControlName.NUMB]: new InputControl<string | null>(null),
+      [EControlName.TOGGLE]: new InputControl<string | null>(null),
+      [EControlName.CALENDAR_YEAR]: new InputControl<number | null>(null),
+      [EControlName.MONTH]: new InputControl<PrizmMonth | null>(null),
+      [EControlName.MONTH_RANGE]: new InputControl<PrizmMonthRange | null>(null),
+      [EControlName.DATE]: new InputControl<TuiDay | null>(null),
+      [EControlName.DATE_RANGE]: new InputControl<PrizmDayRange | null>(null),
+      [EControlName.DATE_TIME]: new InputControl<SmaPrizmDateTime | null>(null),
+      [EControlName.DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
+      [EControlName.SELECT]: new InputControl<IFilterSelectValue | null>(null),
+      [EControlName.MULTI_SELECT]: new InputControl<IFilterSelectValue[] | null>(null),
+      [EControlName.SWITCHER]: new InputControl<number | null>(null),
+      [EControlName.SWITCHER_DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
+      [EControlName.TREE_SELECT]: new InputControl<ITreeNode | null>(null),
+      [EControlName.TREE_MULTI_SELECT]: new InputControl<ITreeNode[] | null>(null),
+      [EControlName.CUSTOM]: new InputControl<File | null>(null),
+    });
   }
+
+  protected onFileSelect(event: any): void {
+    const target: HTMLInputElement = event.target;
+    const file = target.files?.[0];
+
+    if (file) {
+      this.filtersForm.controls[EControlName.CUSTOM].setValue(file);
+    }
+  }
+
+  protected readonly defaultSettings = defaultSettings;
+  protected readonly TestSearchGqlFormatter = TestSearchGqlFormatter;
 }

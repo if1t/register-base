@@ -36,13 +36,13 @@
   </ng-template>
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
-      <div *ngIf="label" class="label-wrapper">
+      <div *ngIf="label" class="label-wrapper" [class.applied]="applied()">
         <span class="label" [class.required]="required">
           {{ label }}
         </span>
         <tui-icon
           *ngIf="hint"
-          icon="assets/icons/circle-info-empty.svg"
+          icon="assets/ngx-register-base/icons/circle-info-empty.svg"
           [tuiHint]="hint"
           class="hintIcon"
         ></tui-icon>

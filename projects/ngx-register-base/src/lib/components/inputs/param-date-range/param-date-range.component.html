@@ -22,14 +22,19 @@
   </ng-template>
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
-      <div *ngIf="label" class="label-wrapper">
-        <span class="label">{{ label }}</span>
-        <span *ngIf="required" class="required">*</span>
+      <div *ngIf="label" class="label-wrapper" [class.applied]="applied()">
+        <span class="label" [class.required]="required">
+          {{ label }}
+        </span>
+        @if (errorMessage() && control.invalid) {
+          <div class="errorMessage">{{ errorMessage() }}</div>
+        }
       </div>
 
       <prizm-input-layout class="flex-shrink--zero" size="s" [forceClear]="forceClear">
         <prizm-input-layout-date-range
           [placeholder]="placeholder()"
+          [maxLength]="maxLength()"
           [min]="$any(min)"
           [max]="$any(max)"
           [formControl]="control"

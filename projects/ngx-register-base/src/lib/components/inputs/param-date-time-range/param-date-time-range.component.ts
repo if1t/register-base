@@ -12,12 +12,14 @@ import {
 import { distinctUntilChanged, filter, map, pairwise } from 'rxjs';
 import { ParamDateBase } from '../../../core/param/param-date-base';
 import { FormatterSavedValueType, ParserSavedValueType } from '../../../types/params.types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type InputDateTimeRangeSaveValue = {
   from: string;
   to: string;
 } | null;
 
+// TODO не открывается пикер дат
 @Component({
   selector: 'sproc-param-date-time-range',
   templateUrl: './param-date-time-range.component.html',
@@ -92,7 +94,8 @@ export class ParamDateTimeRangeComponent extends ParamDateBase<
           currDiff: curr.time_diff,
           value: this.value,
         })),
-        filter(({ value }) => !!value)
+        filter(({ value }) => !!value),
+        takeUntilDestroyed(this.dr)
       )
       .subscribe(({ prevDiff, currDiff, value }) => {
         const { from, to } = this._dts.prizmDateTimeRangeToNativeDates(value!);

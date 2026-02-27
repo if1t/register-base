@@ -2,22 +2,24 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   input,
   output,
+  TemplateRef,
   untracked,
 } from '@angular/core';
 import { TuiCheckbox, TuiTree } from '@taiga-ui/kit';
 import { TuiLabel, TuiLoader } from '@taiga-ui/core';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { EMPTY, expand, filter, from, of, switchMap, take, takeUntil, tap } from 'rxjs';
 import { ChildrenHandlerType, ITreeNode } from './types/param-tree.types';
 import { ParamTreeService } from './services/param-tree.service';
 import {
-  TREE_LOADER,
+  TREE_LOADING_NODE,
   treeNodesFlatten,
   updatesCheckedNodesEqual,
 } from './consts/param-tree.consts';
@@ -26,7 +28,7 @@ import {
 @Component({
   selector: 'sproc-param-tree',
   standalone: true,
-  imports: [TuiTree, TuiLabel, TuiCheckbox, FormsModule, AsyncPipe, TuiLoader],
+  imports: [TuiTree, TuiLabel, TuiCheckbox, FormsModule, AsyncPipe, TuiLoader, NgTemplateOutlet],
   templateUrl: './param-tree.component.html',
   styleUrl: './param-tree.component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,11 +41,14 @@ export class ParamTreeComponent<T> {
   public multi = input(false);
   /** Задать выбранные узлы */
   public checkedNodes = input<ITreeNode<T>[]>([]);
+  /** Кастомный шаблон узла */
+  public nodeTemplate = input<TemplateRef<any> | null>(null);
 
   /** Выбранные узлы верхнего уровня */
   public readonly selectedNodesChange = output<ITreeNode<T>[]>();
 
   private readonly _treeService = inject(ParamTreeService<T>);
+  private readonly _dr = inject(DestroyRef);
 
   protected readonly defaultNodeOpenedState = toSignal(this._treeService.defaultNodeOpenedState$);
   protected readonly openedNodesState = this._treeService.openedNodesState;
@@ -58,7 +63,7 @@ export class ParamTreeComponent<T> {
 
   protected readonly treeNodes$ = this._treeService.nodes$;
 
-  protected readonly TREE_LOADER = TREE_LOADER;
+  protected readonly TREE_LOADER = TREE_LOADING_NODE;
   protected readonly childrenHandler: ChildrenHandlerType<T> = (node) =>
     this._treeService.getChildren(node);
 
@@ -162,18 +167,21 @@ export class ParamTreeComponent<T> {
   }
 
   protected onToggle(currentNode: ITreeNode<T>): void {
-    this._treeService.loadChildren(currentNode).subscribe((children) => {
-      const parent = children?.[0]?.parent;
+    this._treeService
+      .loadChildren(currentNode)
+      .pipe(takeUntilDestroyed(this._dr))
+      .subscribe((children) => {
+        const parent = children?.[0]?.parent;
 
-      if (parent && this.checkedNodesState().get(parent)) {
-        for (const child of children) {
-          this.checkedNodesState().set(child, true);
+        if (parent && this.checkedNodesState().get(parent)) {
+          for (const child of children) {
+            this.checkedNodesState().set(child, true);
+          }
         }
-      }
-    });
+      });
   }
 
-  protected onChecked(currentNode: ITreeNode<T>, check: boolean): void {
+  protected onChecked = (currentNode: ITreeNode<T>, check: boolean) => {
     this._treeService.setLastCheckedNode(check ? currentNode : null);
     const flattenNodes = treeNodesFlatten<T>(currentNode, this._treeService);
 
@@ -190,7 +198,7 @@ export class ParamTreeComponent<T> {
     }
 
     this._updateCheckedNodes();
-  }
+  };
 
   private _updateCheckedNodes(options?: { emitEvent: boolean }): void {
     const topLevelNodes = this._treeService.getTopLevelNodes();
@@ -259,7 +267,9 @@ export class ParamTreeComponent<T> {
         }),
         filter(() => allComplete(searchNodesCompleteState)),
         take(1),
-        takeUntil(of(null).pipe(filter(() => allComplete(searchNodesCompleteState))))
+        // eslint-disable-next-line rxjs/no-unsafe-takeuntil
+        takeUntil(of(null).pipe(filter(() => allComplete(searchNodesCompleteState)))),
+        takeUntilDestroyed(this._dr)
       )
       .subscribe({
         complete: () => {

@@ -1,0 +1,79 @@
+@import 'fonts';
+
+.column-item {
+  display: flex;
+  align-items: center;
+  padding: 0 12px 0 8px;
+  gap: 8px;
+  height: 32px;
+
+  &__name {
+    flex-grow: 1;
+    color: var(--text-main);
+
+    .table-text-12px;
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .expanded {
+    .pointer;
+
+    transition: transform 0.2s linear;
+
+    &[expanded='true'] {
+      transform: rotate(90deg);
+      transform-origin: center center;
+    }
+  }
+
+  .eye-icon {
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  &.hidden {
+    .eye-icon {
+      opacity: 1;
+    }
+  }
+
+  &:hover {
+    background: var(--brand-hovered);
+    cursor: ns-resize;
+
+    .eye-icon {
+      opacity: 1;
+    }
+  }
+}
+
+.nested-columns {
+  margin-left: 24px;
+}
+
+.custom-placeholder {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px dashed #cccccc;
+  border-radius: 3px;
+  background-color: #fafafa;
+  box-sizing: border-box;
+  color: #888888;
+  font-style: italic;
+  user-select: none;
+  width: 100%;
+  margin: 0;
+}
+
+.cdk-drag-preview {
+  .column-item;
+
+  box-shadow: -1px 0 12px rgba(71, 83, 38, 23%);
+  background: var(--main-white);
+}

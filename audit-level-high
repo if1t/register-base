@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# https://github.com/yarnpkg/yarn/issues/7260#issuecomment-1697086503
+yarn audit --groups 'dependencies devDependencies' --level high
+
+if [ $? -ge 8 ]; then
+  echo "High vulnerabilities found"
+  exit 1
+else
+  echo "High vulnerabilities not found"
+  exit 0
+fi

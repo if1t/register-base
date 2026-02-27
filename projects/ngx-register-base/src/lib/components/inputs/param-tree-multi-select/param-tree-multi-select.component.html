@@ -37,7 +37,7 @@
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
       @if (label) {
-        <div class="label-wrapper">
+        <div class="label-wrapper" [class.applied]="applied()">
           <span class="label" [class.required]="required">
             {{ label }}
           </span>

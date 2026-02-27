@@ -1,14 +1,6 @@
 import { OrderBy, WhereBoolExp } from 'hasura';
 
-export type ColumnDataTypes =
-  | 'text'
-  | 'num'
-  | 'checkbox'
-  | 'icon'
-  | 'iconSvg'
-  | 'template'
-  | 'empty'
-  | 'date';
+export type ColumnDataTypes = 'text' | 'num' | 'checkbox' | 'icon' | 'iconSvg' | 'empty' | 'date';
 
 export enum EColumnDataType {
   TEXT = 'text',
@@ -24,6 +16,7 @@ export interface IColumnData {
   type: EColumnDataType | ColumnDataTypes;
   value?: string;
   width?: string;
+  isHeadTemplate?: boolean;
   isTemplate?: boolean;
   sortable?: boolean;
   tooltipText?: string;

@@ -1,0 +1,160 @@
+<button
+  tuiButton
+  class="column-settings__main-button"
+  appearance="outline-grayscale"
+  size="m"
+  [disabled]="disabled()"
+  (click)="toggle()"
+>
+  <tui-icon class="column-settings__icon gray" [icon]="iconSettings"></tui-icon>
+</button>
+
+<tui-drawer
+  *tuiPopup="openSettings()"
+  class="column-settings__popup"
+  direction="right"
+  [overlay]="true"
+  (click.self)="close()"
+>
+  <header class="header" [style.height.px]="columnSettingsHeaderHeightPx">
+    <span class="header__title">Настройка таблицы</span>
+    <div class="header__buttons">
+      <button
+        tuiIconButton
+        class="reset-button"
+        appearance="flat"
+        size="m"
+        (click)="openResetDialog()"
+      >
+        <tui-icon class="column-settings__icon" [icon]="iconEraser"></tui-icon>
+      </button>
+      <sproc-divider layout="vertical"></sproc-divider>
+      <button tuiIconButton class="close-button" appearance="flat" size="m" (click)="close()">
+        <tui-icon class="column-settings__icon" [icon]="iconCancelClose"></tui-icon>
+      </button>
+    </div>
+  </header>
+  <div
+    cdkDropListGroup
+    class="column-container tui__t-content--no-default-padding"
+    [style.height.px]="columnListHeightPx()"
+  >
+    <div
+      cdkDropList
+      class="column-list"
+      [cdkDropListData]="fixedLeftColumns()"
+      (cdkDropListDropped)="dropIntoFixedLeft($event)"
+      [cdkDropListEnterPredicate]="fixedLeftListEnterPredicate()"
+    >
+      @if (showLeftListHeader()) {
+        <div class="column-list__label-container">
+          <span class="subtitle" [style.height.px]="columnSettingsSubtitleHeightPx">
+            Фиксированные колонки слева
+          </span>
+        </div>
+      }
+
+      <tui-scrollbar
+        [style.max-height.px]="scrollBoxFixedColumnsMaxHeightPx"
+        (waResizeObserver)="onFixedScrollbarResize($event)"
+      >
+        @for (fixedLeftColumn of fixedLeftColumns(); track fixedLeftColumn.id) {
+          <sproc-column-settings-template
+            [column]="fixedLeftColumn"
+          ></sproc-column-settings-template>
+        }
+      </tui-scrollbar>
+    </div>
+    <sproc-divider></sproc-divider>
+    <div
+      cdkDropList
+      class="column-list"
+      [style.padding-bottom.px]="columnListBottomPaddingPx"
+      [cdkDropListData]="columns()"
+      (cdkDropListDropped)="dropIntoColumns($event)"
+      [cdkDropListEnterPredicate]="columnsListEnterPredicate()"
+    >
+      <div class="column-list__label-container">
+        <span
+          class="subtitle subtitle--flex-grow-1"
+          [style.height.px]="columnSettingsSubtitleHeightPx"
+          >{{ columnsListHeader() }}</span
+        >
+        <span class="show-all" (click)="showAllColumns()">Показать все</span>
+      </div>
+      <tui-scrollbar [style.max-height.px]="scrollBoxColumnsMaxHeightPx()">
+        @for (column of columns(); track column.id) {
+          <sproc-column-settings-template [column]="column"></sproc-column-settings-template>
+        }
+      </tui-scrollbar>
+    </div>
+    @if (showFixedRightList()) {
+      <sproc-divider></sproc-divider>
+      <div
+        cdkDropList
+        class="column-list"
+        [style.padding-bottom.px]="columnListBottomPaddingPx"
+        [cdkDropListData]="fixedRightColumns()"
+        (cdkDropListDropped)="dropIntoColumns($event)"
+        [cdkDropListEnterPredicate]="fixedRightListEnterPredicate()"
+      >
+        @if (showRightListHeader()) {
+          <div class="column-list__label-container">
+            <span
+              class="subtitle subtitle--flex-grow-1"
+              [style.height.px]="columnSettingsSubtitleHeightPx"
+              >Фиксированные колонки справа</span
+            >
+          </div>
+        }
+
+        <tui-scrollbar
+          [style.max-height.px]="scrollBoxFixedColumnsMaxHeightPx"
+          (waResizeObserver)="onRightFixedScrollbarResize($event)"
+        >
+          @for (column of fixedRightColumns(); track column.id) {
+            <sproc-column-settings-template [column]="column"></sproc-column-settings-template>
+          }
+        </tui-scrollbar>
+      </div>
+    }
+  </div>
+  <footer class="footer" [style.height.px]="columnSettingsFooterHeightPx">
+    <button
+      tuiButton
+      class="save-button"
+      size="m"
+      appearance="primary"
+      (click)="saveTableSettings()"
+    >
+      Сохранить
+    </button>
+  </footer>
+</tui-drawer>
+
+<ng-template #resetSettings>
+  <sproc-reset-settings-form></sproc-reset-settings-form>
+</ng-template>
+
+<ng-template #resetSettingsFooter let-completeWith="completeWith">
+  <div style="width: 100%; display: flex; justify-content: center; gap: 8px">
+    <button
+      tuiButton
+      style="width: 196px"
+      appearance="primary-destructive"
+      size="l"
+      (click)="deleteSettings(); completeWith(true)"
+    >
+      Сбросить
+    </button>
+    <button
+      tuiButton
+      style="width: 196px"
+      appearance="outline-grayscale"
+      size="l"
+      (click)="completeWith(false)"
+    >
+      Отмена
+    </button>
+  </div>
+</ng-template>

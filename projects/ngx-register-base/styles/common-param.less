@@ -1,0 +1,130 @@
+@import 'fonts';
+@import 'classes';
+
+.read-style-card {
+  &[sproc-param-style='card'] {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 0;
+
+    .label-wrapper {
+      .default-label-wrapper;
+
+      width: fit-content;
+    }
+
+    .label {
+      .default-label;
+    }
+
+    .dashed-row {
+      .default-dashed-row;
+    }
+
+    .value {
+      .card-content-text !important;
+      .truncate-text;
+
+      max-width: 210px;
+      color: var(--main-black) !important;
+    }
+  }
+}
+
+.read-style-filter {
+  &[sproc-param-style='filter'] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    gap: 4px;
+
+    .label-wrapper {
+      .default-label-wrapper;
+
+      width: 100%;
+    }
+
+    .label {
+      .default-label;
+    }
+
+    .dashed-row {
+      .default-dashed-row;
+    }
+
+    .value {
+      .main-body-text-14px;
+
+      color: var(--text-main);
+    }
+  }
+}
+
+.edit-style-card {
+  &[sproc-param-style='card'] {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 8px;
+
+    .label-wrapper {
+      .default-label-wrapper;
+
+      width: 100%;
+    }
+
+    .label {
+      .default-label;
+    }
+  }
+}
+
+.edit-style-filter {
+  &[sproc-param-style='filter'] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .label-wrapper {
+      .default-label-wrapper;
+
+      width: fit-content;
+    }
+
+    .label {
+      .default-label;
+    }
+  }
+}
+
+.default-label-wrapper {
+  display: flex;
+  padding-bottom: 1.5px;
+  align-items: center;
+  height: 16px;
+  gap: 4px;
+}
+
+.default-label {
+  .input-label;
+
+  color: var(--main-black);
+
+  &.required::after {
+    content: '*';
+    color: var(--brand-danger);
+    margin-left: 2px;
+  }
+}
+
+.default-dashed-row {
+  display: flex;
+  height: 16px;
+  align-items: center;
+  flex: 1 0 0;
+  border-bottom: 1px dashed var(--table-stroke);
+  min-width: 20px;
+}

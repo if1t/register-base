@@ -5,6 +5,7 @@
   display: flex;
 
   .container {
+    height: 100%;
     width: 100%;
     padding: 8px 16px;
     display: flex;
@@ -79,7 +80,7 @@
         --tui-text-action: var(--gray-icon);
 
         tui-icon {
-          font-size: 16px;
+          font-size: var(--icon-font-size-m);
         }
       }
     }
@@ -93,4 +94,8 @@
       }
     }
   }
+}
+
+.loader {
+  width: 100%;
 }

@@ -106,6 +106,7 @@ export class ParamSelectComponent
   override buildShowedValue = input(
     (value: IFilterSelectValue | null): string => value?.name ?? '-'
   );
+  public strict = input<boolean>(true);
 
   @Output() onSelect = new EventEmitter<IFilterSelectValue>();
 
@@ -205,7 +206,8 @@ export class ParamSelectComponent
         tap(() => {
           this.loading = false;
           this.cdr.markForCheck();
-        })
+        }),
+        takeUntilDestroyed(this.dr)
       )
       .subscribe();
   }
@@ -216,7 +218,7 @@ export class ParamSelectComponent
       return [this.value[idField]];
     }
 
-    return undefined;
+    return;
   }
 
   private _buildSelectedItemIdsWhere(
@@ -227,7 +229,7 @@ export class ParamSelectComponent
     if (where && selectedItemIDs && selectedItemIDs.length > 0) {
       return { _and: [{ [idField]: { _in: selectedItemIDs } }, where] };
     }
-    return undefined;
+    return;
   }
 
   private _handleResults(

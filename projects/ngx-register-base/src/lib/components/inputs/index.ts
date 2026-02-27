@@ -17,3 +17,4 @@ export * from './param-tree/index';
 export { ParamTreeMultiSelectComponent } from './param-tree-multi-select/param-tree-multi-select.component';
 export { ParamTreeSelectComponent } from './param-tree-select/param-tree-select.component';
 export * from './inputs.module';
+export type { SmaPrizmDateTime } from './param-date-time/param-date-time.component';

@@ -1,0 +1,65 @@
+@let col = column();
+@let isHidden = isHiddenColumn(col);
+@let currentEyeIcon = isHidden ? iconEyeClosed : iconEye;
+@let childrenColumns = col.children ?? [];
+
+<div
+  class="column-item"
+  [class.hidden]="isHidden"
+  cdkDrag
+  [cdkDragData]="col"
+  (cdkDragStarted)="collapseNested()"
+>
+  <img [ngSrc]="iconEditorDots" [width]="16" [height]="32" alt="" />
+  @if (canExpand()) {
+    <img
+      class="expanded"
+      [ngSrc]="iconChevron"
+      [width]="16"
+      [height]="16"
+      [attr.expanded]="expanded()"
+      alt=""
+      (click)="toggleNested()"
+    />
+  }
+  <span class="column-item__name">{{ col.name }}</span>
+  @if (status() === EColumnStatus.STICKY) {
+    <img
+      class="pointer"
+      [ngSrc]="iconLock"
+      [width]="16"
+      [height]="16"
+      tuiHint="Нельзя скрыть закрепленную колонку"
+    />
+  } @else {
+    <img
+      class="eye-icon"
+      [ngSrc]="currentEyeIcon"
+      [width]="16"
+      [height]="16"
+      tuiHint="Показать/Скрыть колонку"
+      (click)="toggleVisibility(col)"
+    />
+  }
+
+  <ng-template cdkDragPlaceholder>
+    <div class="custom-placeholder"></div>
+  </ng-template>
+</div>
+
+@if (canExpand()) {
+  <tui-expand
+    class="nested-columns"
+    cdkDropList
+    [expanded]="expanded()"
+    [cdkDropListData]="childrenColumns"
+    (cdkDropListDropped)="dropIntoChildren($event)"
+  >
+    @for (childCol of childrenColumns; track childCol.id) {
+      <sproc-column-settings-template
+        [column]="childCol"
+        [parent]="col"
+      ></sproc-column-settings-template>
+    }
+  </tui-expand>
+}
