@@ -18,12 +18,12 @@ export const invertState = (state: ERegisterObjectState): ERegisterObjectState =
   return ERegisterObjectState.SELECTED;
 };
 
-export const enum EOrder {
+export enum EOrder {
   ASC = 'asc',
   DESC = 'desc',
 }
 
-export const enum SETTINGS_TYPE {
+export enum SETTINGS_TYPE {
   FILTER = 0,
   COLUMNS = 1,
   PAGE_MENU_STATE = 2,

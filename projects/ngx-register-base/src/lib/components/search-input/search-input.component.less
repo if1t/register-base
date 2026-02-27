@@ -1,0 +1,17 @@
+:host {
+  --tui-height-m: var(--top-bar-button-height);
+
+  width: 260px;
+  height: var(--tui-height-m);
+
+  input {
+    outline: none;
+    box-shadow: none;
+    border: 1px solid var(--input-stroke);
+  }
+
+  [tuiAppearance][data-appearance='textfield']:focus-visible:not([data-focus='false']) {
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 2px #cae6f8;
+  }
+}

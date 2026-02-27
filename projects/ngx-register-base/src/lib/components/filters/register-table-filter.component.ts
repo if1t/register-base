@@ -9,15 +9,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  combineLatest,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  Subject,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { combineLatest, debounceTime, map, Subject, takeUntil, of } from 'rxjs';
 import {
   EInputsAction,
   EInputsState,
@@ -26,8 +18,8 @@ import {
   ITpUserSettings,
   ITpUserSettingsSettingsFilter,
 } from '../../types';
-import { RegisterBaseStore } from '../../core';
 import { FiltersService, FiltersStateService } from '../../services';
+import { RegisterBaseStore } from '../../core';
 import { MENU_STATE_SERVICE } from './register-table-filter.consts';
 
 @Component({
@@ -53,26 +45,16 @@ export class RegisterTableFilterComponent<Type extends Record<string, any>>
 
   @Output() clickApplyButton = new EventEmitter<void>();
 
-  private readonly _store = inject(RegisterBaseStore<Type>);
-  private readonly _filterStateService = inject(FiltersStateService<Type>);
-  private readonly _filterListService = inject(FiltersService<Type>);
   private readonly _menuState = inject(MENU_STATE_SERVICE);
 
   private readonly _unsubscribe$: Subject<void> = new Subject<void>();
-
-  private _menuStateWhenFilterClosed = true;
 
   public readonly FilterState = EInputsState;
   public readonly filterState$ = this._filterStateService.state$.pipe(
     map((filterState) => filterState.state)
   );
-  public readonly isOpen$ = this.filterState$.pipe(
-    map((state) => state !== EInputsState.HIDDEN),
-    tap((filterIsOpen) => {
-      this._menuState.setOpen(filterIsOpen ? false : this._menuStateWhenFilterClosed);
-    })
-  );
-  public readonly total$ = this._store.total$;
+  public readonly isOpen$ = this.filterState$.pipe(map((state) => state !== EInputsState.HIDDEN));
+  public readonly total$ = this._store.total$ ?? of(0);
 
   private _currentFilters: ITpUserSettingsSettingsFilter[] = [];
   private _previousState: IInputsState = {
@@ -80,21 +62,13 @@ export class RegisterTableFilterComponent<Type extends Record<string, any>>
     action: EInputsAction.CANCEL,
   };
 
-  constructor() {}
+  constructor(
+    private readonly _store: RegisterBaseStore<Type>,
+    private readonly _filterStateService: FiltersStateService<Type>,
+    private readonly _filterListService: FiltersService<Type>
+  ) {}
 
   public ngOnInit(): void {
-    this._menuState.isOpen$
-      .pipe(distinctUntilChanged(), takeUntil(this._unsubscribe$))
-      .subscribe((isOpen) => {
-        if (this._filterStateService.state.state === EInputsState.HIDDEN) {
-          this._menuStateWhenFilterClosed = isOpen;
-        }
-
-        if (this._filterStateService.isPin) {
-          this._menuState.setOpen(false);
-        }
-      });
-
     combineLatest([this._filterStateService.state$, this._filterStateService.selectedSavedFilter])
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe({
@@ -122,6 +96,12 @@ export class RegisterTableFilterComponent<Type extends Record<string, any>>
         state: EInputsState.FILTER_LIST,
         action: EInputsAction.OPEN,
       });
+    }
+  }
+
+  protected closeMenu(isPin: boolean): void {
+    if (isPin) {
+      this._menuState.setOpen(false);
     }
   }
 

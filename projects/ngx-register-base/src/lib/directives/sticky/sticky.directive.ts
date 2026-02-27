@@ -15,7 +15,7 @@ import { StickyRelativeService } from './sticky-relative.service';
 import { animationFrameScheduler, of, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { toPx } from '../../utils';
-import {moveInEventLoopIteration} from '../../utils';
+import { moveInEventLoopIteration } from '../../utils';
 
 @Directive({
   selector: '[stickyLeft], [stickyRight], [stickyTop], [stickyBottom]',
@@ -41,8 +41,7 @@ export class StickyDirective implements OnChanges, OnDestroy, OnInit {
       : '';
   }
 
-  // eslint-disable-next-line xss/no-mixed-html
-  public readonly elRef = inject(ElementRef<HTMLElement>);
+  public readonly elRef = inject(ElementRef);
 
   private readonly _relativeService = inject(StickyRelativeService);
   private readonly _renderer = inject(Renderer2);

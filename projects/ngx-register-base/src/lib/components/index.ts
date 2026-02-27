@@ -1,3 +1,4 @@
+export * from './column-settings/index';
 export { FilterButtonComponent } from './filter-button/filter-button.component';
 export * from './filters/index';
 export * from './inputs/index';
@@ -5,4 +6,5 @@ export * from './page-menu/index';
 export * from './menu-constructor/index';
 export * from './register-table/index';
 export * from './sliding-panel/sliding-panel.module';
+export { SearchInputComponent } from './search-input/search-input.component';
 export { SlidingPanelComponent } from './sliding-panel/sliding-panel.component';

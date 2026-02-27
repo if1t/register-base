@@ -22,9 +22,10 @@
   </ng-template>
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
-      <div *ngIf="label" class="label-wrapper">
-        <span class="label">{{ label }}</span>
-        <span *ngIf="required" class="required">*</span>
+      <div class="label-wrapper" [class.applied]="applied()">
+        <span class="label" [class.required]="required">
+          {{ label }}
+        </span>
       </div>
 
       <prizm-input-layout size="s" [forceClear]="forceClear">

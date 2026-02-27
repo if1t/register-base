@@ -1,0 +1,6 @@
+<sproc-param-custom [formControl]="searchControl()" [formatGqlValue]="formatGqlValueProxy">
+  <tui-textfield tuiTextfieldSize="m" [tuiTextfieldCleaner]="true">
+    <input placeholder="Поиск" tuiTextfield [formControl]="searchControl()" />
+    <tui-icon icon="@tui.search" [style.width.px]="16" />
+  </tui-textfield>
+</sproc-param-custom>

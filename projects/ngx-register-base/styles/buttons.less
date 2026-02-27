@@ -1,0 +1,13 @@
+// Кнопка на верхнем баре
+.top-icon-button() {
+  width: var(--top-bar-button-width);
+  height: var(--top-bar-button-height);
+  border-radius: 2px;
+  padding: 10px;
+}
+
+// Заблокированная кнопка на верхнем баре
+.top-icon-button--disabled() {
+  filter: grayscale(100%) !important;
+  cursor: not-allowed;
+}

@@ -22,9 +22,10 @@
   </ng-template>
   <ng-template #editTemplate>
     <div class="container container--edit" [attr.sproc-param-style]="paramStyle">
-      <div *ngIf="label" class="label-wrapper">
-        <span class="label">{{ label }}</span>
-        <span *ngIf="required" class="required">*</span>
+      <div *ngIf="label" class="label-wrapper" [class.applied]="applied()">
+        <span class="label" [class.required]="required">
+          {{ label }}
+        </span>
       </div>
 
       @if (searchable) {
@@ -34,10 +35,12 @@
           tuiChevron
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+          [content]="valueTemplate"
         >
           <input
             (input)="search$.next($any($event.target).value)"
             tuiComboBox
+            [strict]="strict()"
             [placeholder]="placeholder()"
             [formControl]="control"
           />
@@ -63,6 +66,7 @@
           [tuiTextfieldLabelOutside]="true"
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+          [content]="valueTemplate"
           [tuiDropdownMaxHeight]="maxDropdownHeight"
         >
           <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
@@ -82,7 +86,7 @@
       }
       <ng-template #dropdownOptionContent let-data>
         <div>
-          {{ data.name }}
+          {{ stringify()(data) }}
         </div>
       </ng-template>
 

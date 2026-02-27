@@ -1,37 +1,38 @@
-:host {
-  position: relative;
+@import 'buttons';
+@import 'indicator';
 
+:host {
   button {
-    height: 32px;
-    width: 32px;
+    .top-icon-button();
+
+    position: relative;
+
+    &:disabled {
+      .top-icon-button--disabled();
+    }
 
     &.--indicator {
       &::after {
-        content: '';
+        .indicator(8px, var(--brand-danger));
+
         position: absolute;
         top: 10px;
         right: 6px;
-        width: 8px;
-        height: 8px;
-        background-color: var(--brand-danger);
-        border-radius: 50%;
-        display: block;
       }
     }
   }
 }
 
 .filter-button__tooltip {
-  background-color: #fcd9d9 !important;
+  background-color: var(--brand-danger-light) !important;
   padding: 16px;
-  border: 1px solid #f14141;
+  border: 1px solid var(--brand-danger);
   border-left-width: 4px;
   display: none;
 
   span {
-    font-size: 12px !important;
-    font-weight: 300 !important;
-    color: #000000 !important;
+    font: var(--input-text-12px);
+    color: var(--main-black);
   }
 
   &--showed {

@@ -2,9 +2,9 @@ import { Observable, Subscription } from 'rxjs';
 import { WhereBoolExp } from 'hasura';
 import { SETTINGS_TYPE } from '../consts/register-base.consts';
 import { IUserProfile } from './user-profile.types';
-import { PrizmTableSettings } from '@prizm-ui/components';
 import { IHasuraQueryFilter, ThWidthEntry } from '../components/register-table/model/schema';
 import { MutationResult } from 'apollo-angular';
+import { ITableColumnSettings } from '../components/column-settings/types/column-settings.types';
 
 export interface IRegisterBase {
   /** @deprecated плохая практика, используйте событие visibleRowsChanges из RegisterTableComponent */
@@ -25,7 +25,7 @@ export interface ITpUserSettingsSettings {
   name?: string;
   favorite?: boolean;
   filter?: ITpUserSettingsSettingsFilter[];
-  tableFields?: PrizmTableSettings;
+  tableFields?: ITableColumnSettings;
   expandType?: string;
   switchValue?: 0 | 1;
   menuState?: boolean;

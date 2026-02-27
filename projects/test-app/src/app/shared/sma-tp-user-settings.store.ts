@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import {
   catchError,
+  delay,
   EMPTY,
   filter as rxjsFilter,
   map,
   Observable,
-  of,
   Subject,
   switchMap,
   take,
@@ -14,11 +14,14 @@ import {
 } from 'rxjs';
 import { WhereBoolExp } from 'hasura';
 import {
+  isDefined,
   ITpUserSettings,
   ITpUserSettingsSettings,
   IUserSettingsLoader,
+  just,
   SETTINGS_TYPE,
 } from 'ngx-register-base';
+import { Router } from '@angular/router';
 
 interface IRegisterPropertiesState {
   loading: boolean;
@@ -37,6 +40,8 @@ export class SmaTpUserSettingsStore
   extends ComponentStore<IRegisterPropertiesState>
   implements IUserSettingsLoader
 {
+  private readonly _router = inject(Router);
+
   constructor() {
     super(initialState);
   }
@@ -94,13 +99,16 @@ export class SmaTpUserSettingsStore
             this.setLoading(true);
           }
 
-          return of({
-            data: { insert_usr_tp_user_settings: { returning: [] } },
-          }).pipe(
-            tap({
-              next: ({ data }) => {
-                const upsertedSettings = data?.insert_usr_tp_user_settings?.returning;
+          // Добавление модуля откуда была сделана запись с настройками
+          if (settings.settings) {
+            settings.settings.referer = this._router.url;
+          }
 
+          return just().pipe(
+            delay(1000),
+            switchMap(() => this._upsertSettings(settings)),
+            tap({
+              next: (upsertedSettings) => {
                 if (updateSettings) {
                   this.setSettings(upsertedSettings ?? []);
                 }
@@ -132,9 +140,10 @@ export class SmaTpUserSettingsStore
         switchMap((filter) => {
           this.setLoading(true);
 
-          return of({
-            data: { update_usr_tp_user_settings: { returning: [] } },
-          }).pipe(
+          return just().pipe(
+            switchMap(() =>
+              this._updateSettings(filter.id as unknown as SETTINGS_TYPE, filter.settings)
+            ),
             tap({
               next: (_) => {
                 this.setLoading(false);
@@ -158,11 +167,10 @@ export class SmaTpUserSettingsStore
         switchMap(({ id, updateSettings }) => {
           this.setLoading(true);
 
-          return of({
-            data: { delete_usr_tp_user_settings_by_pk: { returning: [] } },
-          }).pipe(
+          return just().pipe(
+            switchMap(() => this._deleteSettings(id as unknown as SETTINGS_TYPE)),
             tap({
-              next: (_) => {
+              next: () => {
                 if (updateSettings) {
                   this.setSettings([]);
                 }
@@ -186,53 +194,20 @@ export class SmaTpUserSettingsStore
   readonly fetchUserSettingsByUserId = this.effect(
     (event$: Observable<{ userId: string; settingsType: SETTINGS_TYPE; moduleName: string }>) =>
       event$.pipe(
-        switchMap((filter) => {
+        switchMap(({ settingsType }) => {
           this.setLoading(true);
 
-          return of({
-            data: { usr_tp_user_settings: [] },
-          }).pipe(
+          return just().pipe(
+            switchMap(() => this._fetchSettings(settingsType)),
             tap({
-              next: ({ data }) => {
-                this.setSettings(data.usr_tp_user_settings);
+              next: (settings) => {
+                this.setSettings(settings ?? []);
               },
               error: (e) => {
                 this.#error(e);
               },
               finalize: () => {
                 this.setLoading(false);
-              },
-            }),
-            catchError((e) => {
-              this.#error(e);
-              return EMPTY;
-            })
-          );
-        })
-      )
-  );
-
-  readonly fetchDefaultUserSettingsByUserId = this.effect(
-    (event$: Observable<{ userId: string; settingsType: SETTINGS_TYPE; moduleName: string }>) =>
-      event$.pipe(
-        switchMap((filter) => {
-          this.setLoading(true);
-
-          return of({
-            data: { usr_tp_user_settings: <any>[] },
-          }).pipe(
-            tap({
-              next: ({ data }) => {
-                this.setLoading(false);
-
-                const founded = data.usr_tp_user_settings.find(
-                  (settings: any) => settings?.settings?.favorite
-                );
-
-                this.setDefault(founded);
-              },
-              error: (e) => {
-                this.#error(e);
               },
             }),
             catchError((e) => {
@@ -251,10 +226,9 @@ export class SmaTpUserSettingsStore
     if (!hidden) {
       this.setLoading(true);
     }
-    return of({
-      data: { usr_tp_user_settings: [] },
-    }).pipe(
-      map(({ data }) => data.usr_tp_user_settings ?? []),
+    return just().pipe(
+      switchMap(() => this._fetchSettings(SETTINGS_TYPE.FILTER)),
+      map((response) => response ?? []),
       tap(() => {
         if (!hidden) {
           this.setLoading(false);
@@ -262,4 +236,94 @@ export class SmaTpUserSettingsStore
       })
     );
   };
+
+  private _updateSettings(
+    type: SETTINGS_TYPE,
+    settings: Partial<ITpUserSettingsSettings>
+  ): Observable<ITpUserSettings[] | undefined> {
+    return just().pipe(
+      delay(1000),
+      tap(() => {
+        const currentSettings = this._getSettings(type);
+
+        if (!currentSettings) {
+          throw new Error('Ошибка при обновлении настройки: настройка не найдена');
+        }
+
+        if (!isDefined(type)) {
+          throw new Error('Ошибка при обновлении настройки: тип настройки не указан');
+        }
+
+        this._setSettings(type, {
+          ...currentSettings,
+          settings: settings,
+        });
+      }),
+      switchMap(() => this._fetchSettings(type))
+    );
+  }
+
+  private _upsertSettings(
+    settings: Partial<ITpUserSettings>
+  ): Observable<ITpUserSettings[] | undefined> {
+    return just().pipe(
+      delay(1000),
+      tap(() => {
+        const currentSettings = this._getSettings(settings.settings_type);
+
+        if (currentSettings) {
+          if (!isDefined(settings.settings_type)) {
+            throw new Error('Ошибка при обновлении настройки: тип настройки не указан');
+          }
+
+          this._setSettings(settings.settings_type, {
+            ...currentSettings,
+            ...settings,
+          });
+        } else {
+          if (!isDefined(settings.settings_type)) {
+            throw new Error('Ошибка при создании настройки: тип настройки не указан');
+          }
+
+          this._setSettings(settings.settings_type, settings as ITpUserSettings);
+        }
+      }),
+      switchMap(() => this._fetchSettings(settings.settings_type!))
+    );
+  }
+
+  private _deleteSettings(type: SETTINGS_TYPE): Observable<null | undefined> {
+    return just().pipe(
+      delay(1000),
+      tap(() => {
+        localStorage.removeItem(`settings-${type}`);
+      }),
+      map(() => null)
+    );
+  }
+
+  private _setSettings(type: SETTINGS_TYPE, settings: ITpUserSettings): void {
+    localStorage.setItem(`settings-${type}`, JSON.stringify({ ...settings, id: type }));
+  }
+
+  private _fetchSettings(type: SETTINGS_TYPE): Observable<ITpUserSettings[] | undefined> {
+    return just().pipe(
+      delay(1000),
+      map(() => {
+        const settings = this._getSettings(type);
+
+        return settings ? [settings] : undefined;
+      })
+    );
+  }
+
+  private _getSettings(type: SETTINGS_TYPE | undefined): ITpUserSettings | null {
+    if (!isDefined(type)) {
+      throw new Error('Ошибка при получении настройки: тип настройки не указан');
+    }
+
+    const settings = localStorage.getItem(`settings-${type}`);
+
+    return settings ? JSON.parse(settings) : null;
+  }
 }

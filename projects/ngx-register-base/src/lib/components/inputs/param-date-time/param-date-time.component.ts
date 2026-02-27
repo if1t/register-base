@@ -3,6 +3,7 @@ import { PrizmDay, PrizmTime, PrizmTimeMode } from '@prizm-ui/components';
 import { distinctUntilChanged, filter, map, pairwise } from 'rxjs';
 import { ParamDateBase } from '../../../core/param/param-date-base';
 import { FormatterSavedValueType, ParserSavedValueType } from '../../../types/params.types';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export type SmaPrizmDateTime = [PrizmDay, PrizmTime | undefined];
 
@@ -83,7 +84,8 @@ export class ParamDateTimeComponent extends ParamDateBase<
           currDiff: curr.time_diff,
           value: this.value,
         })),
-        filter(({ value }) => !!value)
+        filter(({ value }) => !!value),
+        takeUntilDestroyed(this.dr)
       )
       .subscribe(({ prevDiff, currDiff, value }) => {
         const date = this._dts.prizmDateTimeToNativeDate(value!);
