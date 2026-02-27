@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/if1t/register-base/compare/v1.1.0...v1.2.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* **migration:** Исправление миграции замены префиксов в файлах стилей. ([c67c674](https://github.com/if1t/register-base/commit/c67c674eb7a8b0006503c546edfded35cc20f745))
+
 ### [1.2.0](https://github.com/if1t/register-base/compare/v1.1.0...v1.2.0) (2026-02-26)
 
 ### 🐞 Bug Fixes
