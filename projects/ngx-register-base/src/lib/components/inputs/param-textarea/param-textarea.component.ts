@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ParamBase } from '../../../core/param/param-base';
 import { NgTemplateOutlet } from '@angular/common';
 import { TuiAppearance, TuiHint, TuiTextfield } from '@taiga-ui/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { TuiTextarea, TuiTextareaLimit } from '@taiga-ui/kit';
 import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
+import { ParamTextBase } from '../../../core/param';
 
 @Component({
   selector: 'sproc-param-textarea',
@@ -25,16 +25,9 @@ import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/
     TuiTextareaLimit,
   ],
 })
-export class ParamTextareaComponent extends ParamBase<string | null, string | null> {
-  public override placeholder = input('Введите значение');
-  public override buildShowedValue = input(
-    (value: string | null): string => value?.toString() ?? '-'
-  );
-
+export class ParamTextareaComponent extends ParamTextBase {
   /** Минимальное кол-во строк в инпуте */
   public min = input(6);
   /** Максимальное кол-во строк в инпуте */
   public max = input(6);
-  /** Максимальное кол-во символов */
-  public maxLength = input(-1);
 }

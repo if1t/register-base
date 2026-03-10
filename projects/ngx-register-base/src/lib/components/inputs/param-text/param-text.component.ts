@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ParamBase } from '../../../core/param/param-base';
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { TuiAppearance, TuiHint, TuiTextfield } from '@taiga-ui/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -7,6 +6,7 @@ import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { MaskitoOptions } from '@maskito/core';
 import { MaskitoDirective } from '@maskito/angular';
 import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
+import { ParamTextBase } from '../../../core/param';
 
 @Component({
   selector: 'sproc-param-text',
@@ -29,13 +29,8 @@ import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/
     MaskitoDirective,
   ],
 })
-export class ParamTextComponent extends ParamBase<string | null, string | null> {
-  override placeholder = input<string>('Введите значение');
-  override buildShowedValue = input((value: string | null): string => value?.toString() ?? '-');
-  stringifyText = input((value: string) => value);
-  maskOptions = input<MaskitoOptions | null>(null);
+export class ParamTextComponent extends ParamTextBase {
+  public maskOptions = input<MaskitoOptions | null>(null);
   /** сообщение об ошибке для текстового поля */
   public errorMessage = input<string>('');
-  /** Максимальное кол-во символов */
-  public maxLength = input(-1);
 }
