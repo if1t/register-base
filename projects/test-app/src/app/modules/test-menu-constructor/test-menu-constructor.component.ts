@@ -1,7 +1,6 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   MENU_CONSTRUCTOR_STORE_TOKEN,
-  SIDE_MENU_OPENED_WIDTH,
   SprocMenuConstructorComponent,
   SprocPageMenuComponent,
 } from 'ngx-register-base';
@@ -16,7 +15,7 @@ import { MenuConstructorService } from './service/menu-constructor.service';
     MenuConstructorService,
     {
       provide: MENU_CONSTRUCTOR_STORE_TOKEN,
-      useExisting: MenuConstructorService
+      useExisting: MenuConstructorService,
     },
   ],
   imports: [SprocPageMenuComponent, SprocMenuConstructorComponent],
