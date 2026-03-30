@@ -1,14 +1,10 @@
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { hasFileExtension, shouldSkipFile } from '../../utils/utils';
 
 export function updatePrefix(): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     tree.visit((filePath) => {
-      if (
-        filePath.includes('/node_modules/') ||
-        filePath.includes('/dist/') ||
-        filePath.includes('/.angular/') ||
-        filePath.includes('/.git/')
-      ) {
+      if (shouldSkipFile(filePath)) {
         return;
       }
 
@@ -19,7 +15,7 @@ export function updatePrefix(): Rule {
 
       const content = contentBuffer.toString('utf-8');
 
-      if (filePath.endsWith('.html') || filePath.endsWith('.ts')) {
+      if (hasFileExtension(filePath, ['.html', '.ts'])) {
         const newContent = content.replace(/<sma-/g, '<sproc-').replace(/<\/sma-/g, '</sproc-');
 
         if (content !== newContent) {
@@ -28,7 +24,7 @@ export function updatePrefix(): Rule {
         return;
       }
 
-      if (filePath.endsWith('.css') || filePath.endsWith('.less') || filePath.endsWith('.scss')) {
+      if (hasFileExtension(filePath, ['.css', '.less', '.scss'])) {
         const newContent = content.replace(/\bsma-/g, 'sproc-');
 
         if (content !== newContent) {

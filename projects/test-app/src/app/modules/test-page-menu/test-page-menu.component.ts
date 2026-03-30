@@ -27,9 +27,9 @@ export class TestPageMenuComponent implements OnInit {
   protected _dr = inject(DestroyRef);
   protected width = `${SIDE_MENU_OPENED_WIDTH}px`;
   protected menu = menu;
-  protected menuIconsSrc = '';
-  protected logoSrc = 'logo.svg';
-  protected closedLogoSrc = 'logo_closed.svg';
+  protected menuIconsSrc = 'assets/icons/';
+  protected logoSrc = 'assets/icons/logo.svg';
+  protected closedLogoSrc = 'assets/icons/logo_closed.svg';
 
   protected findActiveSession(a: any, b: any): void {
     return;

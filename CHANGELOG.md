@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/if1t/register-base/compare/v1.2.2...v1.2.3) (2026-03-30)
+
+### 🐞 Bug Fixes
+
+- **tokens:** Исправление задублированного токена и интерфейса для реализации сервиса состояния навигационного меню. ([96d36b7](https://github.com/if1t/register-base/commit/96d36b70e06fbdb54145449d5def0f5555936b00))
+
 ## [1.2.2](https://github.com/if1t/register-base/compare/v1.2.1...v1.2.2) (2026-03-10)
 
 ### 🐞 Bug Fixes

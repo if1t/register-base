@@ -20,7 +20,7 @@ import {
 } from '../../types';
 import { FiltersService, FiltersStateService } from '../../services';
 import { RegisterBaseStore } from '../../core';
-import { MENU_STATE_SERVICE } from './register-table-filter.consts';
+import { PAGE_MENU_STATE } from '../page-menu';
 
 @Component({
   selector: 'sproc-register-table-filter',
@@ -45,7 +45,7 @@ export class RegisterTableFilterComponent<Type extends Record<string, any>>
 
   @Output() clickApplyButton = new EventEmitter<void>();
 
-  private readonly _menuState = inject(MENU_STATE_SERVICE);
+  private readonly _menuState = inject(PAGE_MENU_STATE);
 
   private readonly _unsubscribe$: Subject<void> = new Subject<void>();
 
