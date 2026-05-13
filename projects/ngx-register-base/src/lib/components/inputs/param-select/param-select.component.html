@@ -15,7 +15,7 @@
           </ng-template>
         </ng-container>
       }
-      <div class="value">
+      <div [tuiHint]="value && showedValue !== '-' ? hintContent : undefined" class="value">
         <span>{{ showedValue }}</span>
       </div>
     </div>
@@ -35,6 +35,7 @@
           tuiChevron
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+          tuiHintDirection="top"
           [content]="valueTemplate"
         >
           <input
@@ -66,6 +67,7 @@
           [tuiTextfieldLabelOutside]="true"
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+          tuiHintDirection="top"
           [content]="valueTemplate"
           [tuiDropdownMaxHeight]="maxDropdownHeight"
         >
@@ -90,8 +92,6 @@
         </div>
       </ng-template>
 
-      <ng-template #hintContent> {{ showedValue }} </ng-template>
-
       <ng-template #textfieldIcons>
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
@@ -102,3 +102,5 @@
     </div>
   </ng-template>
 </ng-container>
+
+<ng-template #hintContent> {{ showedValue }} </ng-template>
