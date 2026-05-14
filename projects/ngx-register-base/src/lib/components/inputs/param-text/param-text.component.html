@@ -15,7 +15,7 @@
           </ng-template>
         </ng-container>
       </ng-container>
-      <div class="value">
+      <div class="value" [tuiHint]="value && showedValue !== '-' ? hintContent : undefined">
         <span>{{ showedValue }}</span>
       </div>
     </div>
@@ -37,6 +37,7 @@
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="forceClear"
         [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+        tuiHintDirection="top"
       >
         <input
           tuiTextfield
@@ -51,8 +52,8 @@
           }
         </div>
       </tui-textfield>
-
-      <ng-template #hintContent> {{ showedValue }} </ng-template>
     </div>
   </ng-template>
 </ng-container>
+
+<ng-template #hintContent> {{ showedValue }} </ng-template>

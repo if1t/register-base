@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.2.3](https://github.com/if1t/register-base/compare/v1.2.2...v1.2.3) (2026-03-30)
+## [1.3.0](https://github.com/if1t/register-base/compare/v1.1.0...v1.3.0) (2026-05-14)
+
+### Features
+
+- Отображение hint при наведении на значение в поле с выбором единственного значения. ([29b6758](https://github.com/if1t/register-base/commit/29b6758414a7a756f6ceb4a94bd308db0939c71e))
+- Отображение hint при наведении на значение в текстовом поле. ([fb5de45](https://github.com/if1t/register-base/commit/fb5de45ee74fed13e02ae65b33d42ecc66bca8dc))
+
+## [1.2.3](https://github.com/if1t/register-base/compare/v1.2.2...v1.2.3) (2026-03-30)
 
 ### 🐞 Bug Fixes
 
@@ -18,13 +25,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 - **maxLength:** Добавление токена MAX_LENGTH_TEXT_PARAMS для возможности глобальной настройки максимального количества символов в текстовых полях. ([8246721](https://github.com/if1t/register-base/commit/8246721b0e1ca228585e23f9c2419ef685bdd413))
 
-### [1.2.1](https://github.com/if1t/register-base/compare/v1.2.0...v1.2.1) (2026-02-27)
+## [1.2.1](https://github.com/if1t/register-base/compare/v1.2.0...v1.2.1) (2026-02-27)
 
 ### 🐞 Bug Fixes
 
 - **migration:** Исправление миграции замены префиксов в файлах стилей. ([c67c674](https://github.com/if1t/register-base/commit/c67c674eb7a8b0006503c546edfded35cc20f745))
 
-### [1.2.0](https://github.com/if1t/register-base/compare/v1.1.0...v1.2.0) (2026-02-26)
+## [1.2.0](https://github.com/if1t/register-base/compare/v1.1.0...v1.2.0) (2026-02-26)
 
 ### 🐞 Bug Fixes
 
