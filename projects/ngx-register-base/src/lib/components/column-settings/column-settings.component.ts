@@ -5,12 +5,11 @@ import {
   DestroyRef,
   effect,
   inject,
+  INJECTOR,
   input,
   OnInit,
   signal,
-  TemplateRef,
   untracked,
-  viewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { filter, map, skip } from 'rxjs';
@@ -41,7 +40,7 @@ import { ICON_CANCEL_CLOSE, ICON_ERASER, ICON_SETTINGS } from './consts/column-s
 import { DialogService, ResizeWindowObserverService } from '../../services';
 import { getLastSegmentOfPathName, isNonNull } from '../../utils';
 import { SETTINGS_TYPE, USER_PROFILE_LOADER, USER_SETTINGS_LOADER } from '../../consts';
-import { ResetSettingsFormComponent } from '../reset-settings-form/reset-settings-form.component';
+import { ResetSettingsFormComponent } from './components/reset-settings-form/reset-settings-form.component';
 import { DividerComponent } from '../divider/divider.component';
 import { ITpUserSettings } from '../../types';
 
@@ -56,7 +55,6 @@ import { ITpUserSettings } from '../../types';
     TuiDrawer,
     TuiPopup,
     DividerComponent,
-    ResetSettingsFormComponent,
     CdkDropList,
     CdkDropListGroup,
     TuiScrollbar,
@@ -67,11 +65,6 @@ import { ITpUserSettings } from '../../types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColumnSettingsComponent implements OnInit {
-  public resetColumnSettingsRef = viewChild('resetSettings', { read: TemplateRef<unknown> });
-  public resetColumnSettingsFooter = viewChild('resetSettingsFooter', {
-    read: TemplateRef<unknown>,
-  });
-
   public defaultSettings = input.required<ITableColumnSettings>();
   /** Высота всего компонента настроек */
   public height = input<number | undefined>();
@@ -90,6 +83,8 @@ export class ColumnSettingsComponent implements OnInit {
   public columnsListEnterPredicate = input<() => boolean>(() => true);
   /** функция предикат - возможность добавления элемента в лист фикс. справа колонок */
   public fixedRightListEnterPredicate = input<() => boolean>(() => true);
+  /** название модуля для сохранения настроек */
+  public pathName = input<string | null>(null);
 
   protected readonly openSettings = signal(false);
   protected readonly inputSettings = signal<ITableColumnSettings | null>(null);
@@ -107,6 +102,7 @@ export class ColumnSettingsComponent implements OnInit {
   protected readonly settingsStore = inject(USER_SETTINGS_LOADER);
 
   private readonly _dr = inject(DestroyRef);
+  private readonly _injector = inject(INJECTOR);
   private readonly _router = inject(Router);
   private readonly _userProfileService = inject(USER_PROFILE_LOADER);
   private readonly _dialogService = inject(DialogService);
@@ -135,13 +131,26 @@ export class ColumnSettingsComponent implements OnInit {
   protected readonly columnListBottomPaddingPx = 8;
 
   private readonly _idUser = this._userProfileService.getUserProfile().id;
-  private readonly _moduleName = getLastSegmentOfPathName(this._router.url);
+  private readonly _moduleName = computed(() => {
+    const pathName = this.pathName();
+    return pathName ?? getLastSegmentOfPathName(this._router.url);
+  });
 
   private _columnsSettings: ITpUserSettings | undefined;
 
   constructor() {
     this.setDefaultSettings();
     this._effectOnSetScrollBoxColumnsMaxHeight();
+    this.fetchSettingsOnModuleNameChange();
+  }
+
+  public fetchSettingsOnModuleNameChange(): void {
+    effect(() => {
+      const pathName = this.pathName();
+      if (pathName) {
+        this.fetchSettings(this._idUser, pathName);
+      }
+    });
   }
 
   public setDefaultSettings(): void {
@@ -171,7 +180,7 @@ export class ColumnSettingsComponent implements OnInit {
 
   public ngOnInit(): void {
     this.subscribeOnSettings();
-    this.fetchSettings(this._idUser, this._moduleName);
+    this.fetchSettings(this._idUser, this._moduleName());
   }
 
   private fetchSettings(userId: string, moduleName: string): void {
@@ -219,7 +228,7 @@ export class ColumnSettingsComponent implements OnInit {
     this.settingsStore.upsertUserSettingsByUserId({
       settings: {
         id: this._columnsSettings?.id,
-        module_name: this._moduleName,
+        module_name: this._moduleName(),
         settings: {
           ...this._columnsSettings?.settings,
           tableFields: settings,
@@ -240,13 +249,19 @@ export class ColumnSettingsComponent implements OnInit {
 
   protected openResetDialog(): void {
     this._dialogService
-      .openModal(this.resetColumnSettingsRef(), {
-        closeable: true,
-        width: 466,
-        footer: this.resetColumnSettingsFooter(),
-        dismissible: true,
-      })
-      .subscribe();
+      .openModalTaiga(
+        ResetSettingsFormComponent,
+        {
+          width: 466,
+          dismissible: true,
+        },
+        this._injector
+      )
+      .subscribe((shouldReset) => {
+        if (shouldReset) {
+          this.deleteSettings();
+        }
+      });
   }
 
   protected toggle(): void {
@@ -287,11 +302,6 @@ export class ColumnSettingsComponent implements OnInit {
     }
   }
 
-  protected toggleVisibility(col: IColumnSettings): void {
-    const isHidden = col.status === EColumnStatus.HIDDEN;
-    col.status = isHidden ? EColumnStatus.DEFAULT : EColumnStatus.HIDDEN;
-  }
-
   protected showAllColumns(): void {
     const settings = this.inputSettings();
 
@@ -300,10 +310,6 @@ export class ColumnSettingsComponent implements OnInit {
     }
 
     this._setColumnsStatusRecursive(settings.columns, EColumnStatus.DEFAULT);
-  }
-
-  protected isHiddenColumn(column: IColumnSettings): boolean {
-    return column.status === EColumnStatus.HIDDEN;
   }
 
   protected onFixedScrollbarResize([fixedScrollbar]: readonly ResizeObserverEntry[]): void {

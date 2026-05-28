@@ -1,0 +1,27 @@
+<sma-template-modal width="440px">
+  <ng-container modalHeader> Сбросить все параметры отображения реестра? </ng-container>
+  <div class="reset-settings-form__description">
+    <i class="exclamation-icon"></i>
+    будут сброшены настройки отображения столбцов реестра (порядок, ширина, отображение и т.д.)
+  </div>
+  <ng-container modalFooter>
+    <button
+      tuiButton
+      class="full-flex-width"
+      appearance="primary-destructive"
+      size="m"
+      (click)="completeWith(true)"
+    >
+      Сбросить
+    </button>
+    <button
+      tuiButton
+      class="full-flex-width"
+      appearance="outline-grayscale"
+      size="m"
+      (click)="completeWith(false)"
+    >
+      Отмена
+    </button>
+  </ng-container>
+</sma-template-modal>

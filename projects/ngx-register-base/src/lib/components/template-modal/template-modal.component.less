@@ -1,0 +1,32 @@
+@import 'modals';
+
+:host {
+  --modal-form-width: auto;
+
+  .template-modal {
+    .modal-form(var(--modal-form-width));
+
+    &__header {
+      .modal-form__content(@padding: 24px 24px 0 24px);
+      .modal-form__title;
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    &__content {
+      .modal-form__content();
+
+      flex-direction: column;
+    }
+
+    &__footer {
+      .modal-form__footer();
+
+      &:empty {
+        display: none;
+      }
+    }
+  }
+}

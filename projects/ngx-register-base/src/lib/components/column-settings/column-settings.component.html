@@ -59,13 +59,11 @@
         (waResizeObserver)="onFixedScrollbarResize($event)"
       >
         @for (fixedLeftColumn of fixedLeftColumns(); track fixedLeftColumn.id) {
-          <sproc-column-settings-template
-            [column]="fixedLeftColumn"
-          ></sproc-column-settings-template>
+          <sproc-column-settings-template [column]="fixedLeftColumn" />
         }
       </tui-scrollbar>
     </div>
-    <sproc-divider></sproc-divider>
+    <sproc-divider />
     <div
       cdkDropList
       class="column-list"
@@ -84,12 +82,12 @@
       </div>
       <tui-scrollbar [style.max-height.px]="scrollBoxColumnsMaxHeightPx()">
         @for (column of columns(); track column.id) {
-          <sproc-column-settings-template [column]="column"></sproc-column-settings-template>
+          <sproc-column-settings-template [column]="column" />
         }
       </tui-scrollbar>
     </div>
     @if (showFixedRightList()) {
-      <sproc-divider></sproc-divider>
+      <sproc-divider />
       <div
         cdkDropList
         class="column-list"
@@ -113,7 +111,7 @@
           (waResizeObserver)="onRightFixedScrollbarResize($event)"
         >
           @for (column of fixedRightColumns(); track column.id) {
-            <sproc-column-settings-template [column]="column"></sproc-column-settings-template>
+            <sproc-column-settings-template [column]="column" />
           }
         </tui-scrollbar>
       </div>
@@ -131,30 +129,3 @@
     </button>
   </footer>
 </tui-drawer>
-
-<ng-template #resetSettings>
-  <sproc-reset-settings-form></sproc-reset-settings-form>
-</ng-template>
-
-<ng-template #resetSettingsFooter let-completeWith="completeWith">
-  <div style="width: 100%; display: flex; justify-content: center; gap: 8px">
-    <button
-      tuiButton
-      style="width: 196px"
-      appearance="primary-destructive"
-      size="l"
-      (click)="deleteSettings(); completeWith(true)"
-    >
-      Сбросить
-    </button>
-    <button
-      tuiButton
-      style="width: 196px"
-      appearance="outline-grayscale"
-      size="l"
-      (click)="completeWith(false)"
-    >
-      Отмена
-    </button>
-  </div>
-</ng-template>
