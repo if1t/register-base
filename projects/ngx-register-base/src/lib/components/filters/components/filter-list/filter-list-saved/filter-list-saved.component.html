@@ -1,5 +1,5 @@
-<div class="sproc-filter-list-saved">
-  <prizm-loader [showLoader]="$any(loading$ | async)" [overlay]="true">
+<div class="sma-filter-list-saved">
+  <tui-loader [showLoader]="$any(loading$ | async)" [overlay]="true">
     <span *ngIf="savedItems.length === 0" class="input-text-12px"
       >Сохраненых фильтров не найдено
     </span>
@@ -13,32 +13,20 @@
 
       <div class="sproc-filter-list-saved-item-action-buttons">
         <button
-          [icon]="item.favorite ? 'social-star-fill' : 'social-star'"
-          prizmIconButton
-          appearanceType="ghost"
-          [appearance]="item.favorite ? 'primary' : 'secondary'"
-          size="xl"
+          tuiButton
+          size="m"
+          [appearance]="item.favorite ? 'flat' : 'flat-grayscale'"
           (click)="onFavorite(item.id)"
-        ></button>
-
-        <button
-          [icon]="'editor-mode'"
-          prizmIconButton
-          appearanceType="ghost"
-          appearance="secondary"
-          size="xl"
-          (click)="onEdit(item.id)"
-        ></button>
-
-        <button
-          [icon]="'delete'"
-          prizmIconButton
-          appearanceType="ghost"
-          appearance="secondary"
-          size="xl"
-          (click)="onDelete(item.id)"
-        ></button>
+        >
+          <tui-icon [icon]="item.favorite ? '@sproc.star-fill' : '@sproc.star-empty'" />
+        </button>
+        <button appearance="flat-grayscale" size="m" tuiButton (click)="onEdit(item.id)">
+          <tui-icon [icon]="'@sproc.pencil'" />
+        </button>
+        <button appearance="flat-grayscale" size="m" tuiButton (click)="onDelete(item.id)">
+          <tui-icon [icon]="'@sproc.trash'" />
+        </button>
       </div>
     </div>
-  </prizm-loader>
+  </tui-loader>
 </div>

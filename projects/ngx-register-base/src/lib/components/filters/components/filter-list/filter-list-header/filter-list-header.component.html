@@ -24,11 +24,10 @@
 <ng-template #filterListTemplate>
   <ng-container *ngIf="showPin">
     <button
-      size="s"
-      appearanceType="ghost"
-      appearance="secondary"
-      prizmButton
+      tuiButton
       class="icon-button"
+      size="s"
+      [appearance]="isPin ? 'flat' : 'flat-grayscale'"
       (click)="onTogglePin()"
     >
       <tui-icon
@@ -36,105 +35,86 @@
         [icon]="isPin ? '@sproc.thumbtack-directly' : '@sproc.thumbtack'"
       />
     </button>
-
     <sproc-divider layout="vertical" />
   </ng-container>
 
   <button
-    icon="social-star"
-    size="s"
-    appearanceType="ghost"
-    appearance="secondary"
-    prizmButton
+    tuiButton
     class="icon-button"
+    appearance="flat-grayscale"
+    size="s"
     (click)="onSavedList()"
-  ></button>
+  >
+    <tui-icon [icon]="'@sproc.star-empty'" />
+  </button>
 
-  <button
-    icon="tools-content-save"
-    size="s"
-    appearanceType="ghost"
-    appearance="secondary"
-    prizmButton
-    class="icon-button"
-    (click)="onSave()"
-  ></button>
+  <button tuiButton class="icon-button" appearance="flat-grayscale" size="s" (click)="onSave()">
+    <tui-icon [icon]="'@sproc.floppy'" />
+  </button>
 
   <sproc-divider layout="vertical" />
 
   <button
-    icon="selection-check-simple"
-    size="s"
-    appearanceType="ghost"
-    appearance="primary"
-    prizmButton
+    tuiButton
     class="icon-button"
+    appearance="flat"
+    size="s"
     [disabled]="applyButtonDisabled"
     (click)="onApplyFilter()"
-  ></button>
+  >
+    <tui-icon class="check-icon" [icon]="'@sproc.check'" />
+  </button>
 
-  <button
-    icon="tools-eraser"
-    size="s"
-    appearanceType="ghost"
-    appearance="secondary"
-    prizmButton
-    class="icon-button"
-    (click)="onReset()"
-  ></button>
+  <button tuiButton class="icon-button" appearance="flat-grayscale" size="s" (click)="onReset()">
+    <tui-icon [icon]="'@sproc.eraser'" />
+  </button>
 
-  <button
-    *ngIf="showCloseButton"
-    icon="cancel-close"
-    size="s"
-    appearanceType="ghost"
-    appearance="danger"
-    prizmButton
-    class="icon-button"
-    (click)="onClose()"
-  ></button>
+  @if (showCloseButton) {
+    <button class="icon-button close-icon" appearance="flat" size="s" tuiButton (click)="onClose()">
+      <tui-icon [icon]="'@sproc.xmark'" />
+    </button>
+  }
 </ng-template>
 
 <ng-template #savedListTemplate>
   <button
-    icon="selection-check-simple"
-    size="s"
-    appearanceType="ghost"
-    appearance="primary"
-    prizmButton
+    tuiButton
     class="icon-button"
+    appearance="flat"
+    size="s"
     [disabled]="acceptButtonDisabled"
     (click)="onApplySavedFilter()"
-  ></button>
+  >
+    <tui-icon class="check-icon" [icon]="'@sproc.check'" />
+  </button>
 
   <ng-container *ngTemplateOutlet="backButtonTemplate" />
 </ng-template>
 
 <ng-template #saveFilterTemplate>
   <button
-    icon="tools-content-save"
-    size="s"
-    appearanceType="ghost"
-    appearance="secondary"
-    prizmButton
+    tuiButton
     class="icon-button"
+    appearance="flat-grayscale"
+    size="s"
     [disabled]="acceptButtonDisabled"
     (click)="onSaveFilter()"
-  ></button>
+  >
+    <tui-icon [icon]="'@sproc.floppy'" />
+  </button>
 
   <ng-container *ngTemplateOutlet="backButtonTemplate" />
 </ng-template>
 
 <ng-template #backButtonTemplate>
   <button
-    icon="arrows-corner-up-left"
-    size="s"
-    appearanceType="ghost"
-    appearance="secondary"
-    prizmButton
+    tuiButton
     class="icon-button"
-    prizmHint="Главное меню фильтров"
-    prizmHintTheme="light"
+    appearance="flat-grayscale"
+    size="s"
+    tuiHint="Главное меню фильтров"
     (click)="onBack()"
-  ></button>
+  >
+    <tui-icon [icon]="'@sproc.arrow-turn-up-left'" />
+  </button>
 </ng-template>

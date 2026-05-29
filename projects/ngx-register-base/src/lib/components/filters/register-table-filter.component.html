@@ -8,6 +8,7 @@
     [acceptButtonDisabled]="acceptButtonDisabled"
     [applyButtonDisabled]="applyButtonDisabled"
     [filterListHeaderTitle]="filterListHeaderTitle"
+    [saveWhenPinned]="saveWhenPinned()"
     (pinnedChange)="closeMenu($event)"
     (applyFilter)="onApplyFilter($event)"
   />
@@ -49,5 +50,6 @@
     [applyButtonDisabled]="applyButtonDisabled"
     (apply)="onApplyFilter($event)"
     [footerApplyButtonLabel]="footerApplyButtonLabel"
+    [saveWhenPinned]="saveWhenPinned()"
   />
 </sproc-sliding-panel>
