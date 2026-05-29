@@ -1,13 +1,21 @@
-<div class="sproc-sliding-panel" [attr.show]="!!isOpen">
-  <div #headerContainer>
+<div class="sproc-sliding-panel" [attr.show]="isOpen()">
+  <div
+    #headerContainer
+    class="display-contents"
+    (waResizeObserver)="onHeaderResize(headerContainer)"
+  >
     <ng-content select="[header]" />
   </div>
 
-  <prizm-scrollbar class="scrolled-content">
+  <tui-scrollbar class="scrolled-content">
     <ng-content />
-  </prizm-scrollbar>
+  </tui-scrollbar>
 
-  <div #footerContainer>
+  <div
+    #footerContainer
+    class="display-contents"
+    (waResizeObserver)="onFooterResize(footerContainer)"
+  >
     <ng-content select="[footer]" />
   </div>
 </div>

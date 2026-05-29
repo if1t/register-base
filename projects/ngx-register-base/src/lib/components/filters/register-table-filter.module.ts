@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterTableFilterComponent } from './register-table-filter.component';
 import { FilterListModule } from './components/filter-list.module';
-import { SlidingPanelModule } from '../sliding-panel/sliding-panel.module';
 import { DividerComponent } from '../divider/divider.component';
 import { TuiLoader } from '@taiga-ui/core';
+import { SlidingPanelComponent } from '../sliding-panel/sliding-panel.component';
 
 @NgModule({
   declarations: [RegisterTableFilterComponent],
@@ -14,7 +14,7 @@ import { TuiLoader } from '@taiga-ui/core';
     ReactiveFormsModule,
     FilterListModule,
     DividerComponent,
-    SlidingPanelModule,
+    SlidingPanelComponent,
     TuiLoader,
   ],
   exports: [RegisterTableFilterComponent],

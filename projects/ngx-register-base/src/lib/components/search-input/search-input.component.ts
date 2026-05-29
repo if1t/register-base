@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TuiIcon, TuiTextfield } from '@taiga-ui/core';
-import { CommonModule } from '@angular/common';
 import { InputsModule } from '../inputs';
 import { FormatterGqlValueType, IInputControl } from '../../types';
 
@@ -11,7 +10,7 @@ import { FormatterGqlValueType, IInputControl } from '../../types';
   templateUrl: './search-input.component.html',
   styleUrls: ['./search-input.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, InputsModule, TuiIcon, TuiTextfield],
+  imports: [ReactiveFormsModule, TuiIcon, TuiTextfield, InputsModule],
 })
 export class SearchInputComponent {
   public searchControl = input.required<
