@@ -1,4 +1,4 @@
-import { Directive, Injector, Input, output } from '@angular/core';
+import { Directive, Injector, input, Input, output, TemplateRef } from '@angular/core';
 import { ParamBase } from './param-base';
 import { BehaviorSubject } from 'rxjs';
 import { PolymorphContent } from '@prizm-ui/components';
@@ -6,6 +6,7 @@ import { InputControlSaveValue } from '../../types';
 import { InferArrayType } from '../../types/sub-types';
 import { MetaQuery } from '../../types/params.types';
 import { FastQueryStore } from '../../store/fast-query-store.service';
+import { TuiDropdownWidth } from '@taiga-ui/core';
 
 @Directive()
 export abstract class ParamSelectBase<
@@ -13,10 +14,12 @@ export abstract class ParamSelectBase<
   SavedValueType extends InputControlSaveValue,
 > extends ParamBase<ValueType, SavedValueType> {
   @Input() items: NonNullable<InferArrayType<ValueType>>[] = [];
-  @Input() searchable: boolean = false;
-  @Input() maxDropdownHeight = 342;
+  @Input() searchable = false;
+  public minDropdownHeight = input(0);
+  public maxDropdownHeight = input(342);
+  public dropdownLimitWidth = input<TuiDropdownWidth>('fixed');
   @Input() valueTemplate?: PolymorphContent;
-  @Input() listItemTemplate?: PolymorphContent;
+  @Input() listItemTemplate?: TemplateRef<any>;
   @Input() nullContent: PolymorphContent | string | null = 'Не выбрано';
   /** Массив полей по которым будет производиться фильтрация _or */
   @Input() searchSubfields: string[] = [];
@@ -24,6 +27,8 @@ export abstract class ParamSelectBase<
   @Input() strictSearch = false;
   @Input() selectClasses?: string;
   @Input() limit = 50;
+  /** Автозаполнение при автозапросе получения значений в поле */
+  @Input() autoFill = false;
   /** форматтер для задания кастомного отображения значения в поле */
   @Input() formatShowedValue: (value: any, field: string) => string = (value, field) =>
     value[field];
@@ -70,6 +75,11 @@ export abstract class ParamSelectBase<
       if (valueField) {
         ilikeConditions.push(this.buildNestedCondition(valueField, searchValue, this.strictSearch));
       }
+    }
+
+    // Если параметр where задан в виде строки, возвращаем его
+    if (paramWhere && typeof paramWhere === 'string') {
+      return paramWhere;
     }
 
     // Если параметр where не задан, но есть значение для поиска и поле valueField, возвращаем только условия _ilike

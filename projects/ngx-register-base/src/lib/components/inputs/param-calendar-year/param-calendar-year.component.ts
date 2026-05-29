@@ -7,7 +7,6 @@ import {
   viewChild,
 } from '@angular/core';
 import { type TuiBooleanHandler } from '@taiga-ui/cdk';
-import { TuiSizeL, TuiSizeM } from '@taiga-ui/core';
 import { ParamBase } from '../../../core/param/param-base';
 import { TuiInputYearComponent } from '@taiga-ui/legacy';
 
@@ -28,7 +27,6 @@ export class ParamCalendarYearComponent extends ParamBase<number, string> {
   public disabledYears = input<number[]>([]);
   public min = input<number | null>(null);
   public max = input<number | null>(null);
-  public size = input<TuiSizeL | TuiSizeM>('m');
   protected isYearPickerOpen = false;
 
   protected click(): void {

@@ -13,6 +13,8 @@ import {
   OnInit,
   Optional,
   Self,
+  signal,
+  TemplateRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, Validators } from '@angular/forms';
 import { filter, skip, tap } from 'rxjs';
@@ -24,6 +26,8 @@ import {
   ParserSavedValueType,
 } from '../../types/params.types';
 import { distinctUntilChangedJSONs } from '../../utils';
+import { ValidationMessageService } from '../../services/validation-message.service';
+import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 
 @Directive({
   providers: [
@@ -40,10 +44,20 @@ export abstract class ParamBase<
   >
   implements ControlValueAccessor, OnInit, AfterViewInit, AfterContentInit
 {
+  protected readonly validationMessageService = inject(ValidationMessageService, {
+    optional: true,
+  });
+
   /** Название */
   @Input() label = '';
   /** Текст при пустом значении control (null) */
-  placeholder = input<string>('');
+  public placeholder = input('');
+  /** Отображаемый при наведении на значок рядом с лейблом текст в режиме просмотра */
+  public tooltip = input('');
+  /** Отображаемый при наведении на значок рядом с лейблом текст в режиме редактирования */
+  public editTooltip = input('');
+  /** Размер поля */
+  public size = input<TuiSizeS | TuiSizeL>('m');
   /** Режим просмотра, по умолчанию выключен */
   @Input() readmode = false;
   /** Кнопка быстрой очистки поля, по умолчанию включена */
@@ -76,6 +90,8 @@ export abstract class ParamBase<
   }
   /** Метод для отображения значения в режиме просмотра */
   buildShowedValue = input((_: ValueType): string => '');
+  /** Шаблон для отображения значения в режиме просмотра */
+  public templateReadValue = input<TemplateRef<{ $implicit: ValueType }> | null>(null);
 
   @Input() set required(required: boolean) {
     this._required = required;
@@ -94,6 +110,10 @@ export abstract class ParamBase<
   public get disabled(): boolean {
     return this.control?.disabled ?? false;
   }
+
+  private _errorMessage = signal<string | null>(null);
+
+  protected validationErrorHint = computed(() => this._errorMessage() ?? '');
 
   @Optional()
   @Self()
@@ -194,6 +214,7 @@ export abstract class ParamBase<
 
       this._subscribeOnValue();
       this._subscribeOnSavedValue();
+      this._subscribeOnValidationMessage();
     }
 
     this.afterContentInit();
@@ -207,6 +228,7 @@ export abstract class ParamBase<
         takeUntilDestroyed(this.dr)
       )
       .subscribe((value) => {
+        this.onControlValueChange();
         this.control.gql_value = this.formatterGqlValue(value, this._injector);
         this._updateShowedValue(value);
 
@@ -215,6 +237,8 @@ export abstract class ParamBase<
         }
       });
   }
+
+  protected onControlValueChange(): void {}
 
   private _updateShowedValue(value: ValueType): void {
     this.showedValue = this.buildShowedValue()(value);
@@ -239,6 +263,15 @@ export abstract class ParamBase<
         const value =
           savedValue === null ? null : this.parserSavedValue(savedValue, this._injector);
         this.control.setValue(value as ValueType);
+      });
+  }
+
+  private _subscribeOnValidationMessage(): void {
+    this.validationMessageService
+      ?.observeControlErrors(this.control)
+      .pipe(takeUntilDestroyed(this.dr))
+      .subscribe((message) => {
+        this._errorMessage.set(message);
       });
   }
 

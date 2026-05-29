@@ -52,7 +52,7 @@
               *tuiTextfieldDropdown
               [items]="items | tuiFilterByInput: matcher()"
               [itemContent]="listItemTemplate ?? dropdownOptionContent"
-              [tuiDropdownMaxHeight]="maxDropdownHeight"
+              [tuiDropdownMaxHeight]="maxDropdownHeight()"
               (itemClick)="onSelect.emit($event)"
             />
           </tui-loader>
@@ -69,7 +69,7 @@
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
           tuiHintDirection="top"
           [content]="valueTemplate"
-          [tuiDropdownMaxHeight]="maxDropdownHeight"
+          [tuiDropdownMaxHeight]="maxDropdownHeight()"
         >
           <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
 

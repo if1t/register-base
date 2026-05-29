@@ -36,7 +36,7 @@
         [stringify]="stringify()"
         [tuiTextfieldLabelOutside]="forceClear"
         [tuiTextfieldCleaner]="true"
-        [tuiDropdownMaxHeight]="maxDropdownHeight"
+        [tuiDropdownMaxHeight]="maxDropdownHeight()"
       >
         <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
         <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate" />
