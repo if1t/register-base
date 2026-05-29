@@ -1,6 +1,6 @@
 <div class="sproc-sliding-panel" [attr.show]="!!isOpen">
   <div #headerContainer>
-    <ng-content select="[header]"></ng-content>
+    <ng-content select="[header]" />
   </div>
 
   <prizm-scrollbar class="scrolled-content">
@@ -8,6 +8,6 @@
   </prizm-scrollbar>
 
   <div #footerContainer>
-    <ng-content select="[footer]"></ng-content>
+    <ng-content select="[footer]" />
   </div>
 </div>

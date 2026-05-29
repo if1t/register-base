@@ -42,11 +42,7 @@
             {{ label }}
           </span>
           @if (hint) {
-            <tui-icon
-              icon="assets/ngx-register-base/icons/circle-info-empty.svg"
-              [tuiHint]="hint"
-              class="hintIcon"
-            ></tui-icon>
+            <tui-icon icon="@sproc.circle-info-empty" [tuiHint]="hint" class="hintIcon" />
           }
         </div>
       }
@@ -60,7 +56,7 @@
         [content]="valueContent"
       >
         <input tuiComboBox [placeholder]="placeholder()" [formControl]="control" />
-        <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate"></ng-container>
+        <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate" />
       </tui-textfield>
       <ng-template #valueContent let-list>
         {{ shortPickedLength() ? 'Выбрано: ' : null }} {{ list.length }}
@@ -74,5 +70,5 @@
     [multi]="true"
     [checkedNodes]="checkedNodes()"
     (selectedNodesChange)="setSelectedNodes($event)"
-  ></sproc-param-tree>
+  />
 </ng-template>

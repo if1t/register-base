@@ -8,6 +8,7 @@ import { FilterListSavedComponent } from './filter-list/filter-list-saved/filter
 import { FiltersSectionComponent } from './filter-list/filters-section/filters-section.component';
 import { DividerComponent } from '../../divider/divider.component';
 import { PrizmSharedModule } from '../../../utils/prizm.shared.module';
+import { TuiButton, TuiHintDirective, TuiIcon } from '@taiga-ui/core';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,16 @@ import { PrizmSharedModule } from '../../../utils/prizm.shared.module';
     FiltersSectionComponent,
     FilterListFooterComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, PrizmSharedModule, DividerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrizmSharedModule,
+    DividerComponent,
+    TuiHintDirective,
+    TuiButton,
+    TuiIcon,
+  ],
   exports: [
     FilterEditComponent,
     FilterListSavedComponent,

@@ -4,6 +4,7 @@ import {
   DestroyRef,
   EventEmitter,
   inject,
+  input,
   Input,
   OnInit,
   Output,
@@ -24,6 +25,8 @@ import { getLastSegmentOfPathName } from '../../../../../utils/get-url-segment';
   providers: [FilterListService],
 })
 export class FilterListFooterComponent implements OnInit {
+  public saveWhenPinned = input<boolean>(true);
+
   @Input() acceptButtonDisabled = false;
   @Input() applyButtonDisabled = false;
   @Input() footerApplyButtonLabel = 'Применить';
@@ -48,7 +51,9 @@ export class FilterListFooterComponent implements OnInit {
 
     this._filterListService.apply$.pipe(takeUntilDestroyed(this._dr)).subscribe((gql) => {
       this.apply.emit(gql);
-      this._filterListService.savePinnedFilters();
+      if (this.saveWhenPinned()) {
+        this._filterListService.savePinnedFilters();
+      }
     });
   }
 

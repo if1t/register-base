@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { TuiButton, TuiHint } from '@taiga-ui/core';
-import { NgOptimizedImage } from '@angular/common';
+import { TuiButton, TuiHint, TuiIcon } from '@taiga-ui/core';
 
 @Component({
   selector: 'sproc-filter-button',
@@ -8,7 +7,7 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './filter-button.component.less',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TuiButton, TuiHint, NgOptimizedImage],
+  imports: [TuiButton, TuiHint, TuiIcon],
 })
 export class FilterButtonComponent {
   public filterApplied = input.required<boolean>();

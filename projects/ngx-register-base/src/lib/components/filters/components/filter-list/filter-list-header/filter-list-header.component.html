@@ -7,23 +7,17 @@
 
 <div class="sproc-filter-list-header-actions-button">
   <ng-container [ngSwitch]="filterState$ | async">
-    <ng-container
-      *ngSwitchCase="FilterState.FILTER_LIST"
-      [ngTemplateOutlet]="filterListTemplate"
-    ></ng-container>
-    <ng-container
-      *ngSwitchCase="FilterState.SAVED_LIST"
-      [ngTemplateOutlet]="savedListTemplate"
-    ></ng-container>
+    <ng-container *ngSwitchCase="FilterState.FILTER_LIST" [ngTemplateOutlet]="filterListTemplate" />
+    <ng-container *ngSwitchCase="FilterState.SAVED_LIST" [ngTemplateOutlet]="savedListTemplate" />
     <ng-container
       *ngSwitchCase="FilterState.ON_EDIT_FILTER"
       [ngTemplateOutlet]="saveFilterTemplate"
-    ></ng-container>
+    />
     <ng-container
       *ngSwitchCase="FilterState.ON_SAVE_FILTER"
       [ngTemplateOutlet]="saveFilterTemplate"
-    ></ng-container>
-    <ng-container *ngSwitchDefault [ngTemplateOutlet]="backButtonTemplate"></ng-container>
+    />
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="backButtonTemplate" />
   </ng-container>
 </div>
 
@@ -37,14 +31,13 @@
       class="icon-button"
       (click)="onTogglePin()"
     >
-      <img
-        [src]="
-          'assets/ngx-register-base/icons/' + (isPin ? 'thumbtack-directly.svg' : 'thumbtack.svg')
-        "
+      <tui-icon
+        class="icon-size--16"
+        [icon]="isPin ? '@sproc.thumbtack-directly' : '@sproc.thumbtack'"
       />
     </button>
 
-    <sproc-divider layout="vertical"></sproc-divider>
+    <sproc-divider layout="vertical" />
   </ng-container>
 
   <button
@@ -67,7 +60,7 @@
     (click)="onSave()"
   ></button>
 
-  <sproc-divider layout="vertical"></sproc-divider>
+  <sproc-divider layout="vertical" />
 
   <button
     icon="selection-check-simple"
@@ -114,7 +107,7 @@
     (click)="onApplySavedFilter()"
   ></button>
 
-  <ng-container *ngTemplateOutlet="backButtonTemplate"></ng-container>
+  <ng-container *ngTemplateOutlet="backButtonTemplate" />
 </ng-template>
 
 <ng-template #saveFilterTemplate>
@@ -129,7 +122,7 @@
     (click)="onSaveFilter()"
   ></button>
 
-  <ng-container *ngTemplateOutlet="backButtonTemplate"></ng-container>
+  <ng-container *ngTemplateOutlet="backButtonTemplate" />
 </ng-template>
 
 <ng-template #backButtonTemplate>

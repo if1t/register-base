@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
-  selector: 'sma-template-modal',
+  selector: 'sproc-template-modal',
   templateUrl: './template-modal.component.html',
   styleUrl: './template-modal.component.less',
   standalone: true,

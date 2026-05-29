@@ -6,7 +6,7 @@
   [disabled]="disabled()"
   (click)="toggle()"
 >
-  <tui-icon class="column-settings__icon gray" [icon]="iconSettings"></tui-icon>
+  <tui-icon class="column-settings__icon gray" [icon]="iconSettings" />
 </button>
 
 <tui-drawer
@@ -26,11 +26,11 @@
         size="m"
         (click)="openResetDialog()"
       >
-        <tui-icon class="column-settings__icon" [icon]="iconEraser"></tui-icon>
+        <tui-icon class="column-settings__icon" [icon]="iconEraser" />
       </button>
-      <sproc-divider layout="vertical"></sproc-divider>
+      <sproc-divider layout="vertical" />
       <button tuiIconButton class="close-button" appearance="flat" size="m" (click)="close()">
-        <tui-icon class="column-settings__icon" [icon]="iconCancelClose"></tui-icon>
+        <tui-icon class="column-settings__icon" [icon]="iconCancelClose" />
       </button>
     </div>
   </header>

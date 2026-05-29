@@ -57,7 +57,7 @@
             />
           </tui-loader>
 
-          <ng-container *ngTemplateOutlet="textfieldIcons"></ng-container>
+          <ng-container *ngTemplateOutlet="textfieldIcons" />
         </tui-textfield>
       } @else {
         <tui-textfield
@@ -83,7 +83,7 @@
             />
           </tui-loader>
 
-          <ng-container *ngTemplateOutlet="textfieldIcons"></ng-container>
+          <ng-container *ngTemplateOutlet="textfieldIcons" />
         </tui-textfield>
       }
       <ng-template #dropdownOptionContent let-data>
@@ -95,7 +95,7 @@
       <ng-template #textfieldIcons>
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
-            <sproc-param-invalid-icon></sproc-param-invalid-icon>
+            <sproc-param-invalid-icon />
           }
         </div>
       </ng-template>

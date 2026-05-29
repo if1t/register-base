@@ -36,7 +36,7 @@
           <span>Выбрано</span>
           <span class="selected-counter">{{ selectedCounter() }}</span>
         </div>
-        <sproc-divider layout="vertical"></sproc-divider>
+        <sproc-divider layout="vertical" />
         @if (!paginatorOptions().noFilterInfo) {
           <div class="selected-container">
             <span>Отфильтровано</span>
@@ -69,7 +69,7 @@
           [disabled]="disabled() || currentPage === 1"
           (click)="toFirstPage()"
         >
-          <img [src]="SvgSrc.CHEVRONS_DOUBLE_LEFT" />
+          <tui-icon [icon]="SvgSrc.CHEVRONS_DOUBLE_LEFT" />
         </button>
         <tui-pagination
           [index]="currentPage - 1"
@@ -88,7 +88,7 @@
             [disabled]="disabled() || currentPage === pagesCount() || currentPage === 0"
             (click)="toLastPage()"
           >
-            <img [src]="SvgSrc.CHEVRONS_DOUBLE_RIGHT" />
+            <tui-icon [icon]="SvgSrc.CHEVRONS_DOUBLE_RIGHT" />
           </button>
         }
       </div>

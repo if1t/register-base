@@ -10,9 +10,9 @@
     }
   </div>
 
-  <prizm-icons [name]="isOpen() ? 'chevrons-up' : 'chevrons-down'" size="16"></prizm-icons>
+  <prizm-icons [name]="isOpen() ? 'chevrons-up' : 'chevrons-down'" size="16" />
 </div>
 
 <div class="filters-block" [attr.show]="isOpen()">
-  <ng-content></ng-content>
+  <ng-content />
 </div>

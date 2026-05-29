@@ -28,7 +28,7 @@
                     [loading]="isSelectloading()"
                     [disabled]="checkboxDisabled()"
                     (onApply)="selectChanged.emit($event)"
-                  ></sproc-checkbox-selector>
+                  />
                 </th>
               }
               @for (cell of hrow; track cell.col.name) {
@@ -65,15 +65,12 @@
                         [ngTemplateOutletContext]="{
                           $implicit: cell.col,
                         }"
-                      ></ng-container>
+                      />
                     }
                   } @else {
                     @switch (thType) {
                       @case (EColumnDataType.ICON) {
-                        <tui-icon
-                          class="register-table--icon-color"
-                          [icon]="cell.col.value!"
-                        ></tui-icon>
+                        <tui-icon class="register-table--icon-color" [icon]="cell.col.value!" />
                       }
                       @case (EColumnDataType.ICON_SVG) {
                         <img [src]="cell.col.value" [alt]="thName" />
@@ -174,16 +171,13 @@
                           $implicit: tdValue,
                           row,
                         }"
-                      ></ng-container>
+                      />
                     }
                   } @else {
                     @switch (tdType) {
                       @case (EColumnDataType.ICON) {
                         @if (tdValue) {
-                          <tui-icon
-                            class="register-table--icon-color"
-                            [icon]="columnData.value!"
-                          ></tui-icon>
+                          <tui-icon class="register-table--icon-color" [icon]="columnData.value!" />
                         }
                       }
                       @case (EColumnDataType.ICON_SVG) {

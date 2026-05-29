@@ -16,7 +16,7 @@ import { debounceTime, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiButton, TuiDataListDirective, TuiHint, TuiLoader } from '@taiga-ui/core';
+import { TuiButton, TuiDataListDirective, TuiHint, TuiIcon, TuiLoader } from '@taiga-ui/core';
 import { TuiDataListWrapperComponent, TuiPagination } from '@taiga-ui/kit';
 import { TuiComboBoxModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { IPaginatorOptions, IPaginatorOutput } from './types/paginator.types';
@@ -24,8 +24,8 @@ import { DividerComponent } from '../divider/divider.component';
 import { NumberOnlyDirective } from '../../directives/number/number-only.directive';
 
 export enum SvgSrc {
-  CHEVRONS_DOUBLE_LEFT = 'assets/ngx-register-base/icons/chevrons-double-left.svg',
-  CHEVRONS_DOUBLE_RIGHT = 'assets/ngx-register-base/icons/chevrons-double-right.svg',
+  CHEVRONS_DOUBLE_LEFT = '@sproc.chevrons-double-left',
+  CHEVRONS_DOUBLE_RIGHT = '@sproc.chevrons-double-right',
 }
 
 @Component({
@@ -45,6 +45,7 @@ export enum SvgSrc {
     TuiLoader,
     TuiHint,
     NumberOnlyDirective,
+    TuiIcon,
   ],
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.less'],

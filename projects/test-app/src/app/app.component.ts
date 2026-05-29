@@ -4,6 +4,7 @@ import { TuiRoot } from '@taiga-ui/core';
 import { PrizmIconsFullRegistry, PrizmIconsRegistry } from '@prizm-ui/icons/core';
 import * as allBaseIcons from '@prizm-ui/icons/base/source';
 import * as fullBaseIcons from '@prizm-ui/icons/full/source';
+import { provideSprocIcons } from 'ngx-register-base';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import * as fullBaseIcons from '@prizm-ui/icons/full/source';
   imports: [RouterOutlet, TuiRoot],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less',
+  providers: [provideSprocIcons()],
 })
 export class AppComponent {
   title = 'test-app';

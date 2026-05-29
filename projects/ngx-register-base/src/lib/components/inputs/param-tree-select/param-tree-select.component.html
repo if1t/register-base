@@ -39,7 +39,7 @@
         [tuiDropdownMaxHeight]="maxDropdownHeight"
       >
         <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
-        <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate"></ng-container>
+        <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate" />
       </tui-textfield>
     </div>
   </ng-template>
@@ -50,5 +50,5 @@
     [multi]="false"
     [checkedNodes]="checkedNodes()"
     (selectedNodesChange)="setSelectedNodes($event)"
-  ></sproc-param-tree>
+  />
 </ng-template>

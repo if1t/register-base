@@ -40,12 +40,7 @@
         <span class="label" [class.required]="required">
           {{ label }}
         </span>
-        <tui-icon
-          *ngIf="hint"
-          icon="assets/ngx-register-base/icons/circle-info-empty.svg"
-          [tuiHint]="hint"
-          class="hintIcon"
-        ></tui-icon>
+        <tui-icon *ngIf="hint" icon="@sproc.circle-info-empty" [tuiHint]="hint" class="hintIcon" />
       </div>
       <tui-multi-select
         [formControl]="control"
@@ -66,7 +61,7 @@
           tuiMultiSelectGroup
           [items]="items"
           [itemContent]="listItemTemplate ?? itemContent"
-        ></tui-data-list-wrapper>
+        />
       </tui-multi-select>
 
       <ng-template #itemContent let-data>

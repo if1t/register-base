@@ -19,6 +19,16 @@ angular.json:
 }
 ```
 
+app.component.ts:
+
+```ts
+import { provideSprocIcons } from './provide-icons';
+
+providers: [provideSprocIcons()];
+```
+
+> Провайд в app.config.ts ломает иерархию DI и не находит дефолтный
+
 ## Подключение стилей
 
 angular.json:
