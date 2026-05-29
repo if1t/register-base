@@ -3,9 +3,7 @@
     <div class="content">
       @if (!paginatorOptions().noRowsSelector && !paginatorOptions().noRowsSelectorLabel) {
         <span class="rows rows__count">
-          <ng-container *polymorphOutlet="textOnPage() as title">
-            {{ title }}
-          </ng-container>
+          {{ textOnPage() }}
         </span>
       }
       @if (!paginatorOptions().noRowsSelector) {

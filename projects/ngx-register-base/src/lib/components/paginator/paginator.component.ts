@@ -11,7 +11,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { PolymorphContent, PolymorphModule } from '@prizm-ui/components';
 import { debounceTime, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -33,7 +32,6 @@ export enum SvgSrc {
   imports: [
     DividerComponent,
     CommonModule,
-    PolymorphModule,
     ReactiveFormsModule,
     FormsModule,
     TuiPagination,
@@ -53,7 +51,7 @@ export enum SvgSrc {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent implements OnDestroy {
-  public textOnPage = input<PolymorphContent>('Строк на странице');
+  public textOnPage = input<string>('Строк на странице');
   public totalRecords = input(0, {
     transform: (value: NumberInput) => Math.max(coerceNumberProperty(value), 0),
   });
