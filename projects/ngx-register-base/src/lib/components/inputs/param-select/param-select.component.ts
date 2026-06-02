@@ -133,6 +133,12 @@ export class ParamSelectComponent
   }
 
   private _observeFetchItems(): void {
+    this._observeValueFill();
+    this._observeEmptyValue();
+    this._observeValueFetch();
+  }
+
+  private _observeValueFill(): void {
     this.control.valueChanges
       .pipe(
         filter(Boolean),
@@ -140,18 +146,28 @@ export class ParamSelectComponent
         takeUntilDestroyed(this.dr)
       )
       .subscribe((value) => {
-        const valueId =
-          typeof value === 'object' && value
-            ? (value as any).id
-            : (value as unknown as string | number | null);
-
-        const filledValue = this.items.find((item) => item.id === valueId);
+        const id = this._getIdFromValue(value);
+        const filledValue = this.items.find((item) => item.id === id);
 
         if (filledValue) {
           this.control.setValue(filledValue, { emitEvent: false });
         }
       });
+  }
 
+  private _observeEmptyValue(): void {
+    this.control.valueChanges
+      .pipe(
+        filter((value) => value === null),
+        takeUntilDestroyed(this.dr)
+      )
+      .subscribe(() => {
+        this.search$.next('');
+        this.fetchItems();
+      });
+  }
+
+  private _observeValueFetch(): void {
     combineLatest([
       this.control.valueChanges.pipe(
         map((value) => value?.id ?? null),
@@ -161,9 +177,13 @@ export class ParamSelectComponent
       this.meta$,
     ])
       .pipe(takeUntilDestroyed(this.dr))
-      .subscribe(() => {
-        this.fetchItems();
-      });
+      .subscribe(() => this.fetchItems());
+  }
+
+  private _getIdFromValue(value: unknown): string | number | null {
+    return typeof value === 'object' && value !== null
+      ? ((value as { id?: string | number }).id ?? null)
+      : (value as string | number | null);
   }
 
   private _subscribeOnMetaChanges(): void {
@@ -218,7 +238,7 @@ export class ParamSelectComponent
       return [this.value[idField]];
     }
 
-    return;
+    return undefined;
   }
 
   private _buildSelectedItemIdsWhere(
@@ -226,10 +246,11 @@ export class ParamSelectComponent
     selectedItemIDs: string[] | undefined,
     idField: string
   ): object | undefined {
-    if (where && selectedItemIDs && selectedItemIDs.length > 0) {
+    if (where && selectedItemIDs && selectedItemIDs.length > 0 && selectedItemIDs[0]) {
       return { _and: [{ [idField]: { _in: selectedItemIDs } }, where] };
     }
-    return;
+
+    return undefined;
   }
 
   private _handleResults(

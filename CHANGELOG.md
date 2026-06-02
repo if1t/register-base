@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/if1t/register-base/compare/v1.3.0...v1.3.1) (2026-06-02)
+
+### Bug Fixes
+
+- Исправление открытия датапикеров в ParamDateRange и ParamDateTimeRange. ([98a64de](https://github.com/if1t/register-base/commit/98a64de23ecdd7809519935d229899ad768f0f15))
+- Исправление сброса селектора при отсутствии данных. ([104ab9d3](https://github.com/if1t/register-base/commit/104ab9d398a597a90029769b8d6e904761c12bde)).
+
 ## [1.3.0](https://github.com/if1t/register-base/compare/v1.1.0...v1.3.0) (2026-05-14)
 
 ### Features
