@@ -1,53 +1,47 @@
 @import 'fonts';
+@import 'variables';
+@import 'common-param';
 
 :host {
-  .param-switcher {
+  --block-width: 100%;
+  --block-height: 100%;
+
+  .switcher-block-label {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: center;
 
-    .label {
-      display: flex;
-      gap: 4px;
+    .input-text-14px;
+  }
 
-      .input-label;
+  .block {
+    height: var(--block-height);
+  }
 
-      &__text {
-        color: var(--main-black);
-      }
+  .block:focus,
+  .block:focus-visible,
+  .block:checked {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: var(--chip-background);
+    background-color: var(--brand-light-blue) !important;
+  }
 
-      &--required {
-        color: var(--brand-danger);
-      }
-    }
+  [tuiBlock][data-appearance=''] {
+    height: var(--block-height);
+    padding: 0;
+    margin: 0;
+    justify-items: center;
+    line-height: var(--block-height);
+    max-height: var(--block-height);
+    min-height: var(--block-height);
+    width: var(--block-width);
+  }
 
-    ::ng-deep {
-      prizm-switcher {
-        .container {
-          display: flex;
-          flex: 1;
+  .not-allowed-cursor {
+    cursor: not-allowed;
+  }
 
-          prizm-switcher-item {
-            display: flex;
-            flex: 1;
-
-            button {
-              height: 24px !important;
-              min-height: 24px !important;
-              display: flex;
-              flex: 1;
-
-              prizm-wrapper {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: unset !important;
-                border: 1px solid var(--chip-background);
-              }
-            }
-          }
-        }
-      }
-    }
+  .disabled {
+    pointer-events: none;
   }
 }

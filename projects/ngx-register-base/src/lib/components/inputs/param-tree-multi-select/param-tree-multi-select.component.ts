@@ -1,5 +1,11 @@
 import { Component, effect, inject, Injector, input, signal } from '@angular/core';
-import { TuiAppearance, TuiHint, TuiIcon, TuiTextfield } from '@taiga-ui/core';
+import {
+  TuiAppearance,
+  TuiDropdownOptionsDirective,
+  TuiHint,
+  TuiIcon,
+  TuiTextfield,
+} from '@taiga-ui/core';
 import { TUI_TREE_LOADING, TuiChevron, TuiComboBox } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgTemplateOutlet } from '@angular/common';
@@ -12,6 +18,8 @@ import { FastQueryStore } from '../../../store/fast-query-store.service';
 import { ParamSelectBase } from '../../../core/param/param-select-base';
 import { distinctUntilChangedJSONs } from '../../../utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
+import { ValidationMessageService } from '../../../services/validation-message.service';
 
 export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any };
 
@@ -30,6 +38,8 @@ export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any }
     TuiTextfield,
     TuiChevron,
     TuiComboBox,
+    ParamInvalidIconComponent,
+    TuiDropdownOptionsDirective,
   ],
   templateUrl: './param-tree-multi-select.component.html',
   styleUrl: './param-tree-multi-select.component.less',
@@ -37,6 +47,7 @@ export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any }
     ParamTreeService,
     { provide: TUI_TREE_LOADING, useValue: TREE_LOADING_NODE },
     FastQueryStore,
+    ValidationMessageService,
   ],
 })
 export class ParamTreeMultiSelectComponent<T> extends ParamSelectBase<
@@ -54,6 +65,7 @@ export class ParamTreeMultiSelectComponent<T> extends ParamSelectBase<
   public defaultNodeOpenedState = input<boolean>();
   public stringify = input<(item: ITreeNode<T>) => string>((item) => String(item.name));
   public shortPickedLength = input(true);
+  public openedNodesState = input<Map<ITreeNode<T>, boolean>>();
 
   public override readonly buildShowedValue = input(
     (values: ITreeNode[]): string => values?.map((v) => v.name).join(',\n') ?? '-'
@@ -67,7 +79,11 @@ export class ParamTreeMultiSelectComponent<T> extends ParamSelectBase<
   constructor(injector: Injector) {
     super(injector);
     effect(() => {
-      this._treeService.setLoaderNode(this.loaderNode(), this.defaultNodeOpenedState());
+      this._treeService.setLoaderNode(
+        this.loaderNode(),
+        this.defaultNodeOpenedState(),
+        this.openedNodesState()
+      );
     });
   }
 

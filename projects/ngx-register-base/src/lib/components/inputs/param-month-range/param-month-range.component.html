@@ -28,9 +28,15 @@
         </span>
       </div>
 
-      <prizm-input-layout size="s" [forceClear]="forceClear">
-        <prizm-input-layout-month-range [placeholder]="placeholder()" [formControl]="control" />
-      </prizm-input-layout>
+      <tui-textfield tuiAppearance="sproc-input-appearance" [tuiTextfieldSize]="size()">
+        <input tuiInputMonthRange [placeholder]="placeholder()" [formControl]="control" />
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+          }
+        </div>
+        <tui-calendar-month *tuiTextfieldDropdown [maxLength]="maxLength" [minLength]="minLength" />
+      </tui-textfield>
     </div>
   </ng-template>
 </ng-container>

@@ -1,50 +1,49 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  input,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { type TuiBooleanHandler } from '@taiga-ui/cdk';
+import { ValidationMessageService } from '../../../services/validation-message.service';
 import { ParamBase } from '../../../core/param/param-base';
-import { TuiInputYearComponent } from '@taiga-ui/legacy';
+import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
+import { TuiDropdown, TuiTextfield } from '@taiga-ui/core';
+import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
+import { TuiInputYear } from '@taiga-ui/kit';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
 
 @Component({
   selector: 'sproc-param-calendar-year',
+  standalone: true,
   templateUrl: './param-calendar-year.component.html',
   styleUrls: ['./param-calendar-year.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ValidationMessageService],
+  imports: [
+    NgTemplateOutlet,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    NgIf,
+    TuiDropdown,
+    TuiInputYear,
+    ReactiveFormsModule,
+    ParamInvalidIconComponent,
+    TuiTextfield,
+    TuiTextfieldControllerModule,
+  ],
 })
 export class ParamCalendarYearComponent extends ParamBase<number, string> {
-  private readonly _cdr = inject(ChangeDetectorRef);
-  public yearInputComponent = viewChild<TuiInputYearComponent>('yearInput');
-
-  override buildShowedValue = input((value: number): string => value?.toString() ?? '-');
-  protected readonly disabledHandler: TuiBooleanHandler<number> = (value) =>
-    this.disabledYears().includes(value);
+  public override buildShowedValue = input((value: number): string => value?.toString() ?? '-');
+  public override placeholder = input('Выберите год');
+  protected readonly disabledHandler: TuiBooleanHandler<number> = (value) => {
+    const minYear = this.min();
+    const maxYear = this.max();
+    return (
+      this.disabledYears().includes(value) ||
+      (maxYear ? value > maxYear : false) ||
+      (minYear ? value < minYear : false)
+    );
+  };
 
   public disabledYears = input<number[]>([]);
   public min = input<number | null>(null);
   public max = input<number | null>(null);
-  protected isYearPickerOpen = false;
-
-  protected click(): void {
-    this.isYearPickerOpen = !this.isYearPickerOpen;
-
-    const yearComponent = this.yearInputComponent();
-    if (yearComponent) {
-      const inputEl = yearComponent.nativeFocusableElement!;
-      const onDocumentClick = (event: MouseEvent) => {
-        if (!inputEl.contains(event.target as Node) && this.isYearPickerOpen) {
-          (yearComponent as any).onOpenChange(false);
-          yearComponent.checkControlUpdate();
-          document.removeEventListener('click', onDocumentClick);
-          this.isYearPickerOpen = false;
-          this._cdr.markForCheck();
-        }
-      };
-      document.addEventListener('click', onDocumentClick);
-    }
-  }
 }

@@ -31,14 +31,21 @@
       }
       <tui-textfield
         tuiChevron
-        tuiTextfieldSize="m"
+        [tuiTextfieldSize]="size()"
         tuiAppearance="sproc-input-appearance"
         [stringify]="stringify()"
         [tuiTextfieldLabelOutside]="forceClear"
         [tuiTextfieldCleaner]="true"
+        [tuiDropdownMinHeight]="minDropdownHeight()"
         [tuiDropdownMaxHeight]="maxDropdownHeight()"
+        [tuiDropdownLimitWidth]="dropdownLimitWidth()"
       >
         <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+          }
+        </div>
         <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate" />
       </tui-textfield>
     </div>

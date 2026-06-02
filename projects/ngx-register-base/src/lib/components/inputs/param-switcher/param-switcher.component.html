@@ -1,8 +1,28 @@
-<div class="param-switcher">
-  <div *ngIf="label" class="label">
-    <span *ngIf="label" class="label__text">{{ label }}</span>
-    <span *ngIf="required" class="label--required">*</span>
+@if (label) {
+  <div class="default-label" [class.required]="required">
+    {{ label }}
   </div>
-
-  <prizm-switcher [formControl]="control" [switchers]="switchers" />
-</div>
+}
+<form tuiGroup [collapsed]="true">
+  @for (switcher of switchers(); track switcher?.name) {
+    @let isDisabled = switcher?.disabled ?? false;
+    <span [class.not-allowed-cursor]="isDisabled">
+      <label class="switcher-block-label" [class.disabled]="isDisabled" appearance="" tuiBlock>
+        <input
+          class="block"
+          [name]="uniqueSwitcherUUID"
+          [formControl]="control"
+          tuiBlock
+          type="radio"
+          [value]="switcher"
+        />
+        @let template = switcher.template;
+        @if (template) {
+          <ng-container *ngTemplateOutlet="template"></ng-container>
+        } @else {
+          {{ switcher.name }}
+        }
+      </label>
+    </span>
+  }
+</form>

@@ -3,6 +3,7 @@ import { ParamBase } from '../../../core/param/param-base';
 
 @Component({
   selector: 'sproc-param-custom',
+  standalone: true,
   templateUrl: './param-custom.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

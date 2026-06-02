@@ -1,5 +1,6 @@
 export * from './param.tokens';
 export { ParamBase } from './param-base';
 export { ParamDateBase } from './param-date-base';
+export type { DateRangeType } from './param-date-base';
 export { ParamSelectBase } from './param-select-base';
 export { ParamTextBase } from './param-text-base';

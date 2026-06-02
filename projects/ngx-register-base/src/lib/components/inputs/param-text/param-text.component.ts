@@ -5,14 +5,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { MaskitoOptions } from '@maskito/core';
 import { MaskitoDirective } from '@maskito/angular';
+import { ParamTextBase } from '../../../core/param/param-text-base';
 import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
-import { ParamTextBase } from '../../../core/param';
+import { ParamLabelHintIconComponent } from '../sub-components/param-label-hint-icon/param-label-hint-icon.component';
+import { ValidationMessageService } from '../../../services/validation-message.service';
 
 @Component({
   selector: 'sproc-param-text',
+  standalone: true,
   templateUrl: './param-text.component.html',
   styleUrls: ['./param-text.component.less'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
@@ -27,10 +29,14 @@ import { ParamTextBase } from '../../../core/param';
     TuiTextfieldControllerModule,
     TuiAppearance,
     MaskitoDirective,
+    ParamLabelHintIconComponent,
   ],
+  providers: [ValidationMessageService],
 })
 export class ParamTextComponent extends ParamTextBase {
-  public maskOptions = input<MaskitoOptions | null>(null);
-  /** сообщение об ошибке для текстового поля */
-  public errorMessage = input<string>('');
+  override buildShowedValue = input((value: string | null): string => value?.toString() ?? '-');
+  stringifyText = input((value: string) => value);
+  maskOptions = input<MaskitoOptions | null>(null);
+  /** тип инпута */
+  public type = input<'password' | 'text'>('text');
 }

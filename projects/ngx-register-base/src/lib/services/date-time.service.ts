@@ -3,15 +3,7 @@ import { format } from 'date-fns';
 import moment, { Moment } from 'moment-timezone';
 import { BehaviorSubject } from 'rxjs';
 import { STORED_TIMEZONE } from '../consts/date-time.consts';
-import { EDatePattern, ETimezone, SmaPrizmDateTime } from '../directives/date/date-time.types';
-import {
-  PrizmDateTimeRange,
-  PrizmDay,
-  PrizmDayRange,
-  PrizmTime,
-  PrizmTimeRange,
-} from '@prizm-ui/components';
-import { TuiDay } from '@taiga-ui/cdk';
+import { EDatePattern, ETimezone } from '../directives/date/date-time.types';
 
 export interface ITimeZone {
   time_diff: string;
@@ -346,54 +338,5 @@ export class DateTimeService {
     const currentDate = new Date();
     currentDate.setMonth(currentDate.getMonth() - monthBackNumber);
     return currentDate;
-  }
-
-  public prizmDateTimeRangeToNativeDates(range: PrizmDateTimeRange): { from: Date; to: Date } {
-    const { dayRange, timeRange } = range;
-
-    const from = this.prizmDateTimeToNativeDate([dayRange.from, timeRange?.from]);
-    const to = this.prizmDateTimeToNativeDate([dayRange.to, timeRange?.to]);
-
-    return { from, to };
-  }
-
-  public prizmDateTimeRangeFromNativeDates(from: Date, to: Date): PrizmDateTimeRange {
-    return new PrizmDateTimeRange(
-      PrizmDayRange.fromLocalNativeDate(from, to),
-      new PrizmTimeRange(PrizmTime.fromLocalNativeDate(from), PrizmTime.fromLocalNativeDate(to))
-    );
-  }
-
-  public prizmDateTimeToNativeDate(prizmDateTime: SmaPrizmDateTime): Date {
-    const [day, time] = prizmDateTime;
-    const date = new Date(day.toLocalNativeDate());
-
-    if (time) {
-      date.setHours(time.hours, time.minutes, time.seconds, time.ms);
-    }
-
-    return date;
-  }
-
-  public getTuiDayFromString(date: string): TuiDay {
-    const localDate = this.isoToLocalDate(date);
-    return new TuiDay(localDate.getFullYear(), localDate.getMonth(), localDate.getDate());
-  }
-
-  public getTuiDayFromDate(date: Date): TuiDay {
-    return new TuiDay(date.getFullYear(), date.getMonth(), date.getDate());
-  }
-
-  public transferTuiDayToString(date: TuiDay | null, pattern?: EDatePattern): string | null {
-    return date ? format(date.toLocalNativeDate(), pattern ?? EDatePattern.YEAR_MONTH_DAY) : null;
-  }
-
-  public toSmaPrizmDateTime(dateString: string): SmaPrizmDateTime {
-    const date = new Date(dateString);
-    const hours = date.getHours();
-    const min = date.getMinutes();
-    const day = PrizmDay.fromLocalNativeDate(date);
-    const time = new PrizmTime(hours, min);
-    return [day, time];
   }
 }

@@ -43,25 +43,24 @@
         <span class="label" [class.required]="required">
           {{ label }}
         </span>
-        <img
-          *ngIf="hint"
-          src="assets/ngx-register-base/icons/circle-info-empty.svg"
-          [prizmHint]="hint"
-          prizmHintTheme="light"
-          style="margin-bottom: 2px"
-        />
       </div>
 
-      <prizm-input-layout class="flex-shrink--zero" size="s" [forceClear]="forceClear">
-        <prizm-input-layout-date-time-range
-          [placeholder]="placeholder()"
-          [timeMode]="timeMode"
-          [maxLength]="maxLength"
-          [min]="$any(min)"
-          [max]="$any(max)"
-          [formControl]="control"
-        />
-      </prizm-input-layout>
+      <sproc-custom-date-time-range
+        [formControl]="control"
+        [min]="min()"
+        [max]="max()"
+        [minLength]="minLength()"
+        [maxLength]="maxLength()"
+        [placeholder]="placeholder()"
+        [timeMode]="timeMode()"
+        [forceClear]="forceClear"
+      >
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+          }
+        </div>
+      </sproc-custom-date-time-range>
     </div>
   </ng-template>
 </ng-container>

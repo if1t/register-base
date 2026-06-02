@@ -68,6 +68,25 @@ export class FastQueryStore {
     );
   }
 
+  public fetchAllCount(meta: MetaQuery, limit: number): Observable<number> {
+    const { where } = meta;
+    const query = this.generateGqlQuery(meta);
+
+    return this._apollo
+      .query<any>({
+        query,
+        variables: { where },
+        fetchPolicy: 'cache-first',
+      })
+      .pipe(
+        map(({ data }) => {
+          const { table } = meta;
+          const count = data[`${table.name}_aggregate`].aggregate.count;
+          return count > limit ? limit : count;
+        })
+      );
+  }
+
   public generateGqlQuery(
     meta: MetaQuery,
     withoutAggregate?: boolean,

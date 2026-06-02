@@ -1,6 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import {
   CellTemplateDirective,
+  ColumnSettingsComponent,
+  DateRangeType,
   FilterButtonComponent,
   FiltersService,
   FiltersStateService,
@@ -11,24 +13,37 @@ import {
   IHasuraQueryFilter,
   InputControl,
   INPUTS_STATE_CONFIG_KEY,
-  InputsModule,
+  ISwitcherItem,
   ITreeNode,
   IUserProfile,
   NumberOnlyDirective,
-  ParamTreeMultiSelectComponent,
-  ParamTreeSelectComponent,
   RegisterBase,
   RegisterBaseStore,
   RegisterTableCellSorter,
   RegisterTableComponent,
   RegisterTableFilterModule,
+  SearchInputComponent,
   SelectedObjectsStateService,
-  SmaPrizmDateTime,
   SyncTreeLoaderService,
   TREE_LOADER,
   USER_SETTINGS_LOADER,
-  ColumnSettingsComponent,
-  SearchInputComponent,
+  ParamTextComponent,
+  ParamTextareaComponent,
+  ParamToggleComponent,
+  ParamCalendarYearComponent,
+  ParamMonthComponent,
+  ParamMonthRangeComponent,
+  ParamDateComponent,
+  ParamDateRangeComponent,
+  ParamDateTimeComponent,
+  ParamDateTimeRangeComponent,
+  ParamSelectComponent,
+  ParamMultiSelectComponent,
+  ParamSwitcherComponent,
+  ParamSwitcherDateTimeRangeComponent,
+  ParamTreeSelectComponent,
+  ParamTreeMultiSelectComponent,
+  ParamCustomComponent,
 } from 'ngx-register-base';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -39,14 +54,7 @@ import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store'
 import { ReactiveFormsModule } from '@angular/forms';
 import { EControlName, GqlTest, TestItems, TestLoaderNode, TestSearchGqlFormatter } from './consts';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  PrizmDateTimeRange,
-  PrizmDayRange,
-  PrizmMonth,
-  PrizmMonthRange,
-  PrizmSwitcherItem,
-} from '@prizm-ui/components';
-import { TuiDay } from '@taiga-ui/cdk';
+import { TuiDay, TuiMonth, TuiMonthRange } from '@taiga-ui/cdk';
 import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.component';
 import { StatusChipsComponent } from './components/status-chips/status-chips.component';
 
@@ -57,16 +65,30 @@ import { StatusChipsComponent } from './components/status-chips/status-chips.com
     RegisterTableComponent,
     RegisterTableFilterModule,
     AsyncPipe,
-    InputsModule,
     ReactiveFormsModule,
     NumberOnlyDirective,
-    ParamTreeSelectComponent,
-    ParamTreeMultiSelectComponent,
     TreeWrapperComponent,
     CellTemplateDirective,
     StatusChipsComponent,
     ColumnSettingsComponent,
     SearchInputComponent,
+    ParamTextComponent,
+    ParamTextareaComponent,
+    ParamToggleComponent,
+    ParamCalendarYearComponent,
+    ParamMonthComponent,
+    ParamMonthRangeComponent,
+    ParamDateComponent,
+    ParamDateRangeComponent,
+    ParamDateTimeComponent,
+    ParamDateTimeRangeComponent,
+    ParamSelectComponent,
+    ParamMultiSelectComponent,
+    ParamSwitcherComponent,
+    ParamSwitcherDateTimeRangeComponent,
+    ParamTreeSelectComponent,
+    ParamTreeMultiSelectComponent,
+    ParamCustomComponent,
   ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
@@ -97,10 +119,10 @@ export class TestRegisterTableComponent
   name = EControlName;
   gql = GqlTest;
   testItems = TestItems;
-  testSwitchers: PrizmSwitcherItem<number>[] = [
-    { id: 1, title: '1' },
-    { id: 2, title: '2' },
-    { id: 3, title: '3' },
+  testSwitchers: ISwitcherItem<number>[] = [
+    { id: 1, name: '1' },
+    { id: 2, name: '2' },
+    { id: 3, name: '3' },
   ];
   testLoaderNode = TestLoaderNode;
 
@@ -137,16 +159,16 @@ export class TestRegisterTableComponent
       [EControlName.NUMB]: new InputControl<string | null>(null),
       [EControlName.TOGGLE]: new InputControl<string | null>(null),
       [EControlName.CALENDAR_YEAR]: new InputControl<number | null>(null),
-      [EControlName.MONTH]: new InputControl<PrizmMonth | null>(null),
-      [EControlName.MONTH_RANGE]: new InputControl<PrizmMonthRange | null>(null),
+      [EControlName.MONTH]: new InputControl<TuiMonth | null>(null),
+      [EControlName.MONTH_RANGE]: new InputControl<TuiMonthRange | null>(null),
       [EControlName.DATE]: new InputControl<TuiDay | null>(null),
-      [EControlName.DATE_RANGE]: new InputControl<PrizmDayRange | null>(null),
-      [EControlName.DATE_TIME]: new InputControl<SmaPrizmDateTime | null>(null),
-      [EControlName.DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
+      [EControlName.DATE_RANGE]: new InputControl<DateRangeType | null>(null),
+      [EControlName.DATE_TIME]: new InputControl<DateRangeType | null>(null),
+      [EControlName.DATE_TIME_RANGE]: new InputControl<DateRangeType | null>(null),
       [EControlName.SELECT]: new InputControl<IFilterSelectValue | null>(null),
       [EControlName.MULTI_SELECT]: new InputControl<IFilterSelectValue[] | null>(null),
       [EControlName.SWITCHER]: new InputControl<number | null>(null),
-      [EControlName.SWITCHER_DATE_TIME_RANGE]: new InputControl<PrizmDateTimeRange | null>(null),
+      [EControlName.SWITCHER_DATE_TIME_RANGE]: new InputControl<DateRangeType | null>(null),
       [EControlName.TREE_SELECT]: new InputControl<ITreeNode | null>(null),
       [EControlName.TREE_MULTI_SELECT]: new InputControl<ITreeNode[] | null>(null),
       [EControlName.CUSTOM]: new InputControl<File | null>(null),

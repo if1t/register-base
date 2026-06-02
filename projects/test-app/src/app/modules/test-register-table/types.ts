@@ -1,12 +1,6 @@
 import { EControlName } from './consts';
-import {
-  PrizmDateTimeRange,
-  PrizmDayRange,
-  PrizmMonth,
-  PrizmMonthRange,
-} from '@prizm-ui/components';
-import { TuiDay } from '@taiga-ui/cdk';
-import { IFilterSelectValue, SmaPrizmDateTime, ITreeNode } from 'ngx-register-base';
+import { TuiDay, TuiMonth, TuiMonthRange } from '@taiga-ui/cdk';
+import { DateRangeType, IFilterSelectValue, ITreeNode } from 'ngx-register-base';
 import { TestId } from './mocks/mocks';
 
 export interface ITestTable {
@@ -47,16 +41,16 @@ export interface ITestFilter {
   [EControlName.NUMB]: string;
   [EControlName.TOGGLE]: boolean;
   [EControlName.CALENDAR_YEAR]: number;
-  [EControlName.MONTH]: PrizmMonth | null;
-  [EControlName.MONTH_RANGE]: PrizmMonthRange | null;
+  [EControlName.MONTH]: TuiMonth | null;
+  [EControlName.MONTH_RANGE]: TuiMonthRange | null;
   [EControlName.DATE]: TuiDay | null;
-  [EControlName.DATE_RANGE]: PrizmDayRange | null;
-  [EControlName.DATE_TIME]: SmaPrizmDateTime | null;
-  [EControlName.DATE_TIME_RANGE]: PrizmDateTimeRange | null;
+  [EControlName.DATE_RANGE]: DateRangeType | null;
+  [EControlName.DATE_TIME]: Date | null;
+  [EControlName.DATE_TIME_RANGE]: DateRangeType | null;
   [EControlName.SELECT]: IFilterSelectValue | null;
   [EControlName.MULTI_SELECT]: IFilterSelectValue[] | null;
   [EControlName.SWITCHER]: number | null;
-  [EControlName.SWITCHER_DATE_TIME_RANGE]: PrizmDateTimeRange | null;
+  [EControlName.SWITCHER_DATE_TIME_RANGE]: DateRangeType | null;
   [EControlName.TREE_SELECT]: ITreeNode | null;
   [EControlName.TREE_MULTI_SELECT]: ITreeNode[] | null;
   [EControlName.CUSTOM]: File | null;

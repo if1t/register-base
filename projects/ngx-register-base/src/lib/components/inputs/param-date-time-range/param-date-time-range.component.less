@@ -13,25 +13,7 @@
       .edit-style-filter;
 
       &[sproc-param-style='card'] {
-        padding: 0 2px;
-
         ::ng-deep {
-          .prizm-input-form:not(.prizm-input-form-focused) {
-            background: inherit;
-            border: 1px solid var(--input-stroke);
-            padding: 0 3.5px 0 8px;
-          }
-
-          .prizm-input-form .prizm-input-form-focused {
-            background: inherit;
-            border: 1px solid var(--input-stroke);
-          }
-
-          .prizm-input-form-inner {
-            min-height: 32px;
-            height: 32px;
-          }
-
           input {
             .input-text-14px;
 
@@ -42,59 +24,10 @@
 
       &[sproc-param-style='filter'] {
         ::ng-deep {
-          .prizm-input-form:not(.prizm-input-form-focused) {
-            background: inherit;
-            border: none;
-            border-bottom: 1px solid var(--input-stroke);
-            padding: 0 3.5px 0 8px;
-          }
+          input {
+            .input-text-12px;
 
-          .prizm-input-form .prizm-input-form-focused {
-            background: inherit;
-            border: 1px !important;
-            border-bottom: 1px solid var(--input-stroke);
-          }
-
-          .prizm-input-form-inner {
-            min-height: 32px;
-            height: 32px;
-          }
-
-          .multiple-input-box {
-            padding: 0 !important;
-
-            input {
-              .input-text-12px;
-
-              color: var(--text-contrast);
-
-              &:last-child {
-                width: 100%;
-              }
-            }
-          }
-
-          .prizm-input-label-clear-btn {
-            position: absolute;
-            right: 0;
-            display: flex;
-            align-items: center;
-
-            prizm-icons-full {
-              width: 16px;
-              height: 16px;
-              display: none;
-            }
-
-            &:hover {
-              background: var(--brand-disabled);
-
-              prizm-icons-full {
-                width: 16px;
-                height: 16px;
-                display: unset;
-              }
-            }
+            color: var(--text-contrast);
           }
         }
       }

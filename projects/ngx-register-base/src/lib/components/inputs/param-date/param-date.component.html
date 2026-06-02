@@ -30,15 +30,15 @@
 
       <tui-textfield
         tuiAppearance="sproc-input-appearance"
-        tuiTextfieldSize="m"
+        [tuiTextfieldSize]="size()"
         [tuiTextfieldLabelOutside]="true"
         [style.--t-icon-end]="'url(/assets/ngx-register-base/icons/calendar-blank.svg)'"
         [style.--t-icon-size]="'16px'"
       >
         <input
           tuiInputDate
-          [min]="min"
-          [max]="max"
+          [min]="minDay()"
+          [max]="maxDay()"
           [placeholder]="placeholder()"
           [formControl]="control"
         />
@@ -46,7 +46,7 @@
 
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
-            <sproc-param-invalid-icon />
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
           }
         </div>
       </tui-textfield>

@@ -37,34 +37,23 @@
         </span>
       </div>
 
-      <prizm-input-layout
-        class="flex-shrink--zero"
-        size="s"
-        [forceClear]="forceClear"
-        [clearButton]="clearButtonTemplate"
-      >
-        <prizm-input-layout-date-time
+      <tui-textfield tuiAppearance="sproc-input-appearance" [tuiTextfieldSize]="size()">
+        <input
+          tuiInputDateTime
+          type="datetime-local"
           [placeholder]="placeholder()"
-          [max]="$any(max)"
-          [min]="$any(min)"
+          [timeMode]="timeMode()"
+          [max]="maxDay()"
+          [min]="minDay()"
           [formControl]="control"
         />
-        <ng-template
-          #clearButtonTemplate
-          let-showStatusButton="showStatusButton"
-          let-disabled="disabled"
-        >
-          <button
-            [interactive]="true"
-            [disabled]="disabled"
-            prizmHint="Нажмите для очистки"
-            prizmHintTheme="light"
-            prizmInputIconButton="cancel-delete-content"
-            class="{{ showStatusButton ? '' : 'alone' }}"
-            (click)="clearValue()"
-          ></button>
-        </ng-template>
-      </prizm-input-layout>
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+          }
+        </div>
+        <tui-calendar *tuiTextfieldDropdown [showAdjacent]="false" />
+      </tui-textfield>
     </div>
   </ng-template>
 </ng-container>

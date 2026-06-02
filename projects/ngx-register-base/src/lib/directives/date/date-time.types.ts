@@ -1,5 +1,3 @@
-import { PrizmDay, PrizmTime } from '@prizm-ui/components';
-
 export enum EDatePattern {
   MONTH_YEAR = 'MM.yyyy',
   DATE = 'dd.MM.yyyy',
@@ -32,5 +30,3 @@ export enum ETimezone {
   IRK = '+08:00',
   YAK = '+09:00',
 }
-
-export type SmaPrizmDateTime = [PrizmDay, PrizmTime | undefined];

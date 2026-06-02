@@ -1,5 +1,6 @@
 @import 'fonts';
 @import 'common-param';
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
 
 :host {
   @customZIndex: 22;
@@ -13,12 +14,12 @@
     z-index: @customZIndex;
     border-radius: 2px;
     height: 16px;
+    padding-left: 8px;
   }
 
   .choosed-many {
     color: var(--main-black);
     background: var(--input-hover-background-color);
-    padding-left: 8px;
     width: 80px;
 
     .table-text-12px;
@@ -62,8 +63,6 @@
 
       &[sproc-param-style='filter'] {
         .placeholder {
-          margin-left: 8px;
-
           .input-text-12px;
         }
       }
@@ -100,9 +99,19 @@
     .empty {
       position: relative;
     }
-
-    .t-value-content {
-      padding-left: 16px;
-    }
   }
+}
+
+.select-all {
+  margin: 16px 16px 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.items-scroll {
+  margin-top: 8px;
+}
+
+[tuiScrollable] {
+  .scrollbar-hidden();
 }

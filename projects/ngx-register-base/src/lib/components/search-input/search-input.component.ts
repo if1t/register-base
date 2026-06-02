@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TuiIcon, TuiTextfield } from '@taiga-ui/core';
-import { InputsModule } from '../inputs';
 import { FormatterGqlValueType, IInputControl } from '../../types';
+import { ParamCustomComponent } from '../inputs/param-custom/param-custom.component';
 
 @Component({
   selector: 'sproc-search-input',
@@ -10,7 +10,7 @@ import { FormatterGqlValueType, IInputControl } from '../../types';
   templateUrl: './search-input.component.html',
   styleUrls: ['./search-input.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, TuiIcon, TuiTextfield, InputsModule],
+  imports: [ReactiveFormsModule, TuiIcon, TuiTextfield, ParamCustomComponent],
 })
 export class SearchInputComponent {
   public searchControl = input.required<

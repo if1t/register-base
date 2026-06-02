@@ -48,25 +48,60 @@
         [tuiTextfieldCleaner]="true"
         tuiAppearance="sproc-input-appearance"
         [valueContent]="valueContent"
-        tuiTextfieldSize="m"
+        [tuiTextfieldSize]="size()"
         [stringify]="stringify()"
         [identityMatcher]="identityMatcher()"
-        (searchChange)="onSearch($event)"
+        [tuiDropdownMinHeight]="minDropdownHeight()"
+        [tuiDropdownMaxHeight]="maxDropdownHeight()"
+        [tuiDropdownLimitWidth]="dropdownLimitWidth()"
         [editable]="searchable"
+        (searchChange)="onSearch($event)"
       >
         <span class="placeholder">{{ placeholder() }}</span>
-
-        <tui-data-list-wrapper
-          *tuiDataList
-          tuiMultiSelectGroup
-          [items]="items"
-          [itemContent]="listItemTemplate ?? itemContent"
-        />
+        <!-- TODO добавить после рефакторинга deprecated tui-multi-select на tui-textfield
+          <div class="textfield-icons-container">
+            @if (isInvalidAndNotPristine) {
+              <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+            }
+          </div>
+        -->
+        <div *tuiDataList>
+          <tui-loader [showLoader]="loading" [overlay]="true">
+            @if (itemSelectAll() && items.length > 1) {
+              <div class="select-all" (click)="selectAll()">
+                <input
+                  tuiCheckbox
+                  type="checkbox"
+                  size="s"
+                  [checked]="value && value.length === allItemCount()"
+                />
+                {{ itemSelectAllName() }}
+              </div>
+            }
+            @let currentItems = filteredItems() ?? items;
+            <cdk-virtual-scroll-viewport
+              class="items-scroll"
+              tuiScrollable
+              [itemSize]="32"
+              [style.height.px]="currentItems.length * 32 + 8"
+              [style.max-height.px]="maxDropdownHeight() - 56"
+            >
+              <tui-data-list tuiMultiSelectGroup>
+                <button *cdkVirtualFor="let item of currentItems" tuiOption [value]="item">
+                  @if (listItemTemplate) {
+                    <ng-container
+                      *ngTemplateOutlet="listItemTemplate; context: { $implicit: item }"
+                    ></ng-container>
+                  } @else {
+                    {{ item.name }}
+                  }
+                </button>
+              </tui-data-list>
+            </cdk-virtual-scroll-viewport>
+          </tui-loader>
+        </div>
       </tui-multi-select>
 
-      <ng-template #itemContent let-data>
-        {{ data.name }}
-      </ng-template>
       <ng-template #valueContent let-list>
         @let isSingle = list.length === 1;
         <span [class]="isSingle ? 'choosed choosed-one' : 'choosed choosed-many'">

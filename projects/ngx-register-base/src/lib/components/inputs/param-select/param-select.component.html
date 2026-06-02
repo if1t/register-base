@@ -6,17 +6,38 @@
           <ng-template ngSwitchCase="filter">
             <div class="label-wrapper">
               <span class="label">{{ label }}</span>
+
+              @let currentTooltip = readmode ? tooltip() : editTooltip();
+
+              @if (currentTooltip) {
+                <sproc-param-label-hint-icon [tuiHint]="currentTooltip" />
+              }
+
               <div class="dashed-row"></div>
             </div>
           </ng-template>
           <ng-template ngSwitchDefault>
             <span class="label">{{ label }}</span>
+
+            @let currentTooltip = readmode ? tooltip() : editTooltip();
+
+            @if (currentTooltip) {
+              <sproc-param-label-hint-icon [tuiHint]="currentTooltip" />
+            }
+
             <div class="dashed-row"></div>
           </ng-template>
         </ng-container>
       }
       <div [tuiHint]="value && showedValue !== '-' ? hintContent : undefined" class="value">
-        <span>{{ showedValue }}</span>
+        @if (templateReadValue()) {
+          <ng-container
+            [ngTemplateOutlet]="templateReadValue()"
+            [ngTemplateOutletContext]="{ $implicit: value }"
+          />
+        } @else {
+          <span>{{ showedValue }}</span>
+        }
       </div>
     </div>
   </ng-template>
@@ -30,13 +51,14 @@
 
       @if (searchable) {
         <tui-textfield
-          tuiTextfieldSize="m"
+          [tuiTextfieldSize]="size()"
           tuiAppearance="sproc-input-appearance"
           tuiChevron
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
           tuiHintDirection="top"
           [content]="valueTemplate"
+          [tuiDropdownLimitWidth]="dropdownLimitWidth()"
         >
           <input
             (input)="search$.next($any($event.target).value)"
@@ -52,16 +74,17 @@
               *tuiTextfieldDropdown
               [items]="items | tuiFilterByInput: matcher()"
               [itemContent]="listItemTemplate ?? dropdownOptionContent"
+              [tuiDropdownMinHeight]="minDropdownHeight()"
               [tuiDropdownMaxHeight]="maxDropdownHeight()"
               (itemClick)="onSelect.emit($event)"
             />
           </tui-loader>
 
-          <ng-container *ngTemplateOutlet="textfieldIcons" />
+          <ng-container *ngTemplateOutlet="textfieldIcons"></ng-container>
         </tui-textfield>
       } @else {
         <tui-textfield
-          tuiTextfieldSize="m"
+          [tuiTextfieldSize]="size()"
           tuiAppearance="sproc-input-appearance"
           tuiChevron
           [tuiTextfieldLabelOutside]="true"
@@ -69,7 +92,9 @@
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
           tuiHintDirection="top"
           [content]="valueTemplate"
+          [tuiDropdownMinHeight]="minDropdownHeight()"
           [tuiDropdownMaxHeight]="maxDropdownHeight()"
+          [tuiDropdownLimitWidth]="dropdownLimitWidth()"
         >
           <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
 
@@ -95,7 +120,7 @@
       <ng-template #textfieldIcons>
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
-            <sproc-param-invalid-icon />
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
           }
         </div>
       </ng-template>
