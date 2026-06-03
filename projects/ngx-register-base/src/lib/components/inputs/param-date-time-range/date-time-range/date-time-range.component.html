@@ -2,6 +2,7 @@
 @let timeTo = tuiTimeTo();
 
 <div
+  tuiAppearance="sproc-input-appearance"
   class="multiple-input-box"
   [tuiDropdown]="dropdownContent"
   [tuiDropdownManual]="open"
@@ -68,15 +69,15 @@
   <div class="t-content">
     <div class="icon-wrapper">
       <!-- placeholder for sproc-param-invalid-icon -->
-      <ng-content></ng-content>
+      <ng-content />
 
       @if (forceClear()) {
         <button
+          class="t-clear"
           tuiIconButton
           size="xs"
           appearance="action-grayscale"
           type="button"
-          class="t-clear"
           (click)="clear()"
         >
           Очистить
@@ -84,7 +85,7 @@
       }
     </div>
 
-    <tui-icon class="calendar" [icon]="'@sproc.calendar-custom'"> </tui-icon>
+    <tui-icon class="calendar" [icon]="'@sproc.calendar-date'"> </tui-icon>
   </div>
 </div>
 
@@ -99,24 +100,32 @@
   />
 
   <div class="time-range">
-    <tui-textfield [tuiTextfieldSize]="'s'" [style.width.px]="250">
+    <tui-textfield
+      tuiAppearance="sproc-input-appearance"
+      [tuiTextfieldSize]="'s'"
+      [style.width.px]="250"
+    >
       <input
         tuiInputTime
         [mode]="timeMode()"
         [ngModel]="timeFrom"
         (ngModelChange)="updateTimeFrom($event)"
       />
-      <tui-icon [icon]="'@tui.clock'" class="clock-icon" [style.font-size.px]="16" />
+      <tui-icon class="clock-icon" [icon]="'@tui.clock'" [style.font-size.px]="16" />
     </tui-textfield>
 
-    <tui-textfield [tuiTextfieldSize]="'s'" [style.width.px]="250">
+    <tui-textfield
+      tuiAppearance="sproc-input-appearance"
+      [tuiTextfieldSize]="'s'"
+      [style.width.px]="250"
+    >
       <input
         tuiInputTime
         [mode]="timeMode()"
         [ngModel]="timeTo"
         (ngModelChange)="updateTimeTo($event)"
       />
-      <tui-icon [icon]="'@tui.clock'" class="clock-icon" [style.font-size.px]="16" />
+      <tui-icon class="clock-icon" [icon]="'@tui.clock'" [style.font-size.px]="16" />
     </tui-textfield>
   </div>
 </ng-template>

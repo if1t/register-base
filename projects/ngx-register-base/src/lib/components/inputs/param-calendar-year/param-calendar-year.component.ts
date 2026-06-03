@@ -3,7 +3,7 @@ import { type TuiBooleanHandler } from '@taiga-ui/cdk';
 import { ValidationMessageService } from '../../../services/validation-message.service';
 import { ParamBase } from '../../../core/param/param-base';
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
-import { TuiDropdown, TuiTextfield } from '@taiga-ui/core';
+import { TuiAppearance, TuiDropdown, TuiTextfield } from '@taiga-ui/core';
 import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { TuiInputYear } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +28,7 @@ import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/
     ParamInvalidIconComponent,
     TuiTextfield,
     TuiTextfieldControllerModule,
+    TuiAppearance,
   ],
 })
 export class ParamCalendarYearComponent extends ParamBase<number, string> {

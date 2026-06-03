@@ -25,7 +25,7 @@ import {
   tuiNullableSame,
   TuiTime,
 } from '@taiga-ui/cdk';
-import { TuiButton, TuiDropdown, TuiIcon, TuiTextfield } from '@taiga-ui/core';
+import { TuiAppearance, TuiButton, TuiDropdown, TuiIcon, TuiTextfield } from '@taiga-ui/core';
 import { TuiCalendarRange, TuiInputTime, tuiInputTimeOptionsProvider } from '@taiga-ui/kit';
 
 import { MaskitoOptions } from '@maskito/core';
@@ -64,6 +64,7 @@ import { DateRangeType } from '../../../../core/param/param-date-base';
     TuiButton,
     TuiActiveZone,
     TuiIcon,
+    TuiAppearance,
   ],
   providers: [
     {

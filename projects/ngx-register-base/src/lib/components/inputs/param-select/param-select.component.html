@@ -51,8 +51,8 @@
 
       @if (searchable) {
         <tui-textfield
-          [tuiTextfieldSize]="size()"
           tuiAppearance="sproc-input-appearance"
+          [tuiTextfieldSize]="size()"
           tuiChevron
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"

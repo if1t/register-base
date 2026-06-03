@@ -43,10 +43,10 @@
         <tui-icon *ngIf="hint" icon="@sproc.circle-info-empty" [tuiHint]="hint" class="hintIcon" />
       </div>
       <tui-multi-select
+        tuiAppearance="sproc-input-appearance"
         [formControl]="control"
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="true"
-        tuiAppearance="sproc-input-appearance"
         [valueContent]="valueContent"
         [tuiTextfieldSize]="size()"
         [stringify]="stringify()"

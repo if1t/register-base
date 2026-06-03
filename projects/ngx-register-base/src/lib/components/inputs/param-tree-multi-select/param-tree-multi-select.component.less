@@ -22,24 +22,6 @@
           display: flex;
           justify-content: space-between;
         }
-
-        ::ng-deep {
-          input {
-            .input-text-14px;
-
-            color: var(--text-contrast);
-          }
-        }
-      }
-
-      &[sproc-param-style='filter'] {
-        ::ng-deep {
-          input {
-            .input-text-12px;
-
-            color: var(--text-contrast);
-          }
-        }
       }
 
       .selected-item-wrapper {
@@ -76,34 +58,5 @@
   .hintIcon {
     width: 16px;
     height: 16px;
-  }
-
-  ::ng-deep {
-    .choosed {
-      display: none;
-    }
-
-    .empty {
-      position: relative;
-
-      .choosed {
-        display: flex;
-        cursor: pointer;
-        align-items: center;
-        position: absolute;
-        justify-content: space-between;
-        top: 7px;
-        left: 8px;
-        z-index: 2;
-        font-size: 12px;
-        font-family: Inter, sans-serif;
-        color: #000000;
-        padding: 6px;
-        border-radius: 2px;
-        width: 95px;
-        height: 18px;
-        background: transparent;
-      }
-    }
   }
 }
