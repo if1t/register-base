@@ -128,7 +128,14 @@ export class ParamSelectComponent
     this.search$
       .pipe(debounceTime(PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS), takeUntilDestroyed(this.dr))
       .subscribe((searchValue: string | undefined) => {
-        this.fetchItems(searchValue);
+        if (this.strict() && !this.control.value) {
+          if (searchValue) {
+            this.search$.next('');
+          }
+          this.fetchItems();
+        } else {
+          this.fetchItems(searchValue);
+        }
       });
   }
 
@@ -158,7 +165,8 @@ export class ParamSelectComponent
   private _observeEmptyValue(): void {
     this.control.valueChanges
       .pipe(
-        filter((value) => value === null),
+        filter(() => !this.strict()),
+        filter((value) => value === null || (typeof value === 'string' && value === '')),
         takeUntilDestroyed(this.dr)
       )
       .subscribe(() => {
