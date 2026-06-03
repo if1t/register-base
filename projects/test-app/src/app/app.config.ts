@@ -9,7 +9,6 @@ import { provideApollo } from 'apollo-angular';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { prizmIconsProvideOldNameTransformer } from '@prizm-ui/icons';
 import { MenuStateService } from './modules/test-page-menu/service/menu-state.service';
 
 export const appConfig: ApplicationConfig = {
@@ -27,7 +26,6 @@ export const appConfig: ApplicationConfig = {
     }),
     { provide: USER_PROFILE_LOADER, useClass: UserProfileService },
     { provide: PAGE_MENU_STATE, useClass: MenuStateService },
-    prizmIconsProvideOldNameTransformer(),
     { provide: MAX_LENGTH_TEXT_PARAMS, useValue: 200 },
   ],
 };

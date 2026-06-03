@@ -1,5 +1,4 @@
-import { PrizmTableSettings } from '@prizm-ui/components';
-import { IColumnData } from 'ngx-register-base';
+import { IColumnData, ITableColumnSettings } from 'ngx-register-base';
 import { ITestTable } from '../types';
 
 export enum TestId {
@@ -104,7 +103,7 @@ export const columnsData: IColumnData[] = [
   },
 ];
 
-export const tableSettings: PrizmTableSettings = {
+export const tableSettings: ITableColumnSettings = {
   columns: [
     { id: TestId.CODE, name: 'Код', status: 'default' },
     { id: TestId.CONTRACT_NUMBER, name: TestName.CONTRACT_NUMBER, status: 'default' },
@@ -120,7 +119,6 @@ export const tableSettings: PrizmTableSettings = {
   ],
   stickyLeft: [],
   stickyRight: [],
-  fixHeader: true,
 };
 
 export const defaultSettingsForExport = [

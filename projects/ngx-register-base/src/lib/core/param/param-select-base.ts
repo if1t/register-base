@@ -1,12 +1,12 @@
 import { Directive, Injector, input, Input, output, TemplateRef } from '@angular/core';
 import { ParamBase } from './param-base';
 import { BehaviorSubject } from 'rxjs';
-import { PolymorphContent } from '@prizm-ui/components';
 import { InputControlSaveValue } from '../../types';
 import { InferArrayType } from '../../types/sub-types';
 import { MetaQuery } from '../../types/params.types';
 import { FastQueryStore } from '../../store/fast-query-store.service';
 import { TuiDropdownWidth } from '@taiga-ui/core';
+import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
 
 @Directive()
 export abstract class ParamSelectBase<
@@ -18,9 +18,9 @@ export abstract class ParamSelectBase<
   public minDropdownHeight = input(0);
   public maxDropdownHeight = input(342);
   public dropdownLimitWidth = input<TuiDropdownWidth>('fixed');
-  @Input() valueTemplate?: PolymorphContent;
+  @Input() valueTemplate?: PolymorpheusContent;
   @Input() listItemTemplate?: TemplateRef<any>;
-  @Input() nullContent: PolymorphContent | string | null = 'Не выбрано';
+  @Input() nullContent: PolymorpheusContent | null = 'Не выбрано';
   /** Массив полей по которым будет производиться фильтрация _or */
   @Input() searchSubfields: string[] = [];
   /** Флаг строгого поиска: строгий - _eq, не строгий - _ilike */

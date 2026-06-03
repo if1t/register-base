@@ -1,7 +1,6 @@
 import { inject, Injectable, Injector } from '@angular/core';
-import { PrizmDialogService } from '@prizm-ui/components';
 import { Observable } from 'rxjs';
-import { DialogContext, DialogOptions, DialogOverlayInsidePlacement } from './dialog.types';
+import { DialogContext } from './dialog.types';
 import { tuiDialog, TuiDialogOptions, TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
 
@@ -9,21 +8,7 @@ import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
   providedIn: 'root',
 })
 export class DialogService {
-  private readonly _dialogService = inject(PrizmDialogService);
   private readonly _tuiDialogService = inject(TuiDialogService);
-
-  public openModal(
-    template: unknown,
-    config: Partial<DialogOptions<unknown, unknown>>
-  ): Observable<any> {
-    return this._dialogService.open(template, {
-      closeable: false,
-      width: 440,
-      position: DialogOverlayInsidePlacement.CENTER,
-      backdrop: true,
-      ...config,
-    });
-  }
 
   public openModalTaiga<Context extends DialogContext, Result = any>(
     component: new (...args: any[]) => unknown,

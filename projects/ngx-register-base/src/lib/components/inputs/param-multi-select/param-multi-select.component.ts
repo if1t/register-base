@@ -17,19 +17,14 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { PrizmMultiSelectSearchMatcher } from '@prizm-ui/components';
 import {
   BehaviorSubject,
   combineLatest,
   debounceTime,
-  delay,
   distinctUntilChanged,
   filter,
   map,
-  of,
-  skip,
   Subscription,
-  switchMap,
   tap,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -109,10 +104,6 @@ export class ParamMultiSelectComponent
   override readonly placeholder = input('Выберите значения');
   readonly itemSelectAll = input(false);
   public readonly itemSelectAllName = input<string>(SELECT_ALL_NAME);
-  readonly searchMatcher = input<PrizmMultiSelectSearchMatcher<IFilterSelectValue>>(
-    (search: string, item: IFilterSelectValue) =>
-      item.name?.toLowerCase().includes(search.toLowerCase())
-  );
   readonly shortPickedLength = input(true);
 
   readonly stringify = input<TuiStringHandler<IFilterSelectValue | TuiContext<IFilterSelectValue>>>(
@@ -138,10 +129,7 @@ export class ParamMultiSelectComponent
   protected allItemCount = signal<number | null>(null);
 
   protected readonly onSearch$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  private onSearchSubscription: Subscription | null = null;
-  private cachedString = '';
 
-  private onClearButtonSubscription: Subscription | null = null;
   public choosedHint = '';
 
   constructor(
@@ -172,10 +160,6 @@ export class ParamMultiSelectComponent
   }
 
   public override afterViewInit(): void {
-    if (this.meta?.table && this.searchable) {
-      this._subscribeOnClearButton();
-    }
-
     if (this.meta) {
       this._observeFetchItems();
     }
@@ -233,9 +217,7 @@ export class ParamMultiSelectComponent
 
   public ngOnDestroy(): void {
     this.onSearch$.complete();
-    this.onSearchSubscription?.unsubscribe();
     this.onCancelButtonSubscription?.unsubscribe();
-    this.onClearButtonSubscription?.unsubscribe();
   }
 
   protected fetchAllCount(searchValue?: string): void {
@@ -325,47 +307,6 @@ export class ParamMultiSelectComponent
     } else {
       this.fetchItems(true, this.searchValue());
     }
-  }
-
-  private _subscribeOnClearButton(): void {
-    this.onClearButtonSubscription?.unsubscribe();
-    this.onClearButtonSubscription = this.onSearch$
-      .pipe(
-        skip(1),
-        switchMap((value) => {
-          if (value.length > 0 && this.cachedString.length === 0) {
-            const elements = this.document.querySelectorAll('.input-search');
-            const clearButtonClicks$ = [];
-            for (let i = 0; i < elements.length; i++) {
-              const founded = elements.item(i);
-              const item = founded?.parentElement;
-              if (founded && item && item.className === 'prizm-input-form-body') {
-                clearButtonClicks$.push(
-                  of(null).pipe(
-                    delay(300),
-                    switchMap(() => {
-                      const clearButton = item.parentElement?.getElementsByClassName(
-                        'prizm-input-label-clear-btn prizm-input-button-default clear-icon interactive ng-star-inserted'
-                      );
-                      if (clearButton?.[0]) {
-                        clearButton[0].addEventListener('click', () => {
-                          this.onSearch$.next('');
-                        });
-                      }
-                      return of(null);
-                    })
-                  )
-                );
-              }
-            }
-            return clearButtonClicks$.length > 0 ? clearButtonClicks$[0] : of(null);
-          }
-          this.cachedString = value;
-          return of(null);
-        }),
-        takeUntilDestroyed(this.dr)
-      )
-      .subscribe();
   }
 
   private _getSelectedItemIDs(searchValue?: string): string[] | undefined {

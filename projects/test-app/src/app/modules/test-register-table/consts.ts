@@ -6,7 +6,6 @@ import {
   ISwitcherItem,
   ITreeNode,
 } from 'ngx-register-base';
-import { PrizmMonth } from '@prizm-ui/components';
 import { TuiMonth, TuiMonthRange } from '@taiga-ui/cdk';
 import { Injector } from '@angular/core';
 
