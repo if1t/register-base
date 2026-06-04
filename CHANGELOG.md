@@ -2,16 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.3.1](https://github.com/if1t/register-base/compare/v1.3.0...v1.3.1) (2026-06-02)
+## [1.3.2](https://github.com/if1t/register-base/compare/v1.3.1...v1.3.2) (2026-06-04)
 
-### Bug Fixes
+### 🐞 Bug Fixes
+
+- Исправление сброса селектора при отсутствии данных для srtict=true. ([644fc427](https://github.com/if1t/register-base/pull/9/changes/644fc427a88704715ede665cc4165d5a405721ad)).
+
+## [1.3.1](https://github.com/if1t/register-base/compare/v1.3.0...v1.3.1) (2026-06-02)
+
+### 🐞 Bug Fixes
 
 - Исправление открытия датапикеров в ParamDateRange и ParamDateTimeRange. ([98a64de](https://github.com/if1t/register-base/commit/98a64de23ecdd7809519935d229899ad768f0f15))
 - Исправление сброса селектора при отсутствии данных. ([104ab9d3](https://github.com/if1t/register-base/commit/104ab9d398a597a90029769b8d6e904761c12bde)).
 
 ## [1.3.0](https://github.com/if1t/register-base/compare/v1.1.0...v1.3.0) (2026-05-14)
 
-### Features
+### 🚀 Features
 
 - Отображение hint при наведении на значение в поле с выбором единственного значения. ([29b6758](https://github.com/if1t/register-base/commit/29b6758414a7a756f6ceb4a94bd308db0939c71e))
 - Отображение hint при наведении на значение в текстовом поле. ([fb5de45](https://github.com/if1t/register-base/commit/fb5de45ee74fed13e02ae65b33d42ecc66bca8dc))
