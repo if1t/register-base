@@ -1,11 +1,26 @@
+@clearIcon: url('/assets/ngx-register-base/icons/delete-content.svg');
+@calendarDateIcon: url('/assets/ngx-register-base/icons/calendar-date.svg');
+@calendarDateTimeIcon: url('/assets/ngx-register-base/icons/calendar-date-time.svg');
+@triangleDownIcon: url('/assets/ngx-register-base/icons/triangle-down.svg');
+
+.params-input {
+  font-family: Inter, serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 16px;
+  border-radius: 2px;
+  outline: unset !important;
+  box-shadow: unset !important;
+}
+
 [data-appearance='sproc-input-appearance'] {
   // Icons
   .t-clear {
-    --t-icon-start: url('/assets/ngx-register-base/icons/delete-content.svg') !important;
+    --t-icon-start: @clearIcon !important;
   }
 
   .t-cleaner {
-    --t-icon: url('/assets/ngx-register-base/icons/delete-content.svg') !important;
+    --t-icon: @clearIcon !important;
   }
 
   // Inputs
@@ -14,70 +29,110 @@
     padding-right: 4px;
   }
 
-  input {
-    font-family: Inter, serif;
-    font-size: 12px;
-    font-weight: 300;
-    line-height: 16px;
+  input,
+  textarea {
+    .params-input;
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed) !important;
+    }
   }
 
   // Calendar-year
   &:has([tuiInputYear])::after {
-    --t-icon-end: url('/assets/ngx-register-base/icons/calendar-date.svg');
+    --t-icon-end: @calendarDateIcon;
 
     width: 16px;
   }
 
   // Date
   &:has([tuiInputDate])::after {
-    --t-icon-end: url('/assets/ngx-register-base/icons/calendar-date.svg');
+    --t-icon-end: @calendarDateIcon;
 
     width: 16px;
   }
 
   // Date-range
   &:has([tuiInputDateRange])::after {
-    --t-icon-end: url('/assets/ngx-register-base/icons/calendar-date.svg');
+    --t-icon-end: @calendarDateIcon;
 
     width: 16px;
   }
 
   // Date-time
   &:has([tuiInputDateTime])::after {
-    --t-icon-end: url('/assets/ngx-register-base/icons/calendar-date-time.svg');
+    --t-icon-end: @calendarDateTimeIcon;
 
     width: 16px;
   }
 
   // Month
   &:has([tuiInputMonth])::after {
-    --t-icon-end: url('/assets/ngx-register-base/icons/calendar-date.svg');
+    --t-icon-end: @calendarDateIcon;
 
     width: 16px;
   }
 
   // Month-range
   &:has([tuiInputMonthRange])::after {
-    --t-icon-end: url('/assets/ngx-register-base/icons/calendar-date.svg');
+    --t-icon-end: @calendarDateIcon;
 
     width: 16px;
   }
 
   // Multi-select
   tui-multi-select& {
+    [tuiWrapper][data-appearance='textfield'] {
+      box-shadow: unset;
+
+      .t-absolute-wrapper {
+        padding-inline-start: 0.75rem;
+      }
+
+      .t-tags {
+        padding-inline-start: 0.75rem;
+      }
+
+      .t-value-content {
+        padding-inline-start: 0.75rem;
+      }
+
+      input {
+        box-shadow: none !important;
+      }
+
+      &:hover {
+        box-shadow: unset;
+      }
+
+      &::after {
+        .params-input;
+
+        border: unset;
+      }
+    }
+
     .t-arrow {
       tui-icon {
-        --t-icon: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
+        --t-icon: @triangleDownIcon !important;
       }
+    }
+
+    &:has(input:focus) {
+      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed) !important;
     }
   }
 
   // Select
   &[tuiChevron] {
-    --t-icon-end: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
+    --t-icon-end: @triangleDownIcon !important;
 
     &::after {
-      margin-inline-end: -13px;
+      margin-inline-end: -13px !important;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed) !important;
     }
   }
 }
