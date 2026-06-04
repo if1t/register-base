@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, inject, Injector, OnInit } from '@angular/core';
 import {
   CellTemplateDirective,
   ColumnSettingsComponent,
@@ -44,19 +44,32 @@ import {
   ParamTreeSelectComponent,
   ParamTreeMultiSelectComponent,
   ParamCustomComponent,
+  DialogService,
+  DialogContext,
+  ParamDropboxComponent,
 } from 'ngx-register-base';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { ITestData, ITestFilter } from './types';
+import { ITestData, ITestForm } from './types';
 import { columnsData, defaultSettings, TestId } from './mocks/mocks';
 import { ContractsTableStoreService } from './store';
 import { SmaTpUserSettingsStore } from '../../shared/sma-tp-user-settings.store';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EControlName, GqlTest, TestItems, TestLoaderNode, TestSearchGqlFormatter } from './consts';
+import {
+  EControlName,
+  GqlTest,
+  PHONE_MASK,
+  TestItems,
+  TestLoaderNode,
+  TestSearchGqlFormatter,
+  TestSwitchers,
+} from './consts';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TuiDay, TuiMonth, TuiMonthRange } from '@taiga-ui/cdk';
 import { TreeWrapperComponent } from './components/tree-wrapper/tree-wrapper.component';
 import { StatusChipsComponent } from './components/status-chips/status-chips.component';
+import { TestCardComponent } from './components/test-card/test-card.component';
+import { TestCardContext } from './components/test-card/test-card.types';
 
 @Component({
   standalone: true,
@@ -89,6 +102,7 @@ import { StatusChipsComponent } from './components/status-chips/status-chips.com
     ParamTreeSelectComponent,
     ParamTreeMultiSelectComponent,
     ParamCustomComponent,
+    ParamDropboxComponent,
   ],
   templateUrl: './test-register-table.component.html',
   styleUrl: './test-register-table.component.less',
@@ -104,12 +118,13 @@ import { StatusChipsComponent } from './components/status-chips/status-chips.com
   ],
 })
 export class TestRegisterTableComponent
-  extends RegisterBase<ITestData, ITestFilter>
+  extends RegisterBase<ITestData, ITestForm>
   implements OnInit
 {
   protected readonly TestId = TestId;
 
   private _store = this.baseStore as ContractsTableStoreService;
+  private _dialogService = inject(DialogService);
 
   override totalNotFiltered$ = this._store.total$;
   override routes: any[] = [];
@@ -119,11 +134,7 @@ export class TestRegisterTableComponent
   name = EControlName;
   gql = GqlTest;
   testItems = TestItems;
-  testSwitchers: ISwitcherItem<number>[] = [
-    { id: 1, name: '1' },
-    { id: 2, name: '2' },
-    { id: 3, name: '3' },
-  ];
+  testSwitchers: ISwitcherItem<number>[] = TestSwitchers;
   testLoaderNode = TestLoaderNode;
 
   constructor(injector: Injector) {
@@ -152,26 +163,27 @@ export class TestRegisterTableComponent
     return this._store.buildFilter(limit, offset, gqlFilter, sorter);
   }
 
-  protected override get buildForm(): FormGroupWrapper<ITestFilter> {
-    return new FormGroupWrapper<ITestFilter>({
-      [EControlName.TEXT]: new InputControl<string | null>(null),
-      [EControlName.TEXTAREA]: new InputControl<string | null>(null),
-      [EControlName.NUMB]: new InputControl<string | null>(null),
-      [EControlName.TOGGLE]: new InputControl<string | null>(null),
+  protected override get buildForm(): FormGroupWrapper<ITestForm> {
+    return new FormGroupWrapper<ITestForm>({
       [EControlName.CALENDAR_YEAR]: new InputControl<number | null>(null),
-      [EControlName.MONTH]: new InputControl<TuiMonth | null>(null),
-      [EControlName.MONTH_RANGE]: new InputControl<TuiMonthRange | null>(null),
-      [EControlName.DATE]: new InputControl<TuiDay | null>(null),
+      [EControlName.CUSTOM]: new InputControl<File | null>(null),
+      [EControlName.NUMB]: new InputControl<string | null>(null),
+      [EControlName.DATE]: new InputControl<Date | null>(null),
       [EControlName.DATE_RANGE]: new InputControl<DateRangeType | null>(null),
       [EControlName.DATE_TIME]: new InputControl<DateRangeType | null>(null),
       [EControlName.DATE_TIME_RANGE]: new InputControl<DateRangeType | null>(null),
-      [EControlName.SELECT]: new InputControl<IFilterSelectValue | null>(null),
+      [EControlName.DROPBOX]: new InputControl<string[] | null>(null),
+      [EControlName.MONTH]: new InputControl<TuiMonth | null>(null),
+      [EControlName.MONTH_RANGE]: new InputControl<TuiMonthRange | null>(null),
       [EControlName.MULTI_SELECT]: new InputControl<IFilterSelectValue[] | null>(null),
+      [EControlName.SELECT]: new InputControl<IFilterSelectValue | null>(null),
       [EControlName.SWITCHER]: new InputControl<number | null>(null),
       [EControlName.SWITCHER_DATE_TIME_RANGE]: new InputControl<DateRangeType | null>(null),
+      [EControlName.TEXT]: new InputControl<string | null>(null),
+      [EControlName.TEXTAREA]: new InputControl<string | null>(null),
+      [EControlName.TOGGLE]: new InputControl<string | null>(null),
       [EControlName.TREE_SELECT]: new InputControl<ITreeNode | null>(null),
       [EControlName.TREE_MULTI_SELECT]: new InputControl<ITreeNode[] | null>(null),
-      [EControlName.CUSTOM]: new InputControl<File | null>(null),
     });
   }
 
@@ -186,4 +198,13 @@ export class TestRegisterTableComponent
 
   protected readonly defaultSettings = defaultSettings;
   protected readonly TestSearchGqlFormatter = TestSearchGqlFormatter;
+
+  protected showCard(row: ITestData): void {
+    this._dialogService
+      .openModalTaiga<TestCardContext & DialogContext>(TestCardComponent, { row }, this.injector)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
+  }
+
+  protected readonly PHONE_MASK = PHONE_MASK;
 }

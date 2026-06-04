@@ -8,6 +8,7 @@ import {
 } from 'ngx-register-base';
 import { TuiMonth, TuiMonthRange } from '@taiga-ui/cdk';
 import { Injector } from '@angular/core';
+import { MaskitoOptions } from '@maskito/core';
 
 export enum EControlName {
   TEXT = 'text',
@@ -21,6 +22,7 @@ export enum EControlName {
   DATE_RANGE = 'date-range',
   DATE_TIME = 'date-time',
   DATE_TIME_RANGE = 'date-time-range',
+  DROPBOX = 'dropbox',
   SELECT = 'select',
   MULTI_SELECT = 'multi-select',
   SWITCHER = 'switcher',
@@ -86,6 +88,16 @@ const DateTimeRangeGqlValue: FormatterGqlValueType<DateRangeType | null> = (
 
   return {
     dateTimeRangeVar: { _gte: from.toISOString(), _lte: to.toISOString() },
+  };
+};
+
+const DropboxGqlValue: FormatterGqlValueType<string[] | null> = (value: string[] | null) => {
+  if (!value || value.length === 0) {
+    return;
+  }
+
+  return {
+    dropboxVar: { _in: value },
   };
 };
 
@@ -183,6 +195,7 @@ export const GqlTest = {
   [EControlName.DATE_RANGE]: DateRangeGqlValue,
   [EControlName.DATE_TIME]: DateTimeGqlValue,
   [EControlName.DATE_TIME_RANGE]: DateTimeRangeGqlValue,
+  [EControlName.DROPBOX]: DropboxGqlValue,
   [EControlName.SELECT]: SelectGqlValue,
   [EControlName.MULTI_SELECT]: MultiSelectGqlValue,
   [EControlName.SWITCHER]: SwitcherGqlValue,
@@ -196,6 +209,12 @@ export const TestItems: IFilterSelectValue[] = Array.from({ length: 50 }, (_, i)
   id: i,
   name: i.toString(),
 }));
+
+export const TestSwitchers = [
+  { id: 1, name: '1' },
+  { id: 2, name: '2' },
+  { id: 3, name: '3' },
+];
 
 export const TestLoaderNode: ITreeNode = {
   name: '',
@@ -266,3 +285,27 @@ export const TestSearchGqlFormatter: FormatterGqlValueType<string> = (value: str
     ],
   };
 };
+
+const NUMBER_REG_EXP = /\d/;
+
+/** Маска для номеров телефона России и Казахстана */
+export const PHONE_MASK = {
+  mask: [
+    '+',
+    '7',
+    ' ',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    ' ',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    '-',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    '-',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+  ],
+} satisfies MaskitoOptions;

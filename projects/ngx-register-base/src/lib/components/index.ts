@@ -7,3 +7,4 @@ export * from './menu-constructor/index';
 export * from './register-table/index';
 export { SearchInputComponent } from './search-input/search-input.component';
 export { SlidingPanelComponent } from './sliding-panel/sliding-panel.component';
+export * from './template-modal/index';

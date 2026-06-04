@@ -35,7 +35,7 @@ export interface ITestData {
   [TestId.SMART_SERVICE]: boolean;
 }
 
-export interface ITestFilter {
+export interface ITestForm {
   [EControlName.TEXT]: string;
   [EControlName.TEXTAREA]: string;
   [EControlName.NUMB]: string;
@@ -43,10 +43,11 @@ export interface ITestFilter {
   [EControlName.CALENDAR_YEAR]: number;
   [EControlName.MONTH]: TuiMonth | null;
   [EControlName.MONTH_RANGE]: TuiMonthRange | null;
-  [EControlName.DATE]: TuiDay | null;
+  [EControlName.DATE]: Date | null;
   [EControlName.DATE_RANGE]: DateRangeType | null;
   [EControlName.DATE_TIME]: Date | null;
   [EControlName.DATE_TIME_RANGE]: DateRangeType | null;
+  [EControlName.DROPBOX]: string[] | null;
   [EControlName.SELECT]: IFilterSelectValue | null;
   [EControlName.MULTI_SELECT]: IFilterSelectValue[] | null;
   [EControlName.SWITCHER]: number | null;
