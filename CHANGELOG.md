@@ -2,13 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.3.2](https://github.com/if1t/register-base/compare/v1.3.1...v1.3.2) (2026-06-04)
+## [1.3.3](https://github.com/if1t/register-base/compare/v1.3.1...v1.3.3) (2026-06-04)
 
 ### 🐞 Bug Fixes
 
 - Исправление сброса селектора при отсутствии данных для srtict=true. ([644fc427](https://github.com/if1t/register-base/pull/9/changes/644fc427a88704715ede665cc4165d5a405721ad)).
 
-## [1.3.1](https://github.com/if1t/register-base/compare/v1.3.0...v1.3.1) (2026-06-02)
+## [1.3.2](https://github.com/if1t/register-base/compare/v1.3.0...v1.3.2) (2026-06-02)
 
 ### 🐞 Bug Fixes
 
