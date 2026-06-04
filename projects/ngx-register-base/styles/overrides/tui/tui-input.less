@@ -14,6 +14,13 @@
     padding-right: 4px;
   }
 
+  input {
+    font-family: Inter, serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 16px;
+  }
+
   // Calendar-year
   &:has([tuiInputYear])::after {
     --t-icon-end: url('/assets/ngx-register-base/icons/calendar-date.svg');
@@ -68,5 +75,9 @@
   // Select
   &[tuiChevron] {
     --t-icon-end: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
+
+    &::after {
+      margin-inline-end: -13px;
+    }
   }
 }
