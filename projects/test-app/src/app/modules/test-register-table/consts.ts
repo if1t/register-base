@@ -1,18 +1,14 @@
 import {
+  DateRangeType,
+  DateTimeService,
   FormatterGqlValueType,
   IFilterSelectValue,
-  SmaPrizmDateTime,
-  DateTimeService,
+  ISwitcherItem,
   ITreeNode,
 } from 'ngx-register-base';
-import {
-  PrizmDateTimeRange,
-  PrizmDayRange,
-  PrizmMonth,
-  PrizmMonthRange,
-} from '@prizm-ui/components';
-import { TuiDay } from '@taiga-ui/cdk';
+import { TuiMonth, TuiMonthRange } from '@taiga-ui/cdk';
 import { Injector } from '@angular/core';
+import { MaskitoOptions } from '@maskito/core';
 
 export enum EControlName {
   TEXT = 'text',
@@ -26,6 +22,7 @@ export enum EControlName {
   DATE_RANGE = 'date-range',
   DATE_TIME = 'date-time',
   DATE_TIME_RANGE = 'date-time-range',
+  DROPBOX = 'dropbox',
   SELECT = 'select',
   MULTI_SELECT = 'multi-select',
   SWITCHER = 'switcher',
@@ -47,24 +44,24 @@ const BooleanGqlValue: FormatterGqlValueType<boolean | null> = (value: boolean |
 const CalendarYearGqlValue: FormatterGqlValueType<number | null> = (value: number | null) =>
   value ? { calendarYearVar: { _eq: value } } : undefined;
 
-const MonthGqlValue: FormatterGqlValueType<PrizmMonth | null> = (value: PrizmMonth | null) =>
-  value ? { monthVar: { _eq: value.toString() } } : undefined;
+const MonthGqlValue: FormatterGqlValueType<TuiMonth | null> = (value: TuiMonth | null) =>
+  value ? { monthVar: { _eq: value.toLocalNativeDate().toISOString() } } : undefined;
 
-const MonthRangeGqlValue: FormatterGqlValueType<PrizmMonthRange | null> = (
-  value: PrizmMonthRange | null
+const MonthRangeGqlValue: FormatterGqlValueType<TuiMonthRange | null> = (
+  value: TuiMonthRange | null
 ) =>
   value ? { monthRangeVar: { _gte: value.from.toString(), _lte: value.to.toString() } } : undefined;
 
-const DateGqlValue: FormatterGqlValueType<TuiDay | null> = (value: TuiDay | null) =>
-  value ? { dateVar: { _eq: value.toString() } } : undefined;
+const DateGqlValue: FormatterGqlValueType<Date | null> = (value: Date | null) =>
+  value ? { dateVar: { _eq: value.toISOString() } } : undefined;
 
-const DateRangeGqlValue: FormatterGqlValueType<PrizmDayRange | null> = (
-  value: PrizmDayRange | null
+const DateRangeGqlValue: FormatterGqlValueType<DateRangeType | null> = (
+  value: DateRangeType | null
 ) =>
   value ? { dateRangeVar: { _gte: value.from.toString(), _lte: value.to.toString() } } : undefined;
 
-const DateTimeGqlValue: FormatterGqlValueType<SmaPrizmDateTime | null> = (
-  value: SmaPrizmDateTime | null,
+const DateTimeGqlValue: FormatterGqlValueType<Date | null> = (
+  value: Date | null,
   injector?: Injector
 ) => {
   const dateTimeService = injector?.get(DateTimeService);
@@ -73,29 +70,34 @@ const DateTimeGqlValue: FormatterGqlValueType<SmaPrizmDateTime | null> = (
     return;
   }
 
-  const dateTime = dateTimeService.prizmDateTimeToNativeDate(value);
-
   return {
     dateTimeVar: {
-      _lte: dateTime,
+      _lte: value.toISOString(),
     },
   };
 };
 
-const DateTimeRangeGqlValue: FormatterGqlValueType<PrizmDateTimeRange | null> = (
-  value: PrizmDateTimeRange | null,
-  injector?: Injector
+const DateTimeRangeGqlValue: FormatterGqlValueType<DateRangeType | null> = (
+  value: DateRangeType | null
 ) => {
-  const dateTimeService = injector?.get(DateTimeService);
-
-  if (!value || !dateTimeService) {
+  if (!value) {
     return;
   }
 
-  const { from, to } = dateTimeService.prizmDateTimeRangeToNativeDates(value);
+  const { from, to } = value;
 
   return {
     dateTimeRangeVar: { _gte: from.toISOString(), _lte: to.toISOString() },
+  };
+};
+
+const DropboxGqlValue: FormatterGqlValueType<string[] | null> = (value: string[] | null) => {
+  if (!value || value.length === 0) {
+    return;
+  }
+
+  return {
+    dropboxVar: { _in: value },
   };
 };
 
@@ -123,27 +125,26 @@ const MultiSelectGqlValue: FormatterGqlValueType<IFilterSelectValue[] | null> = 
   };
 };
 
-const SwitcherGqlValue: FormatterGqlValueType<number | null> = (value: number | null) => {
+const SwitcherGqlValue: FormatterGqlValueType<ISwitcherItem<string | number> | null> = (
+  value: ISwitcherItem<string | number> | null
+) => {
   if (value === null) {
     return;
   }
 
   return {
-    switcherVar: { _eq: value },
+    switcherVar: { _eq: value.id },
   };
 };
 
-const SwitcherDateTimeRangeGqlValue: FormatterGqlValueType<PrizmDateTimeRange | null> = (
-  value: PrizmDateTimeRange | null,
-  injector?: Injector
+const SwitcherDateTimeRangeGqlValue: FormatterGqlValueType<DateRangeType | null> = (
+  value: DateRangeType | null
 ) => {
-  const dateTimeService = injector?.get(DateTimeService);
-
-  if (!value || !dateTimeService) {
+  if (!value) {
     return;
   }
 
-  const { from, to } = dateTimeService.prizmDateTimeRangeToNativeDates(value);
+  const { from, to } = value;
 
   return {
     switcherDateTimeRangeVar: { _gte: from.toISOString(), _lte: to.toISOString() },
@@ -194,6 +195,7 @@ export const GqlTest = {
   [EControlName.DATE_RANGE]: DateRangeGqlValue,
   [EControlName.DATE_TIME]: DateTimeGqlValue,
   [EControlName.DATE_TIME_RANGE]: DateTimeRangeGqlValue,
+  [EControlName.DROPBOX]: DropboxGqlValue,
   [EControlName.SELECT]: SelectGqlValue,
   [EControlName.MULTI_SELECT]: MultiSelectGqlValue,
   [EControlName.SWITCHER]: SwitcherGqlValue,
@@ -207,6 +209,12 @@ export const TestItems: IFilterSelectValue[] = Array.from({ length: 50 }, (_, i)
   id: i,
   name: i.toString(),
 }));
+
+export const TestSwitchers = [
+  { id: 1, name: '1' },
+  { id: 2, name: '2' },
+  { id: 3, name: '3' },
+];
 
 export const TestLoaderNode: ITreeNode = {
   name: '',
@@ -277,3 +285,27 @@ export const TestSearchGqlFormatter: FormatterGqlValueType<string> = (value: str
     ],
   };
 };
+
+const NUMBER_REG_EXP = /\d/;
+
+/** Маска для номеров телефона России и Казахстана */
+export const PHONE_MASK = {
+  mask: [
+    '+',
+    '7',
+    ' ',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    ' ',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    '-',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+    '-',
+    NUMBER_REG_EXP,
+    NUMBER_REG_EXP,
+  ],
+} satisfies MaskitoOptions;

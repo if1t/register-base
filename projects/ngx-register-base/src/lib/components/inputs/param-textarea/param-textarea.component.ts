@@ -6,12 +6,13 @@ import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { TuiTextarea, TuiTextareaLimit } from '@taiga-ui/kit';
 import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
 import { ParamTextBase } from '../../../core/param';
+import { ValidationMessageService } from '../../../services/validation-message.service';
 
 @Component({
   selector: 'sproc-param-textarea',
+  standalone: true,
   templateUrl: './param-textarea.component.html',
   styleUrls: ['./param-textarea.component.less'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
@@ -24,8 +25,13 @@ import { ParamTextBase } from '../../../core/param';
     TuiTextarea,
     TuiTextareaLimit,
   ],
+  providers: [ValidationMessageService],
 })
 export class ParamTextareaComponent extends ParamTextBase {
+  public override buildShowedValue = input(
+    (value: string | null): string => value?.toString() ?? '-'
+  );
+
   /** Минимальное кол-во строк в инпуте */
   public min = input(6);
   /** Максимальное кол-во строк в инпуте */

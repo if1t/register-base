@@ -1,161 +1,134 @@
-@import '@taiga-ui/core/styles/taiga-ui-local';
+@clearIcon: url('/assets/ngx-register-base/icons/delete-content.svg');
+@calendarDateIcon: url('/assets/ngx-register-base/icons/calendar-date.svg');
+@calendarDateTimeIcon: url('/assets/ngx-register-base/icons/calendar-date-time.svg');
+@triangleDownIcon: url('/assets/ngx-register-base/icons/triangle-down.svg');
 
-tui-multi-select[tuiAppearance][data-appearance='sproc-input-appearance'] {
-  div .t-icons :has(> tui-arrow) {
-    tui-arrow {
-      tui-icon {
-        --t-icon: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
-      }
-    }
-  }
-
-  input {
-    border: none !important;
-  }
-
-  tui-icon.t-cleaner::after {
-    display: none !important;
-  }
-
-  &:hover {
-    tui-icon.t-cleaner::after {
-      display: block !important;
-    }
-  }
-}
-
-[sproc-param-style='filter'] {
-  [tuiAppearance][data-appearance='textfield'] {
-    border: none;
-    border-bottom: 1px solid var(--stroke1);
-  }
-
-  tui-textfield[tuiChevron][tuiIcons]::after {
-    margin-inline-end: -22px !important;
-    --t-icon-end: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
-  }
-}
-
-[sproc-param-style='card'] {
-  [tuiAppearance][data-appearance='textfield'] {
-    .input-text-14px;
-
-    .t-value-content {
-      width: 100%;
-      max-width: calc(100% - 16px);
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .t-absolute-wrapper {
-      margin-left: 16px;
-    }
-    .t-arrow {
-      margin-right: 15px;
-    }
-    .t-text {
-      color: var(--main-black);
-      padding-bottom: 1px;
-    }
-    .t-clear {
-      padding-right: 10px;
-    }
-    border: 1px solid var(--stroke1);
-
-    &::after {
-      border: none !important;
-    }
-
-    // Стили для taiga chips
-    .t-tags {
-      flex-wrap: revert !important;
-      padding-left: 16px;
-      align-items: center;
-      border-radius: 2px !important;
-
-      tui-icon:after {
-        background: var(--icon-hover-color);
-        mask: url('/assets/ngx-register-base/icons/close.svg') no-repeat center / contain;
-      }
-    }
-    .t-tag {
-      height: 16px;
-    }
-    div.t-tag {
-      background-color: var(--input-hover-background-color);
-      border-radius: 2px !important;
-      height: 16px;
-    }
-  }
-
-  tui-textfield[tuiChevron][tuiIcons]::after {
-    margin-inline-end: -12px !important;
-    --t-icon-end: url('/assets/ngx-register-base/icons/triangle-down.svg') !important;
-  }
-}
-
-[tuiAppearance][data-appearance='sproc-input-appearance'] {
-  .transition(~'background, box-shadow, border');
-
-  // .t-clear - класс селекта,.t-cleaner у других инпутов
-  [tuiIconButton].t-cleaner::before,
-  [tuiIconButton].t-clear::before {
-    display: none !important;
-  }
-
-  &:hover {
-    [tuiIconButton].t-cleaner::before,
-    [tuiIconButton].t-clear::before {
-      display: block !important;
-    }
-
-    .t-clear {
-      padding-right: 10px;
-    }
-  }
-
+.params-input {
   border-radius: 2px;
-  outline: unset;
-  border: unset;
+  outline: unset !important;
+  box-shadow: unset !important;
+}
+
+[data-appearance='sproc-input-appearance'] {
+  // Icons
+  .t-clear {
+    --t-icon-start: @clearIcon !important;
+  }
 
   .t-cleaner {
-    --t-icon: url('/assets/ngx-register-base/icons/delete-content.svg') !important;
+    --t-icon: @clearIcon !important;
+  }
 
-    &::after {
-      --t-icon: url('/assets/ngx-register-base/icons/delete-content.svg') !important;
+  // Inputs
+  tui-textfield& {
+    padding: unset;
+    padding-right: 4px;
+  }
+
+  input,
+  textarea {
+    .params-input;
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed) !important;
     }
   }
 
-  input {
-    border: none;
-    border-bottom: 1px solid var(--stroke1);
-    padding-inline-end: unset !important;
+  // Calendar-year
+  &:has([tuiInputYear])::after {
+    --t-icon-end: @calendarDateIcon;
+
+    width: 16px;
   }
 
-  [tuiAppearance][data-appearance='textfield'] {
-    outline: none;
-    box-shadow: unset;
+  // Date
+  &:has([tuiInputDate])::after {
+    --t-icon-end: @calendarDateIcon;
 
-    .t-content {
-      padding-right: 0;
+    width: 16px;
+  }
+
+  // Date-range
+  &:has([tuiInputDateRange])::after {
+    --t-icon-end: @calendarDateIcon;
+
+    width: 16px;
+  }
+
+  // Date-time
+  &:has([tuiInputDateTime])::after {
+    --t-icon-end: @calendarDateTimeIcon;
+
+    width: 16px;
+  }
+
+  // Month
+  &:has([tuiInputMonth])::after {
+    --t-icon-end: @calendarDateIcon;
+
+    width: 16px;
+  }
+
+  // Month-range
+  &:has([tuiInputMonthRange])::after {
+    --t-icon-end: @calendarDateIcon;
+
+    width: 16px;
+  }
+
+  // Multi-select
+  tui-multi-select& {
+    [tuiWrapper][data-appearance='textfield'] {
+      box-shadow: unset;
+
+      .t-absolute-wrapper {
+        padding-inline-start: 0.75rem;
+      }
+
+      .t-tags {
+        padding-inline-start: 0.75rem;
+      }
+
+      .t-value-content {
+        padding-inline-start: 0.75rem;
+      }
+
+      input {
+        box-shadow: none !important;
+      }
+
+      &:hover {
+        box-shadow: unset;
+      }
+
+      &::after {
+        .params-input;
+
+        border: unset;
+      }
     }
 
-    .wrapper-hover({
-      background: var(--brand-disabled);
-    });
-
-    .wrapper-focus({
-      border-color: var(--tui-background-accent-1);
-      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed);
-    });
-
-    :has(._chevron-rotated) {
-      transform: rotate(180deg);
+    .t-arrow {
+      tui-icon {
+        --t-icon: @triangleDownIcon !important;
+      }
     }
+
+    &:has(input:focus) {
+      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed) !important;
+    }
+  }
+
+  // Select
+  &[tuiChevron] {
+    --t-icon-end: @triangleDownIcon !important;
 
     &::after {
-      border: none;
-      border-bottom: 1px solid var(--stroke1);
+      margin-inline-end: -13px !important;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--tui-background-accent-1-pressed) !important;
     }
   }
 }

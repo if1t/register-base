@@ -2,50 +2,6 @@
 @import 'common-param';
 
 :host {
-  ::ng-deep {
-    tui-textfield {
-      padding: 0;
-    }
-
-    [tuiWrapper][data-appearance='textfield'] {
-      box-shadow: none !important;
-    }
-
-    tui-textfield > .t-content {
-      width: 100% !important;
-      height: 100% !important;
-      margin-inline-end: 0 !important;
-    }
-
-    tui-input-year {
-      height: 100% !important;
-      width: 100% !important;
-
-      tui-primitive-textfield {
-        height: 100% !important;
-        max-block-size: none !important;
-      }
-    }
-
-    .t-wrapper label {
-      .input-label;
-      .input-text-14px;
-    }
-
-    [automation-id='tui-primitive-textfield__wrapper'] {
-      padding-inline-start: calc(var(--t-start, 0rem) + var(--t-padding));
-    }
-
-    [tuiAppearance][data-appearance='textfield'] {
-      min-height: 32px;
-    }
-
-    .t-icons {
-      margin-inline-end: 0.5rem !important;
-      min-height: 32px;
-    }
-  }
-
   .container {
     &--read {
       .read-style-card;

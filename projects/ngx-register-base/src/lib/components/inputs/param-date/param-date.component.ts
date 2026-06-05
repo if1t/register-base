@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
 import { TuiAppearance, TuiTextfield } from '@taiga-ui/core';
-import { TuiInputDate } from '@taiga-ui/kit';
+import { TuiInputDate, tuiInputDateOptionsProviderNew } from '@taiga-ui/kit';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
@@ -9,14 +9,16 @@ import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/
 import { ParamDateBase } from '../../../core/param/param-date-base';
 import { FormatterSavedValueType, ParserSavedValueType } from '../../../types/params.types';
 import { EDatePattern } from '../../../directives/date/date-time.types';
+import { ValidationMessageService } from '../../../services/validation-message.service';
+import { format } from 'date-fns';
 
 export type InputDateSaveValue = string | null;
 
 @Component({
   selector: 'sproc-param-date',
+  standalone: true,
   templateUrl: './param-date.component.html',
   styleUrls: ['./param-date.component.less'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TuiTextfield,
@@ -31,47 +33,54 @@ export type InputDateSaveValue = string | null;
     TuiTextfieldControllerModule,
     ParamInvalidIconComponent,
   ],
+  providers: [
+    tuiInputDateOptionsProviderNew({
+      valueTransformer: {
+        fromControlValue: (value: Date | null) => value && TuiDay.fromLocalNativeDate(value),
+        toControlValue: (value): Date | null => value?.toLocalNativeDate() || null,
+      },
+    }),
+    ValidationMessageService,
+  ],
 })
-export class ParamDateComponent extends ParamDateBase<TuiDay | null, InputDateSaveValue> {
+export class ParamDateComponent extends ParamDateBase<Date | null, InputDateSaveValue> {
   override placeholder = input('Выберите дату');
-  @Input() min: TuiDay | null = null;
-  @Input() max: TuiDay | null = null;
   @Input() override set formatSavedValue(
-    formatter: FormatterSavedValueType<TuiDay | null, InputDateSaveValue> | undefined
+    formatter: FormatterSavedValueType<Date | null, InputDateSaveValue> | undefined
   ) {
     this.formatterSavedValue = formatter ?? this._defaultFormatterSaveValue;
   }
   @Input() override set parseSavedValue(
-    parser: ParserSavedValueType<InputDateSaveValue, TuiDay | null> | undefined
+    parser: ParserSavedValueType<InputDateSaveValue, Date | null> | undefined
   ) {
     this.parserSavedValue = parser ?? this._defaultParserSaveValue;
   }
-  override buildShowedValue = input((value: TuiDay | null): string =>
+  override buildShowedValue = input((value: Date | null): string =>
     value ? this._defaultDateConvert(value) : '-'
   );
 
   protected override formatterSavedValue = this._defaultFormatterSaveValue;
   protected override parserSavedValue = this._defaultParserSaveValue;
 
-  private _defaultDateConvert(value: TuiDay): string {
-    return this._dts.parseDate(value.toString(EDatePattern.TUI_YMD, '-'), EDatePattern.DATE);
+  private _defaultDateConvert(value: Date): string {
+    const iso = this._dts.toISOString(value);
+
+    return this._dts.parseDate(iso, EDatePattern.DATE);
   }
 
-  private _defaultFormatterSaveValue(value: TuiDay | null): InputDateSaveValue {
+  private _defaultFormatterSaveValue(value: Date | null): InputDateSaveValue {
     if (!value) {
       return null;
     }
 
-    const iso = this._dts.toISOString(value.toLocalNativeDate());
-
-    return this._dts.parseDate(iso, EDatePattern.YEAR_MONTH_DAY);
+    return format(value, EDatePattern.YEAR_MONTH_DAY);
   }
 
-  private _defaultParserSaveValue(value: InputDateSaveValue): TuiDay | null {
+  private _defaultParserSaveValue(value: InputDateSaveValue): Date | null {
     if (!value) {
       return null;
     }
 
-    return TuiDay.fromLocalNativeDate(this._dts.isoToLocalDate(value));
+    return this._dts.isoToLocalDate(value);
   }
 }

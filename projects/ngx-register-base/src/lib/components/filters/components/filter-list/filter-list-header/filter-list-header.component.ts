@@ -4,6 +4,7 @@ import {
   DestroyRef,
   EventEmitter,
   inject,
+  input,
   Input,
   OnInit,
   Output,
@@ -24,6 +25,8 @@ import { FiltersStateService } from '../../../../../services';
   providers: [FilterListService],
 })
 export class FilterListHeaderComponent implements OnInit {
+  public saveWhenPinned = input<boolean>(true);
+
   @Input() total: number | null = 0;
   @Input() showTotal = true;
   @Input() showPin = true;
@@ -56,14 +59,18 @@ export class FilterListHeaderComponent implements OnInit {
 
     this._filterListService.apply$.pipe(takeUntilDestroyed(this._dr)).subscribe((gql) => {
       this.applyFilter.emit(gql);
-      this._filterListService.savePinnedFilters();
+      if (this.saveWhenPinned()) {
+        this._filterListService.savePinnedFilters();
+      }
     });
   }
 
   public onTogglePin(): void {
     this._filterStateService.togglePin();
     this.pinnedChange.emit(this._filterStateService.isPin);
-    this._filterListService.savePinnedFilters();
+    if (this.saveWhenPinned()) {
+      this._filterListService.savePinnedFilters();
+    }
   }
 
   public onSavedList(): void {

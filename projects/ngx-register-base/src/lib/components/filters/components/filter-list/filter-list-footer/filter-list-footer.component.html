@@ -2,8 +2,8 @@
   <ng-container [ngSwitch]="filterState$ | async">
     <ng-container *ngSwitchCase="FilterState.FILTER_LIST">
       <button
+        tuiButton
         class="filter-list__button"
-        prizmButton
         size="s"
         [disabled]="applyButtonDisabled"
         (click)="onApplyFilter()"
@@ -14,8 +14,8 @@
 
     <ng-container *ngSwitchCase="FilterState.SAVED_LIST">
       <button
+        tuiButton
         class="filter-list__button"
-        prizmButton
         size="s"
         [disabled]="acceptButtonDisabled"
         (click)="onApplySavedFilter()"
@@ -24,20 +24,14 @@
       </button>
     </ng-container>
 
-    <ng-container
-      *ngSwitchCase="FilterState.ON_EDIT_FILTER"
-      [ngTemplateOutlet]="onEditFilter"
-    ></ng-container>
+    <ng-container *ngSwitchCase="FilterState.ON_EDIT_FILTER" [ngTemplateOutlet]="onEditFilter" />
 
-    <ng-container
-      *ngSwitchCase="FilterState.ON_SAVE_FILTER"
-      [ngTemplateOutlet]="onEditFilter"
-    ></ng-container>
+    <ng-container *ngSwitchCase="FilterState.ON_SAVE_FILTER" [ngTemplateOutlet]="onEditFilter" />
 
     <ng-template #onEditFilter>
       <button
+        tuiButton
         class="filter-list__button"
-        prizmButton
         size="s"
         [disabled]="acceptButtonDisabled"
         (click)="onSaveFilter()"

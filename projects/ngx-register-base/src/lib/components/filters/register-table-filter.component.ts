@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  input,
   Input,
   OnDestroy,
   OnInit,
@@ -31,6 +32,8 @@ import { PAGE_MENU_STATE } from '../page-menu';
 export class RegisterTableFilterComponent<Type extends Record<string, any>>
   implements OnInit, AfterViewInit, OnDestroy
 {
+  public saveWhenPinned = input<boolean>(true);
+
   /** Высота всего компонента фильтров */
   @Input() height: string | undefined;
   @Input() showTotal = true;

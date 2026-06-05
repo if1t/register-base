@@ -16,7 +16,14 @@
         </ng-container>
       </ng-container>
       <div class="value" [tuiHint]="value && showedValue !== '-' ? hintContent : undefined">
-        <span>{{ showedValue }}</span>
+        @if (templateReadValue()) {
+          <ng-container
+            [ngTemplateOutlet]="templateReadValue()"
+            [ngTemplateOutletContext]="{ $implicit: value }"
+          ></ng-container>
+        } @else {
+          <span>{{ showedValue }}</span>
+        }
       </div>
     </div>
   </ng-template>
@@ -26,14 +33,14 @@
         <span class="label" [class.required]="required">
           {{ label }}
         </span>
-        @if (errorMessage() && control.invalid) {
-          <div class="errorMessage">{{ errorMessage() }}</div>
+        @if (!readmode && editTooltip()) {
+          <sproc-param-label-hint-icon [tuiHint]="editTooltip()" />
         }
       </div>
 
       <tui-textfield
         tuiAppearance="sproc-input-appearance"
-        tuiTextfieldSize="m"
+        [tuiTextfieldSize]="size()"
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="forceClear"
         [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
@@ -45,10 +52,11 @@
           [maskito]="maskOptions()"
           [placeholder]="placeholder()"
           [maxLength]="maxLength()"
+          [type]="type()"
         />
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
-            <sproc-param-invalid-icon></sproc-param-invalid-icon>
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
           }
         </div>
       </tui-textfield>

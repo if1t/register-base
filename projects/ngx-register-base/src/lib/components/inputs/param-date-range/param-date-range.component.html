@@ -26,20 +26,25 @@
         <span class="label" [class.required]="required">
           {{ label }}
         </span>
-        @if (errorMessage() && control.invalid) {
-          <div class="errorMessage">{{ errorMessage() }}</div>
-        }
       </div>
 
-      <prizm-input-layout class="flex-shrink--zero" size="s" [forceClear]="forceClear">
-        <prizm-input-layout-date-range
+      <tui-textfield tuiAppearance="sproc-input-appearance" [tuiTextfieldSize]="size()">
+        <input
+          tuiInputDateRange
           [placeholder]="placeholder()"
           [maxLength]="maxLength()"
-          [min]="$any(min)"
-          [max]="$any(max)"
+          [minLength]="minLength()"
+          [min]="minDay()"
+          [max]="maxDay()"
           [formControl]="control"
-        ></prizm-input-layout-date-range>
-      </prizm-input-layout>
+        />
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+          }
+        </div>
+        <tui-calendar-range *tuiTextfieldDropdown />
+      </tui-textfield>
     </div>
   </ng-template>
 </ng-container>

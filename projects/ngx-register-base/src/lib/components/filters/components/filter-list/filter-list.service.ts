@@ -1,23 +1,22 @@
-import { inject, Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { ReplaySubject, take } from 'rxjs';
 import { EInputsAction, EInputsState, GqlFields, ITpUserSettings } from '../../../../types';
 import { FiltersService, FiltersStateService } from '../../../../services';
 import { SETTINGS_TYPE, USER_SETTINGS_LOADER } from '../../../../consts';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable()
 export class FilterListService {
+  private readonly _filtersService = inject(FiltersService);
+  private readonly _filterStateService = inject(FiltersStateService);
+  private readonly _settingsStore = inject(USER_SETTINGS_LOADER);
+  private readonly _dr = inject(DestroyRef);
+
   public readonly apply$ = new ReplaySubject<GqlFields>();
 
   public modulePath!: string;
 
   private _pinnedFilterSetting: ITpUserSettings | undefined;
-
-  private readonly settingsStore = inject(USER_SETTINGS_LOADER);
-
-  constructor(
-    private readonly _filtersService: FiltersService<any>,
-    private readonly _filterStateService: FiltersStateService<any>
-  ) {}
 
   public applyFilter(): void {
     this.apply$.next(this._filtersService.gqlFilter);
@@ -48,7 +47,7 @@ export class FilterListService {
     }
 
     const saved = this._filterStateService.getSelectedSavedFilter();
-    this.settingsStore.upsertEnded$.pipe(take(1)).subscribe(() => {
+    this._settingsStore.upsertEnded$.pipe(take(1), takeUntilDestroyed(this._dr)).subscribe(() => {
       this._filterStateService.setSelectedSavedFilter(null);
       this._filterStateService.setState({
         state: EInputsState.SAVED_LIST,
@@ -56,7 +55,7 @@ export class FilterListService {
       });
     });
 
-    this.settingsStore.upsertUserSettingsByUserId({
+    this._settingsStore.upsertUserSettingsByUserId({
       settings: {
         id: saved?.id ?? undefined,
         name: this._filterStateService.name,
@@ -75,13 +74,14 @@ export class FilterListService {
   }
 
   public savePinnedFilters(): void {
-    this.settingsStore
+    this._settingsStore
       .upsertReturningOne$(SETTINGS_TYPE.REGISTER_PINNED_INPUTS)
+      .pipe(takeUntilDestroyed(this._dr))
       .subscribe((setting) => {
         this._pinnedFilterSetting = setting ?? undefined;
       });
 
-    this.settingsStore.upsertUserSettingsByUserId({
+    this._settingsStore.upsertUserSettingsByUserId({
       settings: {
         id: this._pinnedFilterSetting?.id,
         settings: {

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { catchError, EMPTY, map, Observable, of, switchMap } from 'rxjs';
-import { PrizmTableCellSorter } from '@prizm-ui/components';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   GqlFields,
@@ -9,6 +8,7 @@ import {
   isDefined,
   ObjectsSubscriptionConfig,
   RegisterBaseStore,
+  RegisterTableCellSorter,
 } from 'ngx-register-base';
 import { MutationResult } from 'apollo-angular';
 import { TABLE_DATA, TestId } from './mocks/mocks';
@@ -35,7 +35,7 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
     limit: number | undefined,
     offset: number | undefined,
     gqlFilter: GqlFields | undefined,
-    sorter?: PrizmTableCellSorter<any>[]
+    sorter?: RegisterTableCellSorter<any>[]
   ): any {
     const baseFilter = this.getBaseFilter();
     const where =
@@ -52,7 +52,7 @@ export class ContractsTableStoreService extends RegisterBaseStore<any> {
     };
   }
 
-  private _buildOrderBy(sorter?: PrizmTableCellSorter<any>[]): any {
+  private _buildOrderBy(sorter?: RegisterTableCellSorter<any>[]): any {
     const orderBy: any = {};
 
     if (sorter) {

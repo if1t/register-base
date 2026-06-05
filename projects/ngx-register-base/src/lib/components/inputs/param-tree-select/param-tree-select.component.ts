@@ -2,7 +2,7 @@ import { Component, effect, inject, Injector, input, signal } from '@angular/cor
 import { ParamTreeComponent } from '../param-tree/param-tree.component';
 import { ITreeNode } from '../param-tree/types/param-tree.types';
 import { TuiAppearance, TuiDropdown, TuiTextfield } from '@taiga-ui/core';
-import { TUI_TREE_LOADING, TuiChevron, TuiSelect, } from '@taiga-ui/kit';
+import { TUI_TREE_LOADING, TuiChevron, TuiSelect } from '@taiga-ui/kit';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TREE_LOADING_NODE } from '../param-tree/consts/param-tree.consts';
 import { NgTemplateOutlet } from '@angular/common';
@@ -12,6 +12,8 @@ import { ParamTreeService } from '../param-tree/services/param-tree.service';
 import { FastQueryStore } from '../../../store/fast-query-store.service';
 import { ParamSelectBase } from '../../../core/param/param-select-base';
 import { distinctUntilChangedJSONs } from '../../../utils';
+import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
+import { ValidationMessageService } from '../../../services/validation-message.service';
 
 export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any };
 
@@ -30,6 +32,7 @@ export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any }
     NgTemplateOutlet,
     TuiAppearance,
     TuiTextfieldControllerModule,
+    ParamInvalidIconComponent,
   ],
   templateUrl: './param-tree-select.component.html',
   styleUrl: './param-tree-select.component.less',
@@ -37,6 +40,7 @@ export type InputTreeSelectSavedValue<T> = ITreeNode<T> & { [key: string]: any }
     ParamTreeService,
     { provide: TUI_TREE_LOADING, useValue: TREE_LOADING_NODE },
     FastQueryStore,
+    ValidationMessageService,
   ],
 })
 export class ParamTreeSelectComponent<T> extends ParamSelectBase<

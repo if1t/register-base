@@ -1,0 +1,133 @@
+@let timeFrom = tuiTimeFrom();
+@let timeTo = tuiTimeTo();
+
+<div
+  tuiAppearance="sproc-input-appearance"
+  class="multiple-input-box"
+  [tuiDropdown]="dropdownContent"
+  [tuiDropdownManual]="open"
+  (click)="onClick()"
+  (tuiActiveZoneChange)="onActiveZone($event)"
+>
+  <div class="input-items">
+    <input
+      #inputItem
+      class="input-date"
+      [placeholder]="datePlaceholder()"
+      [maskito]="computedDateMask()"
+      [disabled]="disabled"
+      [class.show-placeholder]="empty() && !isFocused()"
+      [ngModelOptions]="{ standalone: true }"
+      [ngModel]="fromValue()"
+      (ngModelChange)="onDateValueChange($event, EInputType.DATE_FROM)"
+      (keyup)="onKeyup($event, EInputType.DATE_FROM)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+    <input
+      #inputItem
+      class="input-time"
+      [placeholder]="TIME_PLACEHOLDER"
+      [maskito]="computedTimeMask()"
+      [disabled]="disabled"
+      [style.width.ch]="timeLength()"
+      [ngModelOptions]="{ standalone: true }"
+      [ngModel]="fromTimeValue()"
+      (ngModelChange)="onTimeValueChange($event, EInputType.TIME_FROM)"
+      (keyup)="onKeyup($event, EInputType.TIME_FROM)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+    <span class="delimiter">-</span>
+    <input
+      #inputItem
+      class="input-date"
+      [placeholder]="DATE_PLACEHOLDER"
+      [maskito]="computedDateMask()"
+      [disabled]="disabled"
+      [ngModelOptions]="{ standalone: true }"
+      [ngModel]="toValue()"
+      (ngModelChange)="onDateValueChange($event, EInputType.DATE_TO)"
+      (keyup)="onKeyup($event, EInputType.DATE_TO)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+    <input
+      #inputItem
+      class="input-time"
+      [placeholder]="TIME_PLACEHOLDER"
+      [maskito]="computedTimeMask()"
+      [disabled]="disabled"
+      [style.width.ch]="timeLength()"
+      [ngModelOptions]="{ standalone: true }"
+      [ngModel]="toTimeValue()"
+      (ngModelChange)="onTimeValueChange($event, EInputType.TIME_TO)"
+      (keyup)="onKeyup($event, EInputType.TIME_TO)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+  </div>
+
+  <div class="t-content">
+    <div class="icon-wrapper">
+      <!-- placeholder for sproc-param-invalid-icon -->
+      <ng-content />
+
+      @if (forceClear()) {
+        <button
+          class="t-clear"
+          tuiIconButton
+          size="xs"
+          appearance="action-grayscale"
+          type="button"
+          (click)="clear()"
+        >
+          Очистить
+        </button>
+      }
+    </div>
+
+    <tui-icon class="calendar" [icon]="'@sproc.calendar-date'"> </tui-icon>
+  </div>
+</div>
+
+<ng-template #dropdownContent>
+  <tui-calendar-range
+    [value]="computedTuiDayRange()"
+    [min]="calendarMinDay()"
+    [max]="calendarMaxDay()"
+    [maxLength]="maxLength()"
+    [minLength]="minLength()"
+    (valueChange)="onCalendarChange($event)"
+  />
+
+  <div class="time-range">
+    <tui-textfield
+      tuiAppearance="sproc-input-appearance"
+      [tuiTextfieldSize]="'s'"
+      [style.width.px]="250"
+    >
+      <input
+        tuiInputTime
+        [mode]="timeMode()"
+        [ngModel]="timeFrom"
+        (ngModelChange)="updateTimeFrom($event)"
+      />
+      <tui-icon class="clock-icon" [icon]="'@tui.clock'" [style.font-size.px]="16" />
+    </tui-textfield>
+
+    <tui-textfield
+      tuiAppearance="sproc-input-appearance"
+      [tuiTextfieldSize]="'s'"
+      [style.width.px]="250"
+    >
+      <input
+        tuiInputTime
+        [mode]="timeMode()"
+        [ngModel]="timeTo"
+        (ngModelChange)="updateTimeTo($event)"
+      />
+      <tui-icon class="clock-icon" [icon]="'@tui.clock'" [style.font-size.px]="16" />
+    </tui-textfield>
+  </div>
+</ng-template>

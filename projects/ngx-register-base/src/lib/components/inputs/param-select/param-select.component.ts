@@ -37,14 +37,18 @@ import { TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { TuiStringMatcher } from '@taiga-ui/cdk';
-import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
 import { FastQueryStore } from '../../../store/fast-query-store.service';
 import { ParamSelectBase } from '../../../core/param/param-select-base';
 import { IFilterSelectValue } from '../../../types/params.types';
 import { PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS } from '../../../consts/params.consts';
+import { ValidationMessageService } from '../../../services/validation-message.service';
+import { ParamLabelHintIconComponent } from '../sub-components/param-label-hint-icon/param-label-hint-icon.component';
+import { InferArrayType } from '../../../types';
+import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
 
 @Component({
   selector: 'sproc-param-select',
+  standalone: true,
   templateUrl: './param-select.component.html',
   styleUrls: ['./param-select.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,8 +63,8 @@ import { PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS } from '../../../consts/params.con
         disabledItemHandler: signal(() => false),
       }),
     },
+    ValidationMessageService,
   ],
-  standalone: true,
   imports: [
     TuiTextfield,
     TuiAppearance,
@@ -73,42 +77,50 @@ import { PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS } from '../../../consts/params.con
     NgSwitchCase,
     NgSwitchDefault,
     TuiComboBox,
-    ParamInvalidIconComponent,
     NgIf,
     TuiSelect,
     TuiDropdown,
     TuiLoader,
     TuiChevron,
     TuiHint,
+    ParamLabelHintIconComponent,
+    ParamInvalidIconComponent,
   ],
 })
-export class ParamSelectComponent
-  extends ParamSelectBase<IFilterSelectValue | null, IFilterSelectValue | null>
+export class ParamSelectComponent<T extends IFilterSelectValue | null = IFilterSelectValue | null>
+  extends ParamSelectBase<T, T>
   implements OnDestroy
 {
   override placeholder = input('Выберите значение');
-  readonly stringify = input<(item: IFilterSelectValue) => string>((item) =>
-    String(item.name ?? '')
-  );
-  readonly identityMatcher = input<(a: IFilterSelectValue, b: IFilterSelectValue) => boolean>(
+  readonly stringify = input<(item: NonNullable<T>) => string>((item) => String(item.name ?? ''));
+  readonly identityMatcher = input<(a: NonNullable<T>, b: NonNullable<T>) => boolean>(
     (a, b) => a.id === b.id
   );
-  readonly matcher = input<TuiStringMatcher<IFilterSelectValue>>(
-    (item: IFilterSelectValue, query: string) => {
-      if (!query || String(query).trim() === '') {
-        return true;
-      }
-      return String(item?.name ?? '')
-        .toLowerCase()
-        .includes(String(query).toLowerCase());
+  readonly matcher = input<TuiStringMatcher<NonNullable<InferArrayType<T>>>>((item, query) => {
+    if (!query || String(query).trim() === '') {
+      return true;
     }
-  );
-  override buildShowedValue = input(
-    (value: IFilterSelectValue | null): string => value?.name ?? '-'
-  );
+
+    return String(item?.name ?? '')
+      .toLowerCase()
+      .includes(String(query).toLowerCase());
+  });
+  public override buildShowedValue = input((value: T): string => {
+    const metaValue = this.meta?.table?.valueField;
+    let showedValue;
+
+    if (metaValue) {
+      const firstWord = metaValue.split(' ')[0];
+      showedValue = value?.[firstWord] ?? '-';
+    } else {
+      showedValue = value?.name ?? '-';
+    }
+
+    return showedValue;
+  });
   public strict = input<boolean>(true);
 
-  @Output() onSelect = new EventEmitter<IFilterSelectValue>();
+  @Output() onSelect = new EventEmitter<NonNullable<T>>();
 
   protected readonly search$ = new BehaviorSubject<string | undefined>(undefined);
 
@@ -148,7 +160,7 @@ export class ParamSelectComponent
         const filledValue = this.items.find((item) => item.id === valueId);
 
         if (filledValue) {
-          this.control.setValue(filledValue, { emitEvent: false });
+          this.control.setValue(filledValue as T, { emitEvent: false });
         }
       });
 
@@ -215,7 +227,8 @@ export class ParamSelectComponent
   private _getSelectedItemIDs(searchValue?: string): string[] | undefined {
     if (this.value && (!searchValue || searchValue === '')) {
       const idField = this.meta?.table.idField ?? 'id';
-      return [this.value[idField]];
+      /** TODO костыль */
+      return this.value[idField] ? [this.value[idField]] : undefined;
     }
 
     return;
@@ -282,7 +295,9 @@ export class ParamSelectComponent
           name: this._getNameFromField(item, valueField),
         })) ?? [];
 
-    if (selectedItemIDs && selectedItemIDs.length > 0 && availableItems.length > 0) {
+    if (this.autoFill && data.data.length === 1 && this.required) {
+      this.control?.setValue(data.data.at(0));
+    } else if (selectedItemIDs && selectedItemIDs.length > 0 && availableItems.length > 0) {
       const [item] = availableItems;
       this.control?.setValue(item);
     }

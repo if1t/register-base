@@ -59,7 +59,7 @@ import {
   tap,
 } from 'rxjs';
 import { CheckboxSelectorComponent } from '../checkbox-selector/checkbox-selector.component';
-import { distinctUntilChangedJSONs } from '../../utils';
+import { distinctUntilChangedJSONs, isDefined } from '../../utils';
 import { StickyDirective, StickyRelativeDirective } from '../../directives';
 import { ScalarUUID } from 'hasura';
 import { ERegisterObjectState, IRegisterObject } from '../../types';
@@ -69,6 +69,7 @@ import { TuiResizable, TuiResizer } from '@taiga-ui/cdk';
 import { FormatDatePipe } from '../../directives/date/format-date.pipe';
 import { IPaginatorOutput } from '../paginator/types/paginator.types';
 import { PaginatorComponent } from '../paginator/paginator.component';
+import { AlertType, MessageService } from '../../services/message.service';
 
 /** Общий компонент для создания таблицы ресстра */
 @Component({
@@ -163,10 +164,10 @@ export class RegisterTableComponent implements OnDestroy {
   public emptyText = input<string>('Нет данных');
   /** Дизейбл сортировки */
   public sortingDisabled = input(false);
-  /** Максимальное значения выбора чекбоксов через поле ввода */
-  public checkboxInputMaxValue = input<number | null>(null);
   /** Дизейбл выбора чекбоксов */
   public checkboxDisabled = input(false);
+  /** Максимальное значение количества выбираемых записей */
+  public maxSelectedRows = input<number | null>(null);
   /** Дизейбл выбора чекбоксов */
   public paginatorDisabled = input(false);
 
@@ -193,6 +194,7 @@ export class RegisterTableComponent implements OnDestroy {
   private readonly _selectedService = inject(SelectedObjectsStateService, {
     optional: true,
   });
+  private readonly _messageService = inject(MessageService);
 
   /** Событие выбора в чекбокс-селекторе */
   public selectChanged = output<ApplySelectionTypes>();
@@ -370,10 +372,14 @@ export class RegisterTableComponent implements OnDestroy {
   private _projectCellTemplates(): void {
     effect(() => {
       this._projectedCellsMap.clear();
-      for (const template of this.cellTemplates()) {
-        this._projectedCellsMap.set(template.cellTemplateName, template.tpl);
-      }
+      this._setProjectedCellsMap();
     });
+  }
+
+  private _setProjectedCellsMap() {
+    for (const template of this.cellTemplates()) {
+      this._projectedCellsMap.set(template.cellTemplateName, template.tpl);
+    }
   }
 
   private _syncRowVisibilityDOM(): void {
@@ -462,13 +468,32 @@ export class RegisterTableComponent implements OnDestroy {
   }
 
   protected onRowClick(event: MouseEvent, row: unknown): void {
-    const blueHighlightsSelected = window.getSelection();
-    blueHighlightsSelected?.removeAllRanges();
+    if (this.checkboxColumn()) {
+      const blueHighlightsSelected = window.getSelection();
+      blueHighlightsSelected?.removeAllRanges();
+    }
 
     const stateObjects = this.stateObjects?.();
 
     // TODO оставить только if после SMA2-3134
     if (stateObjects) {
+      const maxRows = this.maxSelectedRows();
+      const selectedRows = this.selectedCounter();
+
+      if (isDefined(maxRows) && selectedRows >= maxRows) {
+        this._messageService.showAlert(
+          `
+          Выбрано максимально возможное количество выбранных записей в реестре — ${maxRows}.
+          Дальнейший выбор заблокирован.
+          `,
+          {
+            appearance: AlertType.WARNING,
+            autoClose: 10_000,
+          }
+        );
+        return;
+      }
+
       if (event.shiftKey) {
         this._changeRangeRowsState(stateObjects, this.lastSelectedRow, row);
       } else {

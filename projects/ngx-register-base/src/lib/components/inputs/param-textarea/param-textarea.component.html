@@ -33,14 +33,14 @@
       }
       <tui-textfield
         tuiAppearance="sproc-input-appearance"
-        tuiTextfieldSize="m"
+        [tuiTextfieldSize]="size()"
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="forceClear"
         [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
       >
         <textarea
           tuiTextarea
-          tuiTextfieldSize="m"
+          [tuiTextfieldSize]="size()"
           [formControl]="control"
           [max]="max()"
           [min]="min()"
@@ -50,7 +50,7 @@
         ></textarea>
         <div class="textfield-icons-container">
           @if (isInvalidAndNotPristine) {
-            <sproc-param-invalid-icon></sproc-param-invalid-icon>
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
           }
         </div>
       </tui-textfield>

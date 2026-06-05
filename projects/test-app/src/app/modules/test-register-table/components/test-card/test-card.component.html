@@ -1,0 +1,154 @@
+<sproc-template-modal width="600px">
+  <ng-container modalHeader>Карточка {{ row.number }}</ng-container>
+  <form [formGroup]="formGroup" class="param-container">
+    <tui-scrollbar [style.max-height.px]="400">
+      <sproc-param-calendar-year
+        label="param-calendar-year"
+        paramStyle="card"
+        [formControlName]="name.CALENDAR_YEAR"
+        [formatGqlValue]="gql[name.CALENDAR_YEAR]"
+        placeholder="Выберите год"
+      />
+      <sproc-param-date
+        label="param-date"
+        paramStyle="card"
+        [formControlName]="name.DATE"
+        [formatGqlValue]="gql[name.DATE]"
+        placeholder="Выберите дату"
+      />
+      <sproc-param-date-range
+        label="param-date-range"
+        paramStyle="card"
+        [formControlName]="name.DATE_RANGE"
+        [formatGqlValue]="gql[name.DATE_RANGE]"
+      />
+      <sproc-param-date-time
+        label="param-date-time"
+        paramStyle="card"
+        [formControlName]="name.DATE_TIME"
+        [formatGqlValue]="gql[name.DATE_TIME]"
+        placeholder="Выберите дату и время"
+      />
+      <sproc-param-date-time-range
+        label="param-date-time-range"
+        paramStyle="card"
+        [formControlName]="name.DATE_TIME_RANGE"
+        [formatGqlValue]="gql[name.DATE_TIME_RANGE]"
+      />
+      <sproc-param-dropbox
+        label="param-dropbox"
+        [maskOptions]="PHONE_MASK"
+        [placeholder]="'+7'"
+        paramStyle="card"
+        [readmode]="false"
+        [formControlName]="name.DROPBOX"
+        [formatGqlValue]="gql[name.DROPBOX]"
+      />
+      <sproc-param-month
+        label="param-month"
+        paramStyle="card"
+        [formControlName]="name.MONTH"
+        [formatGqlValue]="gql[name.MONTH]"
+        placeholder="Выберите месяц"
+      />
+      <sproc-param-month-range
+        label="param-month-range"
+        paramStyle="card"
+        [formControlName]="name.MONTH_RANGE"
+        [formatGqlValue]="gql[name.MONTH_RANGE]"
+      />
+      <sproc-param-multi-select
+        label="param-multi-select"
+        paramStyle="card"
+        [items]="testItems"
+        [formControlName]="name.MULTI_SELECT"
+        [formatGqlValue]="gql[name.MULTI_SELECT]"
+        [searchable]="true"
+        placeholder="Выберите элементы"
+      />
+      <sproc-param-select
+        label="param-select"
+        paramStyle="card"
+        [items]="testItems"
+        [formControlName]="name.SELECT"
+        [formatGqlValue]="gql[name.SELECT]"
+        [searchable]="true"
+        placeholder="Выберите элемент"
+      />
+      <sproc-param-switcher
+        label="param-switcher"
+        [formControlName]="name.SWITCHER"
+        [formatGqlValue]="gql[name.SWITCHER]"
+        [switchers]="testSwitchers"
+        [required]="true"
+      />
+      <sproc-param-switcher-date-time-range
+        label="param-switcher-date-time-range"
+        paramStyle="card"
+        [formControlName]="name.SWITCHER_DATE_TIME_RANGE"
+        [forceClear]="false"
+      />
+      <sproc-param-text
+        label="param-text"
+        paramStyle="card"
+        [formControlName]="name.TEXT"
+        [formatGqlValue]="gql[name.TEXT]"
+        placeholder="Введите текст"
+        [maxLength]="20"
+      />
+      <sproc-param-text
+        label="param-text numberOnly"
+        paramStyle="card"
+        numberOnly
+        [formControlName]="name.NUMB"
+        [formatGqlValue]="gql[name.NUMB]"
+        placeholder="Введите число"
+        [maxLength]="6"
+      />
+      <sproc-param-textarea
+        label="param-textarea"
+        paramStyle="card"
+        [formControlName]="name.TEXTAREA"
+        [formatGqlValue]="gql[name.TEXTAREA]"
+        placeholder="Введите текст"
+      />
+      <sproc-param-toggle
+        label="param-toggle"
+        paramStyle="card"
+        [formControlName]="name.TOGGLE"
+        [formatGqlValue]="gql[name.TOGGLE]"
+      />
+      <app-tree-wrapper [loaderNode]="testLoaderNode" />
+      <sproc-param-tree-multi-select
+        label="param-tree-multi-select"
+        paramStyle="card"
+        [formControlName]="name.TREE_MULTI_SELECT"
+        [formatGqlValue]="gql[name.TREE_MULTI_SELECT]"
+        [loaderNode]="testLoaderNode"
+        [defaultNodeOpenedState]="false"
+      />
+      <sproc-param-tree-select
+        label="param-tree-select"
+        paramStyle="card"
+        [formControlName]="name.TREE_SELECT"
+        [formatGqlValue]="gql[name.TREE_SELECT]"
+        [loaderNode]="testLoaderNode"
+        [defaultNodeOpenedState]="false"
+      />
+    </tui-scrollbar>
+  </form>
+  <ng-container modalFooter>
+    <button [style.flex]="1" tuiButton size="m" appearance="primary" (click)="completeWith(true)">
+      Принять
+    </button>
+    <button
+      [style.flex]="1"
+      size="m"
+      tuiButton
+      appearance="secondary-grayscale"
+      (click)="completeWith(false)"
+    >
+      Отмена
+    </button>
+  </ng-container>
+</sproc-template-modal>

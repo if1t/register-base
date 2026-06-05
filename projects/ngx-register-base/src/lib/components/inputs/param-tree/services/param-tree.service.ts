@@ -161,9 +161,20 @@ export class ParamTreeService<T> {
     return this._firstLevelNodes;
   }
 
-  public setLoaderNode(loaderNode: ITreeNode<T>, defaultNodeOpenedState?: boolean): void {
+  public setLoaderNode(
+    loaderNode: ITreeNode<T>,
+    defaultNodeOpenedState?: boolean,
+    openedNodesState?: Map<ITreeNode<T>, boolean>
+  ): void {
     this._loaderNode$.next(loaderNode);
     this._defaultNodeOpenedState$.next(defaultNodeOpenedState);
+    if (openedNodesState) {
+      this.openedNodesState.set(openedNodesState);
+      const expandedNodes = [...openedNodesState.keys()];
+      for (const node of expandedNodes) {
+        this.loadChildren(node);
+      }
+    }
   }
 
   public setLastCheckedNode(node: ITreeNode<T> | null): void {

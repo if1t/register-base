@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { PrizmTableCellSorter } from '@prizm-ui/components';
 import { Apollo, MutationResult } from 'apollo-angular';
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
-import { IHasuraQueryFilter } from '../../components/register-table/model/schema';
+import {
+  IHasuraQueryFilter,
+  RegisterTableCellSorter,
+} from '../../components/register-table/model/schema';
 import { GqlFields } from '../../types/inputs.types';
 import { IBaseRegisterStore, IBaseRegisterStoreState } from '../../types/register-base.types';
 import { HasuraError } from '../../types/hasura.types';
@@ -79,6 +81,6 @@ export abstract class RegisterBaseStore<
     limit: number | undefined,
     offset: number | undefined,
     gqlFilter: GqlFields | undefined,
-    sorter?: PrizmTableCellSorter<Type>[]
+    sorter?: RegisterTableCellSorter<Type>[]
   ): IHasuraQueryFilter<Type>;
 }

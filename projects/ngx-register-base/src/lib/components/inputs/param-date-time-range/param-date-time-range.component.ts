@@ -1,64 +1,71 @@
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
-import {
-  PrizmDateTime,
-  PrizmDateTimeRange,
-  PrizmDay,
-  PrizmDayLike,
-  PrizmDayRange,
-  PrizmTime,
-  PrizmTimeMode,
-  PrizmTimeRange,
-} from '@prizm-ui/components';
+import { ChangeDetectionStrategy, Component, input, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaskitoTimeMode } from '@maskito/kit';
 import { distinctUntilChanged, filter, map, pairwise } from 'rxjs';
-import { ParamDateBase } from '../../../core/param/param-date-base';
-import { FormatterSavedValueType, ParserSavedValueType } from '../../../types/params.types';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CustomDateTimeRangeComponent } from './date-time-range/date-time-range.component';
+import { TuiDayLike } from '@taiga-ui/cdk';
+import { DateRangeType, ParamDateBase } from '../../../core/param/param-date-base';
+import { ValidationMessageService } from '../../../services/validation-message.service';
+import { ParamInvalidIconComponent } from '../sub-components/param-invalid-icon/param-invalid-icon.component';
+import { FormatterSavedValueType, ParserSavedValueType } from '../../../types';
+import { FormatDatePipe } from '../../../directives/date/format-date.pipe';
 
-export type InputDateTimeRangeSaveValue = {
-  from: string;
-  to: string;
-} | null;
+export type InputDateRangeSavedValue = { from: string; to: string } | null;
 
-// TODO не открывается пикер дат
 @Component({
   selector: 'sproc-param-date-time-range',
+  standalone: true,
   templateUrl: './param-date-time-range.component.html',
   styleUrls: ['./param-date-time-range.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ParamInvalidIconComponent,
+    CustomDateTimeRangeComponent,
+    FormatDatePipe,
+  ],
+  providers: [ValidationMessageService],
 })
-export class ParamDateTimeRangeComponent extends ParamDateBase<
-  PrizmDateTimeRange | null,
-  InputDateTimeRangeSaveValue
-> {
+export class ParamDateTimeRangeComponent
+  extends ParamDateBase<DateRangeType | null, InputDateRangeSavedValue>
+  implements OnInit
+{
   override placeholder = input('Выберите период');
-  @Input() min: PrizmDay | undefined;
-  @Input() max: PrizmDay | undefined;
-  @Input() timeMode: PrizmTimeMode = 'HH:MM';
-  @Input() maxLength: PrizmDayLike | null = null;
+  public timeMode = input<MaskitoTimeMode>('HH:MM');
+  public maxLength = input<TuiDayLike | null>(null);
+  public minLength = input<TuiDayLike | null>(null);
+
   @Input() override set formatSavedValue(
-    formatter:
-      | FormatterSavedValueType<PrizmDateTimeRange | null, InputDateTimeRangeSaveValue>
-      | undefined
+    formatter: FormatterSavedValueType<DateRangeType | null, InputDateRangeSavedValue> | undefined
   ) {
     this.formatterSavedValue = formatter ?? this._defaultFormatterSaveValue;
   }
   @Input() override set parseSavedValue(
-    parser: ParserSavedValueType<InputDateTimeRangeSaveValue, PrizmDateTimeRange | null> | undefined
+    parser: ParserSavedValueType<InputDateRangeSavedValue, DateRangeType | null> | undefined
   ) {
     this.parserSavedValue = parser ?? this._defaultParserSaveValue;
   }
+  override buildShowedValue = input(
+    (value: DateRangeType | null): string => value?.toString() ?? '-'
+  );
 
   protected override formatterSavedValue = this._defaultFormatterSaveValue;
   protected override parserSavedValue = this._defaultParserSaveValue;
 
-  private _defaultFormatterSaveValue(
-    range: PrizmDateTimeRange | null
-  ): InputDateTimeRangeSaveValue {
+  protected override onInit(): void {
+    this._subscribeOnTimeZoneChanges();
+  }
+
+  private _defaultFormatterSaveValue(range: DateRangeType | null): InputDateRangeSavedValue {
     if (!range) {
       return null;
     }
 
-    const { from, to } = this._dts.prizmDateTimeRangeToNativeDates(range);
+    const { from, to } = range;
 
     return {
       from: this._dts.toISOString(from),
@@ -66,22 +73,14 @@ export class ParamDateTimeRangeComponent extends ParamDateBase<
     };
   }
 
-  private _defaultParserSaveValue(value: InputDateTimeRangeSaveValue): PrizmDateTimeRange | null {
+  private _defaultParserSaveValue(value: InputDateRangeSavedValue): DateRangeType | null {
     if (!value) {
       return null;
     }
-
     const from = this._dts.isoToLocalDate(value.from);
     const to = this._dts.isoToLocalDate(value.to);
 
-    return new PrizmDateTimeRange(
-      PrizmDayRange.fromLocalNativeDate(from, to),
-      new PrizmTimeRange(PrizmTime.fromLocalNativeDate(from), PrizmTime.fromLocalNativeDate(to))
-    );
-  }
-
-  protected override onInit(): void {
-    this._subscribeOnTimeZoneChanges();
+    return { from, to };
   }
 
   private _subscribeOnTimeZoneChanges(): void {
@@ -98,32 +97,25 @@ export class ParamDateTimeRangeComponent extends ParamDateBase<
         takeUntilDestroyed(this.dr)
       )
       .subscribe(({ prevDiff, currDiff, value }) => {
-        const { from, to } = this._dts.prizmDateTimeRangeToNativeDates(value!);
+        const { from, to } = value!;
 
         const newFrom = this.rebuildDateInNewTimezone(from, prevDiff, currDiff);
         const newTo = this.rebuildDateInNewTimezone(to, prevDiff, currDiff);
 
-        this.control.setValue(this._dts.prizmDateTimeRangeFromNativeDates(newFrom, newTo), {
-          emitEvent: false,
-        });
+        this.control.setValue(
+          { from: newFrom, to: newTo },
+          {
+            emitEvent: false,
+          }
+        );
       });
   }
 
   protected get from(): Date | null {
-    return this._getDateFromRange('from');
+    return this.value?.from || null;
   }
 
   protected get to(): Date | null {
-    return this._getDateFromRange('to');
-  }
-
-  private _getDateFromRange(date: 'from' | 'to'): Date | null {
-    if (!this.value) {
-      return null;
-    }
-
-    const { dayRange, timeRange } = this.value;
-
-    return new PrizmDateTime(dayRange[date], timeRange?.[date]).toLocalNativeDate();
+    return this.value?.to || null;
   }
 }

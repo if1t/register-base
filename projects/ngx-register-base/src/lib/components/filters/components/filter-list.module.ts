@@ -7,17 +7,35 @@ import { FilterEditComponent } from './filter-list/filter-edit/filter-edit.compo
 import { FilterListSavedComponent } from './filter-list/filter-list-saved/filter-list-saved.component';
 import { FiltersSectionComponent } from './filter-list/filters-section/filters-section.component';
 import { DividerComponent } from '../../divider/divider.component';
-import { PrizmSharedModule } from '../../../utils/prizm.shared.module';
+import {
+  TuiButton,
+  TuiHintDirective,
+  TuiIcon,
+  TuiLoader,
+  TuiTextfieldComponent,
+  TuiTextfieldOptionsDirective,
+} from '@taiga-ui/core';
 
 @NgModule({
   declarations: [
     FilterListHeaderComponent,
-    FilterEditComponent,
     FilterListSavedComponent,
     FiltersSectionComponent,
     FilterListFooterComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, PrizmSharedModule, DividerComponent],
+  imports: [
+    FilterEditComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DividerComponent,
+    TuiHintDirective,
+    TuiButton,
+    TuiIcon,
+    TuiLoader,
+    TuiTextfieldComponent,
+    TuiTextfieldOptionsDirective,
+  ],
   exports: [
     FilterEditComponent,
     FilterListSavedComponent,

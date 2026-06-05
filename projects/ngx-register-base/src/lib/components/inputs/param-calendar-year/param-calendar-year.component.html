@@ -29,20 +29,19 @@
       </div>
 
       <tui-textfield
+        tuiAppearance="sproc-input-appearance"
         [tuiTextfieldSize]="size()"
         [tuiTextfieldLabelOutside]="true"
         [tuiTextfieldCleaner]="true"
-        (click)="click()"
+        [tuiDropdownLimitWidth]="'fixed'"
       >
-        <tui-input-year
-          #yearInput
-          [formControl]="control"
-          [max]="max()"
-          [min]="min()"
-          [disabledItemHandler]="disabledHandler"
-        >
-          Выберите год
-        </tui-input-year>
+        <input tuiInputYear [placeholder]="placeholder()" [formControl]="control" />
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+          }
+        </div>
+        <tui-calendar-year [disabledItemHandler]="disabledHandler" *tuiTextfieldDropdown />
       </tui-textfield>
     </div>
   </ng-template>

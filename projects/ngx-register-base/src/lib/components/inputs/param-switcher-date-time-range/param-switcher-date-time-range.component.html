@@ -4,16 +4,16 @@
     <span *ngIf="required" class="label--required">*</span>
   </div>
 
-  <prizm-switcher [switchers]="switchers" [formControl]="switcherControl"></prizm-switcher>
+  <sproc-param-switcher [switchers]="switchers" [formControl]="switcherControl" />
 
-  <prizm-input-layout class="flex-shrink--zero" size="s" [forceClear]="forceClear">
-    <prizm-input-layout-date-time-range
-      [placeholder]="placeholder()"
-      [timeMode]="timeMode"
-      [maxLength]="maxLength"
-      [min]="$any(min)"
-      [max]="$any(max)"
-      [formControl]="control"
-    ></prizm-input-layout-date-time-range>
-  </prizm-input-layout>
+  <sproc-param-date-time-range
+    [placeholder]="placeholder()"
+    [timeMode]="timeMode()"
+    [maxLength]="maxLength()"
+    [min]="min()"
+    [max]="max()"
+    [formControl]="control"
+    [forceClear]="forceClear"
+    [paramStyle]="paramStyle"
+  />
 </div>

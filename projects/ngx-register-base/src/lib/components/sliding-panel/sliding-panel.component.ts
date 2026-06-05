@@ -1,36 +1,40 @@
-import { Component, ElementRef, HostBinding, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { WaResizeObserver } from '@ng-web-apis/resize-observer';
+import { TuiScrollbar } from '@taiga-ui/core';
 
 @Component({
   selector: 'sproc-sliding-panel',
+  standalone: true,
   templateUrl: './sliding-panel.component.html',
   styleUrls: ['./sliding-panel.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TuiScrollbar, WaResizeObserver],
+  host: {
+    '[style.--header-offset-height.px]': 'headerHeightPx()',
+    '[style.--footer-offset-height.px]': 'footerHeightPx()',
+    '[style.--sub-offset-height.px]': 'subOffsetHeight()',
+  },
 })
 export class SlidingPanelComponent {
-  @HostBinding('style.--header-offset-height')
-  get headerOffsetHeightPx(): string {
-    const height: number = this._headerContainer?.nativeElement.children[0]?.offsetHeight ?? 0;
-
-    return `${height}px`;
-  }
-
-  @HostBinding('style.--footer-offset-height')
-  get footerOffsetHeightPx(): string {
-    const height: number = this._footerContainer?.nativeElement.children[0]?.offsetHeight ?? 0;
-
-    return `${height}px`;
-  }
-
-  @HostBinding('style.--sub-offset-height')
-  get subOffsetHeightPx(): string {
-    return `${this.subOffsetHeight}px`;
-  }
-
   /** Доп. отступ для вычисления высоты панели (в пикселях) */
-  @Input() subOffsetHeight = 0;
-
+  public subOffsetHeight = input(0);
   /** Состояние видимости панели */
-  @Input() isOpen: boolean | null | undefined = false;
+  public isOpen = input<boolean | null | undefined>(false);
 
-  @ViewChild('headerContainer') private readonly _headerContainer: ElementRef | undefined;
-  @ViewChild('footerContainer') private readonly _footerContainer: ElementRef | undefined;
+  protected readonly headerHeightPx = signal<number>(0);
+  protected readonly footerHeightPx = signal<number>(0);
+
+  protected onHeaderResize(headerContainer: HTMLElement): void {
+    const height = this._getFirstChildOffsetHeight(headerContainer);
+    this.headerHeightPx.set(height);
+  }
+
+  protected onFooterResize(footerContainer: HTMLElement): void {
+    const height = this._getFirstChildOffsetHeight(footerContainer);
+    this.footerHeightPx.set(height);
+  }
+
+  private _getFirstChildOffsetHeight(container: HTMLElement): number {
+    return (container.children[0] as HTMLElement)?.offsetHeight ?? 0;
+  }
 }

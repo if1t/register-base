@@ -8,8 +8,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { NgOptimizedImage } from '@angular/common';
-import { TuiHintDirective } from '@taiga-ui/core';
+import { TuiHintDirective, TuiIcon } from '@taiga-ui/core';
 import {
   ICON_CHEVRONS_RIGHT,
   ICON_EDITOR_DOTS,
@@ -22,14 +21,7 @@ import { TuiExpand } from '@taiga-ui/experimental';
 @Component({
   selector: 'sproc-column-settings-template',
   standalone: true,
-  imports: [
-    NgOptimizedImage,
-    CdkDrag,
-    CdkDragPlaceholder,
-    CdkDropList,
-    TuiExpand,
-    TuiHintDirective,
-  ],
+  imports: [CdkDrag, CdkDragPlaceholder, CdkDropList, TuiExpand, TuiHintDirective, TuiIcon],
   templateUrl: './column-settings-template.component.html',
   styleUrl: './column-settings-template.component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,

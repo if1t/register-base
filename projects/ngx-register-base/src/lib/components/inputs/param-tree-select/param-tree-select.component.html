@@ -30,16 +30,23 @@
         </div>
       }
       <tui-textfield
-        tuiChevron
-        tuiTextfieldSize="m"
         tuiAppearance="sproc-input-appearance"
+        tuiChevron
+        [tuiTextfieldSize]="size()"
         [stringify]="stringify()"
         [tuiTextfieldLabelOutside]="forceClear"
         [tuiTextfieldCleaner]="true"
-        [tuiDropdownMaxHeight]="maxDropdownHeight"
+        [tuiDropdownMinHeight]="minDropdownHeight()"
+        [tuiDropdownMaxHeight]="maxDropdownHeight()"
+        [tuiDropdownLimitWidth]="dropdownLimitWidth()"
       >
         <input tuiSelect [placeholder]="placeholder()" [formControl]="control" />
-        <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate"></ng-container>
+        <div class="textfield-icons-container">
+          @if (isInvalidAndNotPristine) {
+            <sproc-param-invalid-icon [hint]="validationErrorHint()" />
+          }
+        </div>
+        <ng-container *tuiTextfieldDropdown [ngTemplateOutlet]="paramTreeTemplate" />
       </tui-textfield>
     </div>
   </ng-template>
@@ -50,5 +57,5 @@
     [multi]="false"
     [checkedNodes]="checkedNodes()"
     (selectedNodesChange)="setSelectedNodes($event)"
-  ></sproc-param-tree>
+  />
 </ng-template>
