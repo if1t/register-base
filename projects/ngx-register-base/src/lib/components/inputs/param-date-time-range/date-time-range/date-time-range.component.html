@@ -12,7 +12,7 @@
   <div class="input-items">
     <input
       #inputItem
-      class="input-main"
+      class="input-date"
       [placeholder]="datePlaceholder()"
       [maskito]="computedDateMask()"
       [disabled]="disabled"
@@ -26,6 +26,7 @@
     />
     <input
       #inputItem
+      class="input-time"
       [placeholder]="TIME_PLACEHOLDER"
       [maskito]="computedTimeMask()"
       [disabled]="disabled"
@@ -40,7 +41,7 @@
     <span class="delimiter">-</span>
     <input
       #inputItem
-      class="input-main"
+      class="input-date"
       [placeholder]="DATE_PLACEHOLDER"
       [maskito]="computedDateMask()"
       [disabled]="disabled"
@@ -53,6 +54,7 @@
     />
     <input
       #inputItem
+      class="input-time"
       [placeholder]="TIME_PLACEHOLDER"
       [maskito]="computedTimeMask()"
       [disabled]="disabled"

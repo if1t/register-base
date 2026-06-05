@@ -11,6 +11,18 @@
     &--edit {
       .edit-style-card;
       .edit-style-filter;
+
+      &[sproc-param-style='card'] {
+        ::ng-deep input {
+          .input-text-14px;
+        }
+      }
+
+      &[sproc-param-style='filter'] {
+        ::ng-deep input {
+          .input-text-12px;
+        }
+      }
     }
   }
 }
