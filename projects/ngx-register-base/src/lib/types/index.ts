@@ -1,5 +1,6 @@
 export * from './event.types';
 export * from './inputs.types';
+export * from './meta-query-adapter.types';
 export * from './params.types';
 export * from './register-base.types';
 export * from './sub-types';

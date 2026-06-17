@@ -1,6 +1,7 @@
 import { Injector } from '@angular/core';
 import { InputControlGqlValue } from './inputs.types';
 import { OrderBy, WhereBoolExp } from 'hasura';
+import type { MetaQueryAdapter } from './meta-query-adapter.types';
 
 export interface MetaQuery<T extends Record<string, any> = any> {
   table: {
@@ -8,12 +9,13 @@ export interface MetaQuery<T extends Record<string, any> = any> {
     idField: string;
     valueField: string;
   };
-  where?: WhereBoolExp<T>;
-  distinct_on?: (keyof T)[];
+  where?: WhereBoolExp<T> | Record<string, any>;
+  distinct_on?: (keyof T)[] | string[];
   limit?: number;
   offset?: number;
-  order_by?: OrderBy<T>;
+  order_by?: OrderBy<T> | Record<string, any>;
   subquery?: string;
+  adapter?: MetaQueryAdapter;
 }
 
 export interface IFilterSelectValue {
