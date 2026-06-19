@@ -11,6 +11,7 @@ import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { prizmIconsProvideOldNameTransformer } from '@prizm-ui/icons';
 import { MenuStateService } from './modules/test-page-menu/service/menu-state.service';
+import { tuiHintOptionsProvider } from '@taiga-ui/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,6 +25,9 @@ export const appConfig: ApplicationConfig = {
         link: httpLink.create({ uri: 'test' }),
         cache: new InMemoryCache(),
       };
+    }),
+    tuiHintOptionsProvider({
+      appearance: 'dark',
     }),
     { provide: USER_PROFILE_LOADER, useClass: UserProfileService },
     { provide: PAGE_MENU_STATE, useClass: MenuStateService },
