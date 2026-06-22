@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.4](https://github.com/if1t/register-base/compare/v1.3.3...v1.3.4) (2026-06-22)
+
+### 🚀 Features
+
+- **param-select-actions:** Возможность вставлять кастомные кнопки в param-select компонент. ([641c547](https://github.com/if1t/register-base/commit/641c54708fccdc0b8ffab6f71429adb463b93227))
+
+### 🐞 Bug Fixes
+
+- **param-styles:** Исправление стилей param-компонентов. ([4fcc631](https://github.com/if1t/register-base/commit/4fcc63185ef6b85a1eb13c5cd7dcebfc4303e72e))
+
 ## [1.3.3](https://github.com/if1t/register-base/compare/v1.3.1...v1.3.3) (2026-06-04)
 
 ### 🐞 Bug Fixes
