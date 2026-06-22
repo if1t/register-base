@@ -1,5 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import {
+  PrizmDateTimeRange,
+  PrizmDayRange,
+  PrizmMonth,
+  PrizmMonthRange,
+  PrizmSwitcherItem,
+} from '@prizm-ui/components';
+import { TuiDay } from '@taiga-ui/cdk';
+import { TuiButton } from '@taiga-ui/core';
 import {
   FormGroupWrapper,
   InputControl,
@@ -13,20 +23,7 @@ import {
   SyncTreeLoaderService,
   TREE_LOADER,
 } from 'ngx-register-base';
-import {
-  PrizmDateTimeRange,
-  PrizmDayRange,
-  PrizmMonth,
-  PrizmMonthRange,
-  PrizmSwitcherItem,
-} from '@prizm-ui/components';
-import { TuiDay } from '@taiga-ui/cdk';
-import {
-  EControlName,
-  GqlTest,
-  TestItems,
-  TestLoaderNode,
-} from '../test-register-table/consts';
+import { EControlName, GqlTest, TestItems, TestLoaderNode } from '../test-register-table/consts';
 import { ITestFilter } from '../test-register-table/types';
 import { TreeWrapperComponent } from '../test-register-table/components/tree-wrapper/tree-wrapper.component';
 
@@ -40,6 +37,7 @@ import { TreeWrapperComponent } from '../test-register-table/components/tree-wra
     ParamTreeSelectComponent,
     ParamTreeMultiSelectComponent,
     TreeWrapperComponent,
+    TuiButton,
   ],
   templateUrl: './test-card.component.html',
   styleUrl: './test-card.component.less',
@@ -47,6 +45,8 @@ import { TreeWrapperComponent } from '../test-register-table/components/tree-wra
   providers: [{ provide: TREE_LOADER, useClass: SyncTreeLoaderService }],
 })
 export class TestCardComponent {
+  private readonly _router = inject(Router);
+
   protected readonly name = EControlName;
   protected readonly gql = GqlTest;
   protected readonly testItems = TestItems;
@@ -78,12 +78,24 @@ export class TestCardComponent {
     [EControlName.CUSTOM]: new InputControl<File | null>(null),
   });
 
-  protected onFileSelect(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
+  protected onFileSelect(files: FileList | null): void {
+    const [file] = [...(files ?? [])];
 
     if (file) {
       this.form.controls[EControlName.CUSTOM].setValue(file);
     }
+  }
+
+  protected navigateToSelectCard(
+    id: IFilterSelectValue['id'] | null | undefined,
+    event: MouseEvent
+  ): void {
+    event.stopPropagation();
+
+    if (id === null || id === undefined) {
+      return;
+    }
+
+    this._router.navigate(['/test-card', id]);
   }
 }

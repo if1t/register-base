@@ -1,12 +1,17 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ContentChild,
+  ElementRef,
   EventEmitter,
   forwardRef,
+  inject,
   input,
+  NgZone,
   OnDestroy,
   Output,
   signal,
+  ViewChild,
 } from '@angular/core';
 import {
   BehaviorSubject,
@@ -42,6 +47,7 @@ import { FastQueryStore } from '../../../store/fast-query-store.service';
 import { ParamSelectBase } from '../../../core/param/param-select-base';
 import { IFilterSelectValue } from '../../../types/params.types';
 import { PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS } from '../../../consts/params.consts';
+import { ParamSelectActionsDirective } from './param-select-actions.directive';
 
 @Component({
   selector: 'sproc-param-select',
@@ -80,6 +86,7 @@ import { PARAM_SEARCH_INPUT_DEBOUNCE_TIME_MLS } from '../../../consts/params.con
     TuiLoader,
     TuiChevron,
     TuiHint,
+    ParamSelectActionsDirective,
   ],
 })
 export class ParamSelectComponent
@@ -110,7 +117,42 @@ export class ParamSelectComponent
 
   @Output() onSelect = new EventEmitter<IFilterSelectValue>();
 
+  @ContentChild(ParamSelectActionsDirective)
+  protected readonly actionsTemplate?: ParamSelectActionsDirective;
+
   protected readonly search$ = new BehaviorSubject<string | undefined>(undefined);
+  protected textfieldIconsWidth = 0;
+
+  private readonly _ngZone = inject(NgZone);
+  private _textfieldIconsResizeObserver?: ResizeObserver;
+
+  @ViewChild('textfieldIconsContainer')
+  private set textfieldIconsContainer(container: ElementRef<HTMLElement> | undefined) {
+    this._textfieldIconsResizeObserver?.disconnect();
+
+    if (!container) {
+      this._setTextfieldIconsWidth(0);
+
+      return;
+    }
+
+    const updateWidth = (): void => {
+      this._setTextfieldIconsWidth(
+        Math.ceil(container.nativeElement.getBoundingClientRect().width)
+      );
+    };
+
+    updateWidth();
+
+    if (typeof ResizeObserver === 'undefined') {
+      return;
+    }
+
+    this._textfieldIconsResizeObserver = new ResizeObserver(() => {
+      this._ngZone.run(updateWidth);
+    });
+    this._textfieldIconsResizeObserver.observe(container.nativeElement);
+  }
 
   public override afterViewInit(): void {
     this._observeFetchItems();
@@ -121,7 +163,17 @@ export class ParamSelectComponent
   }
 
   public ngOnDestroy(): void {
+    this._textfieldIconsResizeObserver?.disconnect();
     this.search$.complete();
+  }
+
+  private _setTextfieldIconsWidth(width: number): void {
+    if (this.textfieldIconsWidth === width) {
+      return;
+    }
+
+    this.textfieldIconsWidth = width;
+    this.cdr.markForCheck();
   }
 
   private _subscribeOnSearch(): void {

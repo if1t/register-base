@@ -37,6 +37,7 @@ import { FormatDatePipe } from '../../directives/date/format-date.pipe';
 import { PrizmSharedModule } from '../../utils/prizm.shared.module';
 import { PrizmInputMultiSelectModule } from '@prizm-ui/components';
 import { ParamInvalidIconComponent } from './sub-components/param-invalid-icon/param-invalid-icon.component';
+import { ParamSelectActionsDirective } from './param-select/param-select-actions.directive';
 
 @NgModule({
   declarations: [
@@ -79,9 +80,11 @@ import { ParamInvalidIconComponent } from './sub-components/param-invalid-icon/p
     TuiInputYearModule,
     FormatDatePipe,
     ParamInvalidIconComponent,
+    ParamSelectActionsDirective,
   ],
   exports: [
     ParamSelectComponent,
+    ParamSelectActionsDirective,
     ParamMultiSelectComponent,
     ParamDateRangeComponent,
     ParamDateTimeComponent,

@@ -33,6 +33,7 @@
           tuiTextfieldSize="m"
           tuiAppearance="sproc-input-appearance"
           tuiChevron
+          [style.--sproc-param-select-actions-width.px]="textfieldIconsWidth"
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
           tuiHintDirection="top"
@@ -64,6 +65,7 @@
           tuiTextfieldSize="m"
           tuiAppearance="sproc-input-appearance"
           tuiChevron
+          [style.--sproc-param-select-actions-width.px]="textfieldIconsWidth"
           [tuiTextfieldLabelOutside]="true"
           [tuiTextfieldCleaner]="true"
           [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
@@ -93,7 +95,15 @@
       </ng-template>
 
       <ng-template #textfieldIcons>
-        <div class="textfield-icons-container">
+        <div #textfieldIconsContainer class="textfield-icons-container">
+          @if (actionsTemplate?.tpl; as actionsTemplateRef) {
+            <ng-container
+              *ngTemplateOutlet="
+                actionsTemplateRef;
+                context: { $implicit: value, value: value, control: control }
+              "
+            />
+          }
           @if (isInvalidAndNotPristine) {
             <sproc-param-invalid-icon></sproc-param-invalid-icon>
           }

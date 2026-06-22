@@ -85,7 +85,19 @@
       [formatGqlValue]="gql[name.SELECT]"
       [searchable]="true"
       placeholder="Выберите элемент"
-    />
+    >
+      <ng-template sprocParamSelectActions let-value="value">
+        <button
+          tuiIconButton
+          type="button"
+          size="xs"
+          appearance="flat"
+          iconStart="@tui.external-link"
+          [disabled]="!value"
+          (click)="navigateToSelectCard(value?.id, $event)"
+        ></button>
+      </ng-template>
+    </sproc-param-select>
     <sproc-param-multi-select
       label="param-multi-select"
       paramStyle="card"
@@ -127,7 +139,7 @@
     />
     <sproc-param-custom [formControlName]="name.CUSTOM" [formatGqlValue]="gql[name.CUSTOM]">
       <span>param-custom</span>
-      <input type="file" (change)="onFileSelect($event)" />
+      <input #customFileInput type="file" (change)="onFileSelect(customFileInput.files)" />
     </sproc-param-custom>
   </form>
 </div>

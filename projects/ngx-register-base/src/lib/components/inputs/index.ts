@@ -7,6 +7,10 @@ export { ParamDateTimeRangeComponent } from './param-date-time-range/param-date-
 export { ParamMonthComponent } from './param-month/param-month.component';
 export { ParamMonthRangeComponent } from './param-month-range/param-month-range.component';
 export { ParamMultiSelectComponent } from './param-multi-select/param-multi-select.component';
+export {
+  ParamSelectActionsDirective,
+  type ParamSelectActionsContext,
+} from './param-select/param-select-actions.directive';
 export { ParamSelectComponent } from './param-select/param-select.component';
 export { ParamSwitcherComponent } from './param-switcher/param-switcher.component';
 export * from './param-switcher-date-time-range/index';

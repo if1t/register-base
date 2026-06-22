@@ -120,7 +120,9 @@
     --t-icon-end: @triangleDownIcon !important;
 
     input {
-      padding-inline-end: calc(var(--t-end, 0rem) + var(--t-padding) + 10px);
+      padding-inline-end: calc(
+        var(--t-end, 0rem) + var(--t-padding) + 20px + var(--sproc-param-select-actions-width, 0px)
+      );
     }
 
     &::after {

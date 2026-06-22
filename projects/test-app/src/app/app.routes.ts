@@ -22,5 +22,6 @@ export const routes: Routes = [
     component: TestMenuConstructorComponent,
   },
   { path: AppRoutes.TestCard, component: TestCardComponent },
+  { path: `${AppRoutes.TestCard}/:id`, component: TestCardComponent },
   { path: '**', redirectTo: AppRoutes.RegisterTable },
 ];
