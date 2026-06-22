@@ -1,0 +1,133 @@
+<div class="test-card-page">
+  <form [formGroup]="form" class="param-container">
+    <sproc-param-text
+      label="param-text"
+      paramStyle="card"
+      [formControlName]="name.TEXT"
+      [formatGqlValue]="gql[name.TEXT]"
+      placeholder="Введите текст"
+    />
+    <sproc-param-textarea
+      label="param-textarea"
+      paramStyle="card"
+      [formControlName]="name.TEXTAREA"
+      [formatGqlValue]="gql[name.TEXTAREA]"
+      placeholder="Введите текст"
+    />
+    <sproc-param-text
+      label="param-text numberOnly"
+      paramStyle="card"
+      numberOnly
+      [formControlName]="name.NUMB"
+      [formatGqlValue]="gql[name.NUMB]"
+      placeholder="Введите число"
+    />
+    <sproc-param-toggle
+      label="param-toggle"
+      paramStyle="card"
+      [formControlName]="name.TOGGLE"
+      [formatGqlValue]="gql[name.TOGGLE]"
+    />
+    <sproc-param-calendar-year
+      label="param-calendar-year"
+      paramStyle="card"
+      [formControlName]="name.CALENDAR_YEAR"
+      [formatGqlValue]="gql[name.CALENDAR_YEAR]"
+      placeholder="Выберите год"
+    />
+    <sproc-param-month
+      label="param-month"
+      paramStyle="card"
+      [formControlName]="name.MONTH"
+      [formatGqlValue]="gql[name.MONTH]"
+      placeholder="Выберите месяц"
+    />
+    <sproc-param-month-range
+      label="param-month-range"
+      paramStyle="card"
+      [formControlName]="name.MONTH_RANGE"
+      [formatGqlValue]="gql[name.MONTH_RANGE]"
+      placeholder="Выберите период месяцев"
+    />
+    <sproc-param-date
+      label="param-date"
+      paramStyle="card"
+      [formControlName]="name.DATE"
+      [formatGqlValue]="gql[name.DATE]"
+      placeholder="Выберите дату"
+    />
+    <sproc-param-date-range
+      label="param-date-range"
+      paramStyle="card"
+      [formControlName]="name.DATE_RANGE"
+      [formatGqlValue]="gql[name.DATE_RANGE]"
+      placeholder="Выберите период дат"
+    />
+    <sproc-param-date-time
+      label="param-date-time"
+      paramStyle="card"
+      [formControlName]="name.DATE_TIME"
+      [formatGqlValue]="gql[name.DATE_TIME]"
+      placeholder="Выберите дату и время"
+    />
+    <sproc-param-date-time-range
+      label="param-date-time-range"
+      paramStyle="card"
+      [formControlName]="name.DATE_TIME_RANGE"
+      [formatGqlValue]="gql[name.DATE_TIME_RANGE]"
+      placeholder="Выберите период даты и времени"
+    />
+    <sproc-param-select
+      label="param-select"
+      paramStyle="card"
+      [items]="testItems"
+      [formControlName]="name.SELECT"
+      [formatGqlValue]="gql[name.SELECT]"
+      [searchable]="true"
+      placeholder="Выберите элемент"
+    />
+    <sproc-param-multi-select
+      label="param-multi-select"
+      paramStyle="card"
+      [items]="testItems"
+      [formControlName]="name.MULTI_SELECT"
+      [formatGqlValue]="gql[name.MULTI_SELECT]"
+      [searchable]="true"
+      placeholder="Выберите элементы"
+    />
+    <sproc-param-switcher
+      label="param-switcher"
+      [formControlName]="name.SWITCHER"
+      [formatGqlValue]="gql[name.SWITCHER]"
+      [switchers]="testSwitchers"
+      [required]="true"
+    />
+    <sproc-param-switcher-date-time-range
+      label="param-switcher-date-time-range"
+      paramStyle="card"
+      [formControlName]="name.SWITCHER_DATE_TIME_RANGE"
+      [forceClear]="false"
+    />
+    <app-tree-wrapper [loaderNode]="testLoaderNode" />
+    <sproc-param-tree-select
+      label="param-tree-select"
+      paramStyle="card"
+      [formControlName]="name.TREE_SELECT"
+      [formatGqlValue]="gql[name.TREE_SELECT]"
+      [loaderNode]="testLoaderNode"
+      [defaultNodeOpenedState]="false"
+    />
+    <sproc-param-tree-multi-select
+      label="param-tree-multi-select"
+      paramStyle="card"
+      [formControlName]="name.TREE_MULTI_SELECT"
+      [formatGqlValue]="gql[name.TREE_MULTI_SELECT]"
+      [loaderNode]="testLoaderNode"
+      [defaultNodeOpenedState]="false"
+    />
+    <sproc-param-custom [formControlName]="name.CUSTOM" [formatGqlValue]="gql[name.CUSTOM]">
+      <span>param-custom</span>
+      <input type="file" (change)="onFileSelect($event)" />
+    </sproc-param-custom>
+  </form>
+</div>
