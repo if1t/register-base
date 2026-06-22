@@ -1,51 +1,10 @@
 @import 'fonts';
 @import 'common-param';
 
+@clearIcon: url('/assets/ngx-register-base/icons/delete-content.svg');
+@calendarDateIcon: url('/assets/ngx-register-base/icons/calendar-date.svg');
+
 :host {
-  ::ng-deep {
-    tui-textfield {
-      padding: 0;
-    }
-
-    [tuiWrapper][data-appearance='textfield'] {
-      box-shadow: none !important;
-    }
-
-    tui-textfield > .t-content {
-      width: 100% !important;
-      height: 100% !important;
-      margin-inline-end: 0 !important;
-    }
-
-    tui-input-year {
-      height: 100% !important;
-      width: 100% !important;
-
-      tui-primitive-textfield {
-        height: 100% !important;
-        max-block-size: none !important;
-      }
-    }
-
-    .t-wrapper label {
-      .input-label;
-      .input-text-14px;
-    }
-
-    [automation-id='tui-primitive-textfield__wrapper'] {
-      padding-inline-start: calc(var(--t-start, 0rem) + var(--t-padding));
-    }
-
-    [tuiAppearance][data-appearance='textfield'] {
-      min-height: 32px;
-    }
-
-    .t-icons {
-      margin-inline-end: 0.5rem !important;
-      min-height: 32px;
-    }
-  }
-
   .container {
     &--read {
       .read-style-card;
@@ -56,12 +15,188 @@
       .edit-style-card;
       .edit-style-filter;
 
+      ::ng-deep {
+        tui-textfield {
+          padding: unset;
+          padding-right: 4px;
+
+          --t-icon-end: @calendarDateIcon !important;
+
+          &::after {
+            display: none;
+          }
+        }
+
+        tui-input-year {
+          width: 100%;
+
+          tui-primitive-textfield {
+            block-size: auto;
+            min-block-size: auto;
+            max-block-size: none;
+          }
+
+          .t-placeholder:not(.t-placeholder_raised) {
+            opacity: 1 !important;
+            color: var(--text-secondary);
+            transform: none !important;
+            pointer-events: none;
+          }
+
+          .t-placeholder_raised {
+            display: none !important;
+          }
+
+          .t-content {
+            padding: 0 !important;
+            padding-inline-end: 0;
+          }
+
+          .t-input {
+            padding: 0 !important;
+            text-indent: 0 !important;
+          }
+
+          .t-wrapper {
+            padding-inline-end: 0.25rem;
+          }
+
+          .t-icons {
+            gap: 4px;
+            margin-inline-end: 0;
+            align-items: center;
+          }
+
+          .t-cleaner {
+            --t-icon: @clearIcon !important;
+
+            inline-size: 1.5rem !important;
+            block-size: 1.5rem !important;
+            min-inline-size: 1.5rem;
+            min-block-size: 1.5rem;
+            border-width: 0 !important;
+            order: 1;
+
+            tui-icon {
+              --t-icon: @clearIcon !important;
+
+              font-size: 1.5rem !important;
+              inline-size: 1.5rem !important;
+              block-size: 1.5rem !important;
+            }
+          }
+
+          .t-icon.t-textfield-icon {
+            inline-size: 1.5rem;
+            block-size: 1.5rem;
+            order: 2;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+
+            tui-icon {
+              --t-icon: @calendarDateIcon !important;
+
+              font-size: 16px !important;
+              inline-size: 16px !important;
+              block-size: 16px !important;
+              pointer-events: auto !important;
+              cursor: pointer !important;
+            }
+          }
+        }
+      }
+
       &[sproc-param-style='card'] {
+        padding: 0 2px;
+
         ::ng-deep {
+          tui-textfield {
+            border: 1px solid var(--input-stroke);
+            border-radius: 2px;
+            box-sizing: border-box;
+            min-height: 32px;
+            padding: 0 3.5px 0 8px;
+          }
+
+          tui-input-year {
+            [tuiWrapper][data-appearance='textfield'] {
+              box-shadow: none !important;
+              background: inherit !important;
+              border: none !important;
+              border-radius: inherit;
+              min-block-size: 32px;
+              block-size: 32px;
+
+              &::after {
+                border: unset !important;
+                box-shadow: unset !important;
+              }
+
+              &:hover,
+              &:focus,
+              &:focus-within {
+                box-shadow: none !important;
+              }
+            }
+
+            tui-primitive-textfield {
+              block-size: 32px;
+              min-block-size: 32px;
+              max-block-size: 32px;
+            }
+          }
+
           input {
             .input-text-14px;
 
             color: var(--text-contrast);
+            border: none;
+          }
+
+          tui-input-year .t-placeholder:not(.t-placeholder_raised) {
+            .input-text-14px;
+          }
+        }
+      }
+
+      &[sproc-param-style='filter'] {
+        ::ng-deep {
+          tui-input-year {
+            [tuiWrapper][data-appearance='textfield'] {
+              box-shadow: none !important;
+              background: transparent !important;
+              border: none !important;
+              border-radius: 0 !important;
+              min-block-size: unset;
+              block-size: auto;
+
+              &::after {
+                border: unset !important;
+                box-shadow: unset !important;
+              }
+
+              &:hover,
+              &:focus,
+              &:focus-within {
+                box-shadow: none !important;
+              }
+            }
+
+            tui-primitive-textfield {
+              block-size: auto;
+              min-block-size: auto;
+              max-block-size: none;
+            }
+          }
+
+          input {
+            .input-text-12px;
+
+            color: var(--text-contrast);
+          }
+
+          tui-input-year .t-placeholder:not(.t-placeholder_raised) {
+            .input-text-12px;
           }
         }
       }

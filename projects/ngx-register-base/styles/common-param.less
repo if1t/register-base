@@ -79,6 +79,14 @@
     .label {
       .default-label;
     }
+
+    input,
+    textarea,
+    tui-multi-select {
+      .input-text-14px;
+
+      border: 1px solid var(--stroke1);
+    }
   }
 }
 
@@ -87,6 +95,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid var(--stroke1);
 
     .label-wrapper {
       .default-label-wrapper;
@@ -96,6 +105,11 @@
 
     .label {
       .default-label;
+    }
+
+    input,
+    textarea {
+      .input-text-12px;
     }
   }
 }

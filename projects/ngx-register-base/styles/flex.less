@@ -14,6 +14,11 @@
   flex-grow: 1;
 }
 
+.full-flex-width {
+  flex: 1;
+  width: 100%;
+}
+
 // .gap-1, ...,  .gap-6
 .loop(@counter) when (@counter > 0) {
   .gap-@{counter} {
@@ -50,4 +55,3 @@
   }
 }
 .align-items();
-

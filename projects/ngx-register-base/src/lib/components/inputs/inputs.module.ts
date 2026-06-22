@@ -36,7 +36,6 @@ import { ParamCalendarYearComponent } from './param-calendar-year/param-calendar
 import { FormatDatePipe } from '../../directives/date/format-date.pipe';
 import { PrizmSharedModule } from '../../utils/prizm.shared.module';
 import { PrizmInputMultiSelectModule } from '@prizm-ui/components';
-import { ParamDeleteContentBtnComponent } from './sub-components/param-delete-content-icon/param-delete-content-btn.component';
 import { ParamInvalidIconComponent } from './sub-components/param-invalid-icon/param-invalid-icon.component';
 
 @NgModule({
@@ -79,7 +78,6 @@ import { ParamInvalidIconComponent } from './sub-components/param-invalid-icon/p
     ParamTextareaComponent,
     TuiInputYearModule,
     FormatDatePipe,
-    ParamDeleteContentBtnComponent,
     ParamInvalidIconComponent,
   ],
   exports: [

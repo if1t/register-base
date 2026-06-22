@@ -205,7 +205,7 @@ export const GqlTest = {
 
 export const TestItems: IFilterSelectValue[] = Array.from({ length: 50 }, (_, i) => ({
   id: i,
-  name: i.toString(),
+  name: `${i} - wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww`,
 }));
 
 export const TestLoaderNode: ITreeNode = {
