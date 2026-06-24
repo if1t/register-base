@@ -30,4 +30,6 @@ export class ParamTextareaComponent extends ParamTextBase {
   public min = input(6);
   /** Максимальное кол-во строк в инпуте */
   public max = input(6);
+  /** Флаг для снятия ограничений maxLength и limit */
+  public hasNoLimits = input<boolean>(false);
 }

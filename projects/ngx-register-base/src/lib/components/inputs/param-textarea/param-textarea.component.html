@@ -38,24 +38,39 @@
         [tuiTextfieldCleaner]="forceClear"
         [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
       >
-        <textarea
-          tuiTextarea
-          tuiTextfieldSize="m"
-          [formControl]="control"
-          [max]="max()"
-          [min]="min()"
-          [maxLength]="maxLength()"
-          [limit]="maxLength()"
-          [placeholder]="placeholder()"
-        ></textarea>
-        <div class="textfield-icons-container">
-          @if (isInvalidAndNotPristine) {
-            <sproc-param-invalid-icon></sproc-param-invalid-icon>
-          }
-        </div>
+        @if (!hasNoLimits()) {
+          <textarea
+            tuiTextarea
+            tuiTextfieldSize="m"
+            [formControl]="control"
+            [max]="max()"
+            [min]="min()"
+            [maxLength]="maxLength()"
+            [limit]="maxLength()"
+            [placeholder]="placeholder()"
+          ></textarea>
+          <ng-container *ngTemplateOutlet="invalidIcon"></ng-container>
+        } @else {
+          <textarea
+            tuiTextarea
+            tuiTextfieldSize="m"
+            [formControl]="control"
+            [max]="max()"
+            [min]="min()"
+            [placeholder]="placeholder()"
+          ></textarea>
+          <ng-container *ngTemplateOutlet="invalidIcon"></ng-container>
+        }
       </tui-textfield>
 
       <ng-template #hintContent> {{ showedValue }} </ng-template>
+    </div>
+  </ng-template>
+  <ng-template #invalidIcon>
+    <div class="textfield-icons-container">
+      @if (isInvalidAndNotPristine) {
+        <sproc-param-invalid-icon></sproc-param-invalid-icon>
+      }
     </div>
   </ng-template>
 </ng-container>
