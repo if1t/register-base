@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.1](https://github.com/if1t/register-base/compare/v1.4.0...v1.4.1) (2026-06-26)
+
+### 🐞 Bug Fixes
+
+- **param-textarea:**: Исправление работы поля и параметра hasNoLimits ([08e2aad](https://github.com/if1t/register-base/commit/08e2aadf0e8f11fb8730573b46532f2d0ee8872a)).
+
 ## [1.4.0](https://github.com/if1t/register-base/compare/v1.3.4...v1.4.0) (2026-06-26)
 
 ### 🚀 Features
