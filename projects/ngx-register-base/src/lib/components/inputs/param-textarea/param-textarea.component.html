@@ -31,14 +31,14 @@
           </span>
         </div>
       }
-      <tui-textfield
-        tuiAppearance="sproc-input-appearance"
-        tuiTextfieldSize="m"
-        [tuiTextfieldLabelOutside]="true"
-        [tuiTextfieldCleaner]="forceClear"
-        [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
-      >
-        @if (!hasNoLimits()) {
+      @if (!hasNoLimits()) {
+        <tui-textfield
+          tuiAppearance="sproc-input-appearance"
+          tuiTextfieldSize="m"
+          [tuiTextfieldLabelOutside]="true"
+          [tuiTextfieldCleaner]="forceClear"
+          [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+        >
           <textarea
             tuiTextarea
             tuiTextfieldSize="m"
@@ -50,7 +50,15 @@
             [placeholder]="placeholder()"
           ></textarea>
           <ng-container *ngTemplateOutlet="invalidIcon"></ng-container>
-        } @else {
+        </tui-textfield>
+      } @else {
+        <tui-textfield
+          tuiAppearance="sproc-input-appearance"
+          tuiTextfieldSize="m"
+          [tuiTextfieldLabelOutside]="true"
+          [tuiTextfieldCleaner]="forceClear"
+          [tuiHint]="value && showedValue !== '-' ? hintContent : undefined"
+        >
           <textarea
             tuiTextarea
             tuiTextfieldSize="m"
@@ -60,9 +68,8 @@
             [placeholder]="placeholder()"
           ></textarea>
           <ng-container *ngTemplateOutlet="invalidIcon"></ng-container>
-        }
-      </tui-textfield>
-
+        </tui-textfield>
+      }
       <ng-template #hintContent> {{ showedValue }} </ng-template>
     </div>
   </ng-template>
