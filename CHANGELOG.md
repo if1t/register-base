@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/if1t/register-base/compare/v1.3.4...v1.4.0) (2026-06-26)
+
+### 🚀 Features
+
+- **param-textarea:** Добавлен флаг для снятий ограничений ввода в textarea ([d04b29f](https://github.com/if1t/register-base/commit/d04b29fe25979cbc35cccb18a990a5fc051827a5)).
+
 ## [1.3.4](https://github.com/if1t/register-base/compare/v1.3.3...v1.3.4) (2026-06-22)
 
 ### 🚀 Features
