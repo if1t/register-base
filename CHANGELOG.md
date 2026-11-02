@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/if1t/register-base/compare/v1.4.1...v1.5.0) (2026-11-02)
+
+### 🚀 Features
+
+- Добавлен флаг `simpleCheckbox` в `RegisterTableComponent` и `CheckboxSelectorComponent` для возможности выбора нескольких пунктов по ЛКМ и выбора всех пунктов по нажатию чекбокса в шапке ([42f8d10](https://github.com/if1t/register-base/pull/13/changes/42f8d1067a2ab546c22b475481376de576c9b90d))
+
+### 🐞 Bug Fixes
+
+- Исправление сброса иерархии при нажатии по пункту меню ([a1242d1](https://github.com/if1t/register-base/pull/13/changes/a1242d1d28fbfea991332f81492f3a35133690b2))
+
 ## [1.4.1](https://github.com/if1t/register-base/compare/v1.4.0...v1.4.1) (2026-06-26)
 
 ### 🐞 Bug Fixes

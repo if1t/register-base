@@ -169,7 +169,7 @@ export class RegisterTableComponent implements OnDestroy {
   public checkboxDisabled = input(false);
   /** Дизейбл выбора чекбоксов */
   public paginatorDisabled = input(false);
-  /** Упращеная логика чекбоксов */
+  /** Упрощенная логика чекбоксов */
   public simpleCheckbox = input(false);
 
   public selectedCounter = computed(() => {
