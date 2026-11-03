@@ -44,6 +44,7 @@ export class CheckboxSelectorComponent {
   public disabled = input(false);
   public loading = input<boolean | null>(false);
   public inputMaxValue = input<number | null>(null);
+  public simpleCheckbox = input(false);
 
   public onApply = output<ApplySelectionTypes>();
 
@@ -107,7 +108,14 @@ export class CheckboxSelectorComponent {
   }
 
   protected toggle(): void {
-    if (!this.disabled()) {
+    if (this.disabled()) {
+      return;
+    }
+
+    if (this.simpleCheckbox()) {
+      this.isOpen.set(false);
+      this.onApply.emit(this.calcChecked() ? null : SelectionTypes.ALL);
+    } else {
       this.isOpen.update((isOpen) => !isOpen);
     }
   }

@@ -27,6 +27,7 @@
                     [totalRecords]="totalRecords()"
                     [loading]="isSelectloading()"
                     [disabled]="checkboxDisabled()"
+                    [simpleCheckbox]="simpleCheckbox()"
                     (onApply)="selectChanged.emit($event)"
                   ></sproc-checkbox-selector>
                 </th>

@@ -169,6 +169,8 @@ export class RegisterTableComponent implements OnDestroy {
   public checkboxDisabled = input(false);
   /** Дизейбл выбора чекбоксов */
   public paginatorDisabled = input(false);
+  /** Упрощенная логика чекбоксов */
+  public simpleCheckbox = input(false);
 
   public selectedCounter = computed(() => {
     const selectedSize = this._selectedService?.selectedValues()?.size ?? null;
@@ -472,7 +474,7 @@ export class RegisterTableComponent implements OnDestroy {
       if (event.shiftKey) {
         this._changeRangeRowsState(stateObjects, this.lastSelectedRow, row);
       } else {
-        if (event.ctrlKey) {
+        if (event.ctrlKey || this.simpleCheckbox()) {
           this._changeOnlyRowState(stateObjects, row, true);
         } else {
           this._changeOnlyRowState(stateObjects, row);
@@ -498,7 +500,7 @@ export class RegisterTableComponent implements OnDestroy {
     if (event.shiftKey) {
       this._selectRangeRows(this.lastSelectedRow, row);
     } else {
-      if (event.ctrlKey) {
+      if (event.ctrlKey || this.simpleCheckbox()) {
         this._selectOnlyRow(row, true);
       } else {
         this._selectOnlyRow(row);

@@ -175,7 +175,9 @@ export class SprocPageMenuComponent implements OnInit {
       if (copy.has(code)) {
         copy.delete(code);
       } else {
-        copy.clear();
+        if (this.isMenuClosed) {
+          copy.clear();
+        }
         copy.add(code);
 
         const parents = this.getParents(item);
