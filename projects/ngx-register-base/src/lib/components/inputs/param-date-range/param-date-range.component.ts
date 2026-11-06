@@ -41,7 +41,7 @@ export class ParamDateRangeComponent extends ParamDateBase<
   protected override parserSavedValue = this._defaultParserSaveValue;
 
   private _defaultFormatterSaveValue(range: PrizmDayRange | null): InputDateRangeSavedValue {
-    if (!range) {
+    if (!range?.from || !range?.to) {
       return null;
     }
 
